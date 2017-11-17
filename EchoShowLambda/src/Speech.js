@@ -161,6 +161,33 @@ function respond(intentName, resultCode, response, param1) {
 	response.askWithCard(msg.speechOut, "Vier-Gewinnt Skill", msg.display);
 }
 
+function createMsg(intentName, resultCode, param1) {
+	var msg;
+	if (messages[intentName]) {
+		msg = messages[intentName][resultCode];
+	}
+	if (!msg) {
+		msg = messages["Generic"][resultCode];
+	}
+	if (!msg) {
+		msg = {
+				speechOut: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode,
+				display: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode
+		}
+	}
+	msg = setParams(msg, param1);
+	return msg;
+}
+
+function respondMsg(response, msg) {
+	response.askWithCard(msg.speechOut, "Vier-Gewinnt Skill", msg.display);
+}
+
+function respondMsgWithDirectives(response, msg, directives) {
+	response.askWithDirectives(msg.speechOut, "Vier-Gewinnt Skill", msg.display, undefined, directives);
+}
+
+
 function goodbye(intentName, resultCode, response, param1) {
 	var msg;
 	if (messages[intentName]) {
@@ -191,4 +218,4 @@ function setParams(msg, param1) {
 }
 
 
-module.exports = {init_messages, respond, goodbye};
+module.exports = {init_messages, respond, createMsg, respondMsg, respondMsgWithDirectives, goodbye};

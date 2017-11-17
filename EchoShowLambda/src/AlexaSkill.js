@@ -190,6 +190,20 @@ Response.prototype = (function () {
                 cardContent: cardContent,
                 shouldEndSession: false
             }));
+        },
+        askWithDirectives: function (speechOutput, repromptSpeech, cardTitle, cardContent, directives) {
+        	var resp = buildSpeechletResponse({
+                session: this._session,
+                output: speechOutput,
+                reprompt: repromptSpeech,
+                cardTitle: cardTitle,
+                cardContent: cardContent,
+                shouldEndSession: false
+            });
+        	console.log(resp);
+        	resp.response.directives = directives;
+        	console.log(resp);
+            this._context.succeed(resp);
         }
     };
 })();

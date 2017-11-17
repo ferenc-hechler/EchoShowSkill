@@ -26,6 +26,8 @@ var APP_ID = "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; //replace w
 
 var endpoint = 'http://calcbox.de/conn4/rest';
 
+var imgBaseUrl = "http://calcbox.de/c4imgs/";
+
 /**
  * The AlexaSkill prototype and helper functions
  */
@@ -58,12 +60,34 @@ ConnectFourSkill.prototype.eventHandlers.onSessionStarted = function (sessionSta
 };
 
 ConnectFourSkill.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
+//	execWelcome(launchRequest, session, response);
+	setPhase("init", session);
+	execStartBlindGame(session, response);
+};
+
+function execWelcome(launchRequest, session, response) {
     console.log("ConnectFourSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
     var speechOutput = "Willkommen zum Vier Gewinnt Spiel. Zuerst musst du eine Verbindung mit der Webseite Kalk Box Punkt D E aufbauen, damit du das Spiel auf deinem Monitor mitverfolgen kannst. Um ein Spiel ohne Monitor zu starten sage: Starte ein Blindspiel.";
     var repromptText = "Bitte sage mir die Spiel Ei Di, die du auf der Webseite Kalk Box Punkt D E siehst. Verwende dazu die folgende Floskel: Meine Spiel Ei Di ist";
     var display = "Willkommen zum Vier Gewinnt Spiel. Zuerst musst Du eine Verbindung mit der Webseite http://calcbox.de/conn4 aufbauen, damit Du das Spiel auf dem Monitor mitverfolgen kannst. Um ein Spiel ohne Monitor zu starten sage: 'Starte ein Blindspiel'.";
     response.askWithCard(speechOutput, repromptText, "Vier-Gewinnt Skill", display);
 };
+
+function execStartBlindGame(session, response) {
+	if (!checkPhase("init", session, response)) {
+		return;
+	}
+	sendCommand(session, "", "createSessionlessGame", "", "", function callbackFunc(result) {
+        console.log("createSessionlessGame: sessionId: " + session.sessionId+", res: "+result.code);
+        if (result.code === "S_OK") {
+            console.log("Start BlindGame with GameId: " + result.gameId);
+            setSessionGameId(session, result.gameId);
+        	setPhase("name", session);
+        }
+        speech.respond("BlindGameIntent", result.code, response);
+    });
+};
+
 
 ConnectFourSkill.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
     console.log("ConnectFourSkill onSessionEnded requestId: " + sessionEndedRequest.requestId
@@ -91,19 +115,7 @@ ConnectFourSkill.prototype.intentHandlers = {
     },
     
     "BlindGameIntent": function (intent, session, response) {
-    	console.log(intent);
-    	if (!checkPhase("init", session, response)) {
-    		return;
-    	}
-    	sendCommand(session, "", "createSessionlessGame", "", "", function callbackFunc(result) {
-            console.log(intent.name+": sessionId: " + session.sessionId+", res: "+result.code);
-            if (result.code === "S_OK") {
-	            console.log("Start BlindGame with GameId: " + result.gameId);
-	            setSessionGameId(session, result.gameId);
-            	setPhase("name", session);
-            }
-            speech.respond(intent.name, result.code, response);
-        });
+    	execStartBlindGame(session, response);
     },
 
     "SetPlayerNameIntent": function (intent, session, response) {
@@ -142,8 +154,9 @@ ConnectFourSkill.prototype.intentHandlers = {
                     	});
                     }
                     else {
-                    	console.log("### "+intent.name +"/"+ result2.code +"/"+ response +"/"+ result2.slot);
-                    	speech.respond(intent.name, result2.code, response, result2.slot);
+                    	console.log("### "+intent.name +"/"+ result2.code +"/"+ result2.slot);
+                    	var msg = speech.createMsg(intent.name, result2.code, result2.slot);
+                    	execRespondWithDisplay(msg, session, response);
                     }
             	});
             }
@@ -318,6 +331,53 @@ function phaseHelp(prefix, session, response) {
 	}
     response.askWithCard(speechOutput, "Vier-Gewinnt Skill", display);	
 }
+
+
+
+function execRespondWithDisplay(msg, session, response) {
+	sendCommand(session, getSessionGameId(session), "getGameData", "", "", function callbackFunc(result) {
+		var title = "Vier-Gewinnt-Brett";
+        console.log("getGameData: " + result.code);
+        if (result.code === "S_OK") {
+        	var fieldText = createFieldText(result.field);
+        	var directives = [
+	        	{
+		          "type": "Display.RenderTemplate",
+		          "template": {
+		            "type": "BodyTemplate1",
+		            "title": title,
+		            "textContent": {
+		              "primaryText": {
+		                "type": "RichText",
+		                "text": "<font size = '3'>"+msg.display+"</font><br/><br/>"
+		                  + fieldText
+		              }
+		            },
+		            "backButton": "HIDDEN"
+		          }
+		        }
+	        ];
+            speech.respondMsgWithDirectives(response, msg, directives);
+        }
+        else {
+        	speech.responeMsg(msg);
+        }
+	});
+}
+
+function createFieldText(field) {
+	var result = "";
+	for (var y = 0; y < 6; y++) {
+		result = result + "     ";
+		for (var x = 0; x < 7; x++) {
+			var col = field[y][x];   // col = 0..4
+			result = result + "<img src='"+imgBaseUrl+"circle"+col+".png' width='40' height='40' alt='"+col+"'/>";
+		}
+		result = result + "<br/>";
+	}
+	return result;
+}
+
 
 
 function setConfirmation(newConfirmation, session)  {
