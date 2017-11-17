@@ -29,5 +29,14 @@ applicationId muss korrekt gesetzt werden (passend zur Umgebungsvariable process
       }
     }
   },
-  "version": "1.0"
+  "version": "1.0",
+  "context": {
+    "System": {
+      "device": {
+        "supportedInterfaces": {
+          "Display":{}
+        }
+      }
+    }
+  }
 }
