@@ -2,15 +2,67 @@
   "intents": [
   
     {
-      "intent": "AnswerIntent",
+      "intent": "ConnectGameIntent",
       "slots": [
         {
-          "name": "answer",
-          "type": "LIST_OF_ANSWERS"
+          "name": "gameid_letter",
+          "type": "LIST_OF_LETTERS"
+        },
+        {
+          "name": "gameid_number",
+          "type": "AMAZON.NUMBER"
         }
       ]
     },
 
+    {
+      "intent": "BlindGameIntent"
+    },
+
+    {
+      "intent": "SetPlayerNameIntent",
+      "slots": [
+        {
+          "name": "player_name",
+          "type": "AMAZON.DE_FIRST_NAME"
+        }
+      ]
+    },
+
+    {
+      "intent": "PlayerMoveIntent",
+      "slots": [
+        {
+          "name": "slot",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+
+    {
+      "intent": "SetAILevelIntent",
+      "slots": [
+        {
+          "name": "ai_level",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    
+    {
+      "intent": "GetAILevelIntent"
+    },
+	{
+	  "intent": "AMAZON.StartOverIntent"
+	},
+	{
+	  "intent": "AMAZON.YesIntent"
+	},
+	{
+	  "intent": "AMAZON.NoIntent"
+	},
+    
+    
     {
       "intent": "AMAZON.PreviousIntent"
     },
@@ -46,7 +98,6 @@
     },
     {
       "intent": "AMAZON.StopIntent"
-    }
-
+    }    
   ]
 }

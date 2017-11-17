@@ -1,22 +1,12 @@
 /**
- * Diese Datei ist Teil des Echo Show Skills.
- * Copyright (C) 2017 Ferenc Hechler (github@fh.anderemails.de)
- *
- * Der Echo Show Skills ist Freie Software: 
- * Sie koennen es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spaeteren
- * veroeffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * Der Echo Show Skills wird in der Hoffnung, 
- * dass es nuetzlich sein wird, aber
- * OHNE JEDE GEWAEHRLEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewaehrleistung der MARKTFAEHIGKEIT oder EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License fuer weitere Details.
- * 
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- */
+    Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+    Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
+
+        http://aws.amazon.com/apache2.0/
+
+    or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
 
 'use strict';
 
@@ -31,17 +21,99 @@ function init_messages(language) {
 		if (language === "DE") {
 
 			messages = {
-					
-				"LAUNCH": {
+				ConnectGameIntent: {
 					S_OK: { 
-						speechOut: "Erfolgreich gestartetet.",
-						display:   "Erfolgreich gestartetet." 
+						speechOut: "Erfolgreich mit Spiel Verbunden, sage mir jetzt Deinen Namen und verwende dabei die Floskel: Mein Name ist",
+						display:   "Erfolgreich mit Spiel Verbunden, sage mir jetzt Deinen Namen und verwende dabei die Floskel: 'Mein Name ist ...''."
 					},
-					E_CONNECT: { 
-						speechOut: "Es gibt Verbindungsprobleme zum Server: %1 .",
-						display:   "Es gibt Verbindungsprobleme zum Server: '%1'." 
+					E_UNKNOWN_GAMEID: { 
+						speechOut: "Die genannte Spiel Ei Di ist nicht bekannt, bitte versuche es noch einmal.",
+						display:   "Die genannte Spiel-ID ist nicht bekannt, bitte versuche es noch einmal." 
 					}
 				},
+				
+				BlindGameIntent: {
+					S_OK: { 
+						speechOut: "Blindspiel wird gestartet, sage mir jetzt Deinen Namen und verwende dabei die Floskel: Mein Name ist",
+						display :  "Blindspiel wird gestartet, sage mir jetzt Deinen Namen und verwende dabei die Floskel: 'Mein Name ist ...'."
+					},
+					E_UNKNOWN_GAMEID: { 
+						speechOut: "Es gab ein Problem beim Erstellen der Spiel Ei Di, bitte versuche es noch einmal.",
+						display:   "Es gab ein Problem beim Erstellen der Spiel-ID, bitte versuche es noch einmal." 
+					}
+				},
+	
+				SetPlayerNameIntent: {
+					S_OK: { 
+						speechOut: "Hallo %1, mache Deinen Zug.",
+						display :  "Hallo %1, mache Deinen Zug."
+					}
+				},
+				
+				PlayerMoveIntent: {
+					S_PLAYER_WINS: { 
+						speechOut: "Herzlichen Glückwunsch, du hast gewonnen.",
+						display :  "Herzlichen Glückwunsch, du hast gewonnen."
+					},
+					S_DRAW: { 
+						speechOut: "Das Spiel endet unentschieden.",
+						display :  "Das Spiel endet unentschieden."
+					},
+					S_OK: { 
+						speechOut: "Ich werfe in Reihe %1.",
+						display :  "Ich werfe in Reihe %1."
+					},
+					S_AI_PLAYER_WINS: { 
+						speechOut: "Ich werfe in Reihe %1 und gewinne.",
+						display :  "Ich werfe in Reihe %1 und gewinne."
+					},
+					S_AI_DRAW: { 
+						speechOut: "Ich werfe in Reihe %1 und es ist unentschieden.",
+						display :  "Ich werfe in Reihe %1 und es ist unentschieden."
+					},
+					E_INVALID_PARAMETER: { 
+						speechOut: "Ich habe die Reihe nicht verstanden. Sage eine Zahl von eins bis sieben.",
+						display :  "Ich habe die Reihe nicht verstanden. Sage eine Zahl von 1-7."
+					},
+					E_INVALID_MOVE: {
+						speechOut: "In diese Reihe kann kein Stein mehr geworfen werden",
+						display :  "In diese Reihe kann kein Stein mehr geworfen werden."
+					},
+					E_GAME_FINISHED: { 
+						speechOut: "Das Spiel ist zu ende. Um ein neues Spiel zu starten sage: Neues Spiel.",
+						display :  "Das Spiel ist zu ende. Um ein neues Spiel zu starten sage: 'Neues Spiel'"
+					}
+
+				},
+				
+				SetAILevelIntent: {
+					S_OK: { 
+						speechOut: "Die Spielstärke wurde auf %1 gesetzt.",
+						display :  "Die Spielstärke wurde auf %1 gesetzt."
+					},
+					E_INVALID_PARAMETER: { 
+						speechOut: "Ich habe die Spielstärke nicht verstanden. Sage eine Zahl von eins bis sieben.",
+						display :  "Ich habe die Spielstärke nicht verstanden. Sage eine Zahl von 1-7."
+					},
+				}, 
+				
+				GetAILevelIntent: {
+					S_OK: { 
+						speechOut: "Die Spielstärke steht auf %1.",
+						display :  "Die Spielstärke steht auf %1."
+					}
+				},
+				
+			    "AMAZON.StartOverIntent": {
+			    	"CONFIRM": {
+				    	speechOut: "Bitte bestätige mit ja, dass du ein neues Spiel starten möchtest.", 
+				    	display :  "Bitte bestätige mit 'JA', dass du ein neues Spiel starten möchtest."
+			    	},
+			    	"S_OK": {
+				    	speechOut: "Neues Spiel, neues Glück.", 
+				    	display :  "Neues Spiel, neues Glück."
+			    	}
+			    },
 			    
 			    "AMAZON.StopIntent": {
 			    	"CONFIRM": {
@@ -60,8 +132,8 @@ function init_messages(language) {
 						display: "Es ist ein unerwarteter Fehler aufgetreten.",
 					},
 					E_UNKNOWN_GAMEID: { 
-						speechOut: "Dein Spiel wurde beendet. Eventuell gab es ein Timeout nach einer Stunde.",
-						display:   "Dein Spiel wurde beendet. Eventuell gab es ein Timeout nach einer Stunde." 
+						speechOut: "Deine Verbindung wurde beendet. Bitte baue eine neue Verbindung mit Kalk Box Punkt D E auf oder sage: Starte ein Blindspiel.",
+						display:   "Deine Verbindung wurde beendet. Bitte baue eine neue Verbindung mit https://calcbox.de/conn4 auf oder sage: 'Starte ein Blindspiel'." 
 					}
 				}
 			}
@@ -71,7 +143,7 @@ function init_messages(language) {
 	}
 }
 
-function respond(intentName, resultCode, response, param1, param2, param3) {
+function respond(intentName, resultCode, response, param1) {
 	var msg;
 	if (messages[intentName]) {
 		msg = messages[intentName][resultCode];
@@ -85,20 +157,11 @@ function respond(intentName, resultCode, response, param1, param2, param3) {
 				display: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode
 		}
 	}
-	msg = setParams(msg, param1, param2, param3);
-	respondMsg(msg, response)
+	msg = setParams(msg, param1);
+	response.askWithCard(msg.speechOut, "Vier-Gewinnt Skill", msg.display);
 }
 
-function respondMsg(msg, response) {
-	if (msg.speechOut) {
-		response.askWithCard(msg.speechOut, "Show Skill", msg.display);
-	}
-	else {
-		response.askWithCard(msg, "Show Skill", msg);
-	}
-}
-
-function addMsg(prefixMsg, intentName, resultCode, param1, param2, param3) {
+function goodbye(intentName, resultCode, response, param1) {
 	var msg;
 	if (messages[intentName]) {
 		msg = messages[intentName][resultCode];
@@ -112,155 +175,20 @@ function addMsg(prefixMsg, intentName, resultCode, param1, param2, param3) {
 				display: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode
 		}
 	}
-	msg = setParams(msg, param1, param2, param3);
-	return concatMsgs(prefixMsg, msg);
+	msg = setParams(msg, param1);
+	response.tellWithCard(msg.speechOut, "Vier-Gewinnt Skill", msg.display);
 }
 
-function concatMsgs(msg1, msg2) {
-	if (msg1.speechOut) {
-		if (msg2.speechOut) {
-			return {
-				speechOut: msg1.speechOut + " " + msg2.speechOut,
-				display: msg1.display + " " + msg2.display
-			}
-		}
-		else {
-			return {
-				speechOut: msg1.speechOut + " " + msg2,
-				display: msg1.display + " " + msg2
-			}
-		}
+function setParams(msg, param1) {
+	if (!param1) {
+		return msg;
 	}
-	else {
-		if (msg2.speechOut) {
-			return {
-				speechOut: msg1 + " " + msg2.speechOut,
-				display: msg1 + " " + msg2.display
-			}
-		}
-		else {
-			return msg1 + msg2;
-		}
-	}
-}
-
-function getMsg(intentName, resultCode, param1, param2, param3) {
-	var msg;
-	if (messages[intentName]) {
-		msg = messages[intentName][resultCode];
-	}
-	if (!msg) {
-		msg = messages["Generic"][resultCode];
-	}
-	if (!msg) {
-		msg = {
-				speechOut: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode,
-				display: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode
-		}
-	}
-	msg = setParams(msg, param1, param2, param3);
-	return msg;
-}
-
-function hasMsg(intentName, resultCode) {
-	if (!messages[intentName]) {
-		return false;
-	}
-	if (!messages[intentName][resultCode]) {
-		return false;
-	}
-	return true;
-}
-
-function goodbye(intentName, resultCode, response, param1, param2, param3) {
-	var msg;
-	if (messages[intentName]) {
-		msg = messages[intentName][resultCode];
-	}
-	if (!msg) {
-		msg = messages["Generic"][resultCode];
-	}
-	if (!msg) {
-		msg = {
-				speechOut: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode,
-				display: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode
-		}
-	}
-	msg = setParams(msg, param1, param2, param3);
-	goodbyeMsg(msg, response);
-}
-
-function goodbyeMsg(msg, response) {
-	response.tellWithCard(msg.speechOut, "Show Skill", msg.display);
-}
-
-function setParams(msg, param1, param2, param3) {
-	var result = msg;
-	if (msg) {
-		result = replace(result, "%1", param1);
-		result = replace(result, "%2", param2);
-		result = replace(result, "%3", param3);
+	var result = {
+			speechOut: msg.speechOut.replace("%1", param1),
+			display:   msg.display.replace("%1", param1)
 	}
 	return result;
 }
 
-function replace(msg, varName, param) {
-	if (!param) {
-		return msg;
-	}
-	if (param.speechOut) {
-		return {
-			speechOut: msg.speechOut.replace(varName, param.speechOut).trim(),
-			display:   msg.display.replace(varName, param.display).trim()
-		}
-	}
-	return {
-		speechOut: msg.speechOut.replace(varName, param).trim(),
-		display:   msg.display.replace(varName, param).trim()
-	}
-}
 
-
-function ask(msg, response) {
-	var speakMsg = makeSpeakable(msg);
-	var readMsg = makeReadable(msg);
-	response.askWithCard(speakMsg, "Show Skill", "Show Skill", readMsg);
-}
-
-function tell(msg, response) {
-	var speakMsg = makeSpeakable(msg);
-	var readMsg = makeReadable(msg);
-	response.tellWithCard(speakMsg, "Show Skill", "Show Skill", readMsg);
-}
-
-
-var RX_AUDIO = /AUDIO\(([^\)|]+)([|][^\)]+)?\)/g;
-var RX_PHONEM = /PHONEM\(([^=]+)[=]([^\)]+)\)/g;
-var RX_VOICE = /VOICE\(([^\)|]+)[|]([^\)]+)?\)/g;
-
-function makeSpeakable(msg) {
-	var result = msg.replace(/'|"|„|“/g, "");
-	var phonemResult = result.replace(RX_PHONEM, "<phoneme alphabet=\"x-sampa\" ph=\"$2\">$1</phoneme>");
-	var audioResult = phonemResult.replace(RX_AUDIO, "<audio src=\"$1\" />");
-	var voiceResult = audioResult.replace(RX_VOICE, "<p><prosody $1>$2</prosody></p>");
-//    console.log("SPEAK: " + voiceResult);
-	if (voiceResult !== result) {
-		voiceResult = voiceResult.replace(/[&]QUOT[;]/g, "\"");
-		voiceResult = voiceResult.replace(/[*]( [*]){2,}/g, "<break time=\"1s\"/>");
-		voiceResult = "<speak>" + voiceResult + "</speak>";
-//	    console.log("SPEAK2: " + voiceResult);
-		result = {
-				type: "SSML",
-				speech: voiceResult
-		};
-	}
-	return result; 
-}
-
-function makeReadable(msg) {
-	var result = msg.replace(RX_PHONEM, "$1");
-	result = result.replace(RX_VOICE, "$2");
-	return result; 
-}
-
-module.exports = {init_messages, respond, goodbye, ask, tell, addMsg, respondMsg};
+module.exports = {init_messages, respond, goodbye};

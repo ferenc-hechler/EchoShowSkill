@@ -1,2 +1,36 @@
-AnswerIntent {answer}
+ConnectGameIntent Meine Spiel ID ist {gameid_letter} {gameid_number}
+ConnectGameIntent Verbinde mit Spiel ID {gameid_letter} {gameid_number}
+ConnectGameIntent Spiel ID {gameid_letter} {gameid_number}
 
+BlindGameIntent Starte ein Blindspiel
+BlindGameIntent Blindspiel
+
+SetPlayerNameIntent Mein Name ist {player_name}
+SetPlayerNameIntent Ich bin {player_name}
+SetPlayerNameIntent Nenn mich {player_name}
+
+PlayerMoveIntent Reihe {slot}
+PlayerMoveIntent Ich setze in Reihe {slot}
+PlayerMoveIntent Ich werfe in Reihe {slot}
+
+SetAILevelIntent Setze die Spielstärke auf {ai_level}
+SetAILevelIntent Setze Spielstärke auf {ai_level}
+SetAILevelIntent Ändere die Spielstärke zu {ai_level}
+SetAILevelIntent Ändere Spielstärke zu {ai_level}
+SetAILevelIntent Spielstärke {ai_level}
+
+GetAILevelIntent Welche Spielstärke ist gesetzt
+GetAILevelIntent Wie ist die aktuelle Spielstärke
+GetAILevelIntent Mit welcher Spielstärke spielst Du
+
+AMAZON.StopIntent Abbrechen
+AMAZON.StopIntent Beenden
+AMAZON.StopIntent Stop
+
+AMAZON.HelpIntent Hilfe
+AMAZON.HelpIntent Ich weiss nicht was ich tun soll
+AMAZON.HelpIntent was kann ich jetzt tun
+
+AMAZON.StartOverIntent Starte ein neues Spiel
+AMAZON.StartOverIntent Neu starten
+AMAZON.StartOverIntent Neues Spiel

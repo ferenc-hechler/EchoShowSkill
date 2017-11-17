@@ -1,42 +1,30 @@
 /**
- * Diese Datei ist Teil des Echo Show Skills.
- * Copyright (C) 2017 Ferenc Hechler (github@fh.anderemails.de)
+    Copyright 2016 Ferenc Hechler
+*/
+
+/**
+ * This example shows how to link your amazon echo to an WebSite as a display, without any input possibility.
+ * This skill needs the rest service alexalink to manage the actions.
  *
- * Der Echo Show Skills ist Freie Software: 
- * Sie koennen es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spaeteren
- * veroeffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * Der Echo Show Skills wird in der Hoffnung, 
- * dass es nuetzlich sein wird, aber
- * OHNE JEDE GEWAEHRLEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewaehrleistung der MARKTFAEHIGKEIT oder EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License fuer weitere Details.
- * 
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+ * Examples:
+ *  open a browser showing the link-page https://calcbox.de/alexalink
+ *  User:  "Alexa start fourwins"
+ *  Alexa: "Please say the Alexa-Link-Code you can see"
+ *  User:  "E37"
+ *  Alexa: "Established connection to your display, please tell me your name"
+ *  User:  "feri"
+ *  Alexa: "Hello feri, I open the game with a move to slot 3"
+ *  User:  "I select slot 5"
+ *  Alexa: ...
+ *  
  */
 
 /**
  * App ID for the skill
  */
-// Echo Show Skills
 var APP_ID = "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 
-// // SOLO
-var endpoint = 'http://calcbox.de/echoshow/rest/echo';
-
-var URL = require('url');
-var authUsername = 'rest';
-var authPassword = 'geheim';
-
-// LOG environment variables
-console.log("APP_ID="+APP_ID);
-console.log("ENDPOINT="+endpoint);
-console.log("AUTH_USERNAME="+authUsername);
-console.log("AUTH_PASSWORD="+(authPassword.replace(/./g, '*')));
-
+var endpoint = 'http://calcbox.de/conn4/rest';
 
 /**
  * The AlexaSkill prototype and helper functions
@@ -47,140 +35,309 @@ var speech = require('./Speech');
 speech.init_messages("DE");
 
 var http = require('http');
-var querystring = require("querystring");
+
 
 
 
 /**
- * EchoShowSkill is a child of AlexaSkill.
+ * ConnectFourSkill is a child of AlexaSkill.
  */
-var EchoShowSkill = function () {
+var ConnectFourSkill = function () {
     AlexaSkill.call(this, APP_ID);
 };
 
 // Extend AlexaSkill
-EchoShowSkill.prototype = Object.create(AlexaSkill.prototype);
-EchoShowSkill.prototype.constructor = EchoShowSkill;
+ConnectFourSkill.prototype = Object.create(AlexaSkill.prototype);
+ConnectFourSkill.prototype.constructor = ConnectFourSkill;
 
-EchoShowSkill.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
-	console.log("onSessionStarted requestId: " + sessionStartedRequest.requestId + ", sessionId: " + session.sessionId);
+ConnectFourSkill.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
+    console.log("ConnectFourSkill onSessionStarted requestId: " + sessionStartedRequest.requestId + ", sessionId: " + session.sessionId);
     // any initialization logic goes here
     clearSessionData(session);
     setPhase("init", session);
 };
 
-EchoShowSkill.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
-	console.log("onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-	return execReconnectGame(session, response);
+ConnectFourSkill.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
+    console.log("ConnectFourSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
+    var speechOutput = "Willkommen zum Vier Gewinnt Spiel. Zuerst musst du eine Verbindung mit der Webseite Kalk Box Punkt D E aufbauen, damit du das Spiel auf deinem Monitor mitverfolgen kannst. Um ein Spiel ohne Monitor zu starten sage: Starte ein Blindspiel.";
+    var repromptText = "Bitte sage mir die Spiel Ei Di, die du auf der Webseite Kalk Box Punkt D E siehst. Verwende dazu die folgende Floskel: Meine Spiel Ei Di ist";
+    var display = "Willkommen zum Vier Gewinnt Spiel. Zuerst musst Du eine Verbindung mit der Webseite http://calcbox.de/conn4 aufbauen, damit Du das Spiel auf dem Monitor mitverfolgen kannst. Um ein Spiel ohne Monitor zu starten sage: 'Starte ein Blindspiel'.";
+    response.askWithCard(speechOutput, repromptText, "Vier-Gewinnt Skill", display);
 };
 
-EchoShowSkill.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
-    console.log("EchoShowSkill onSessionEnded requestId: " + sessionEndedRequest.requestId
+ConnectFourSkill.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
+    console.log("ConnectFourSkill onSessionEnded requestId: " + sessionEndedRequest.requestId
         + ", sessionId: " + session.sessionId);
     // any cleanup logic goes here
     clearSessionData(session);
 };
 
-EchoShowSkill.prototype.intentHandlers = {
+ConnectFourSkill.prototype.intentHandlers = {
 		
-    "AnswerIntent": execAnswerIntent,
-
-    "AMAZON.StopIntent": function (intent, session, response, event, context) {
-        clearSessionData(session);
-    	speech.goodbye(intent.name, "*", response);
+    "ConnectGameIntent": function (intent, session, response) {
+    	if (!checkPhase("init", session, response)) {
+    		return;
+    	}
+    	var gameId = getGameId(intent);
+    	sendCommand(session, gameId, "activateGame", "", "", function callbackFunc(result) {
+            console.log(intent.name+": gid: "+ gameId + ", sessionId: " + session.sessionId+", res: "+result.code);
+            if (result.code === "S_OK") {
+	            console.log("Start Game with GameId: " + result.gameId);
+            	setSessionGameId(session, result.gameId);
+            	setPhase("name", session);
+            }
+            speech.respond(intent.name, result.code, response);
+        });
+    },
+    
+    "BlindGameIntent": function (intent, session, response) {
+    	console.log(intent);
+    	if (!checkPhase("init", session, response)) {
+    		return;
+    	}
+    	sendCommand(session, "", "createSessionlessGame", "", "", function callbackFunc(result) {
+            console.log(intent.name+": sessionId: " + session.sessionId+", res: "+result.code);
+            if (result.code === "S_OK") {
+	            console.log("Start BlindGame with GameId: " + result.gameId);
+	            setSessionGameId(session, result.gameId);
+            	setPhase("name", session);
+            }
+            speech.respond(intent.name, result.code, response);
+        });
     },
 
-    "AMAZON.HelpIntent": function (intent, session, response, event, context) {
-    	setPhase("help", session);
-    	
-        var skillname = "Show Skill";
-        var title = "Das ist der Titel";
-        var speechOutput = "Das ist der Text. Der kann auch mal etwas länger werden.";
-        var contentText = speechOutput;
-
-        //check to see if the device we're working with supports display directives
-        //enable the simulator if you're testing
-        if(supportsDisplay(event)||isSimulator(event)) {
-        	
-          console.log("has display:"+ supportsDisplay(event));
-          console.log("is simulator:"+isSimulator(event));
-          var content = {
-             "hasDisplaySpeechOutput" : speechOutput,
-             "hasDisplayRepromptText" : contentText,
-             "simpleCardTitle" : skillname,
-             "simpleCardContent" : contentText,
-             "bodyTemplateTitle" : title,
-             "bodyTemplateContent" : contentText,
-             "templateToken" : "factBodyTemplate",
-             "askOrTell" : ":tell",
-             "sessionAttributes": {}
-          };
-          renderTemplate(content, response, event, context);
-          
-        } else {
-          // Just use a card if the device doesn't support a card.
-          speech.tell(speechOutput, response);
-        }
-        
+    "SetPlayerNameIntent": function (intent, session, response) {
+    	if (!checkPhase("name", session, response)) {
+    		return;
+    	}
+    	var playerName = getPlayerName(intent);
+    	sendCommand(session, getSessionGameId(session), "setPlayerNames", playerName, "Alexa", function callbackFunc(result) {
+            console.log(intent.name+": sessionId: " + session.sessionId+", res: "+result.code);
+            if (result.code === "S_OK") {
+            	setSessionPlayername(session, playerName);
+            	setPhase("play", session);
+            }
+            else if (result.code === "E_UNKNOWN_GAMEID") {
+            	clearSessionData(session);
+            	setPhase("init", session);
+            }
+            speech.respond(intent.name, result.code, response, playerName);
+        });
     },
+
+    "PlayerMoveIntent": function (intent, session, response) {
+    	if (!checkPhase("play", session, response)) {
+    		return;
+    	}
+    	var slot = getSlot(intent);
+    	sendCommand(session, getSessionGameId(session), "doMove", slot, "", function callbackFunc(result) {
+            console.log(intent.name+": sessionId: slot: " + slot + session.sessionId+", res: "+result.code);
+            if (result.code === "S_OK") {
+            	sendCommand(session, getSessionGameId(session), "doAIMove", "", "", function callbackFunc(result2) {
+                    console.log(intent.name+": sessionId: "+ session.sessionId+", res: "+result2.code);
+                    if ((result2.code === "S_AI_PLAYER_WINS") || (result2.code === "S_AI_DRAW")) {
+                    	sendCommand(session, getSessionGameId(session), "closeGame", "", "", function callbackFunc(result3) {
+	                    	clearSessionData(session);
+	                    	speech.goodbye(intent.name, result2.code, response, result2.slot);
+                    	});
+                    }
+                    else {
+                    	console.log("### "+intent.name +"/"+ result2.code +"/"+ response +"/"+ result2.slot);
+                    	speech.respond(intent.name, result2.code, response, result2.slot);
+                    }
+            	});
+            }
+            else if ((result.code === "S_PLAYER_WINS") || (result.code === "S_DRAW")) {
+            	sendCommand(session, getSessionGameId(session), "closeGame", "", "", function callbackFunc(result2) {
+                	clearSessionData(session);
+                	speech.goodbye(intent.name, result.code, response);
+            	});
+            }
+            else {
+            	if (result.code === "E_UNKNOWN_GAMEID") {
+	            	clearSessionData(session);
+	            	setPhase("init", session);
+            	}
+            	speech.respond(intent.name, result.code, response);
+            }
+        });
+    },
+
+    "SetAILevelIntent": function (intent, session, response) {
+    	if (!checkPhase("play", session, response)) {
+    		return;
+    	}
+    	var aiLevel = getAILevel(intent);
+        console.log("AILEVEL1=" + aiLevel);
+    	sendCommand(session, getSessionGameId(session), "setAILevel", aiLevel, "", function callbackFunc(result) {
+            console.log("AILEVEL2=" + aiLevel);
+            console.log(intent.name+": aiLevel: " + aiLevel + " sessionId: " + session.sessionId+", res: "+result.code);
+            speech.respond(intent.name, result.code, response, aiLevel);
+        });
+    },
+
+    "GetAILevelIntent": function (intent, session, response) {
+    	if (!checkPhase("play", session, response)) {
+    		return;
+    	}
+    	sendCommand(session, getSessionGameId(session), "getGameData", "", "", function callbackFunc(result) {
+            console.log(intent.name+": " + " sessionId: " + session.sessionId+", res: "+result.code);
+            console.log("AILEVEL3=" + result.aiLevel);
+            speech.respond(intent.name, result.code, response, result.aiLevel);
+        });
+    },
+
+    "AMAZON.StartOverIntent": function (intent, session, response) {
+    	setConfirmation(intent.name, session);
+        speech.respond(intent.name, "CONFIRM", response);
+    },
+
+    "AMAZON.StopIntent": function (intent, session, response) {
+//    	setConfirmation(intent.name, session);
+//        speech.respond(intent.name, "CONFIRM", response);
+    	sendCommand(session, getSessionGameId(session), "closeGame", "", "", function callbackFunc(result) {
+            console.log(intent.name + session.sessionId+", result: "+result.code);
+            clearSessionData(session);
+            speech.goodbye(intent.name, "*", response);
+        });
+    },
+
+    "AMAZON.HelpIntent": function (intent, session, response) {
+    	setLongHelp(session);
+    	phaseHelp("", session, response);
+    },
+    
+
+    "AMAZON.YesIntent": function (intent, session, response) {
+    	var confirmation = getConfirmation(session, "?");
+    	if (confirmation === "?") {
+    		setShortHelp(session);
+    		phaseHelp("Ich hatte keine Ja Nein Frage gestellt. ", session, response);
+    		return;
+    	}
+    	clearConfirmation(session)
+    	if (confirmation === "AMAZON.StopIntent") {
+        	sendCommand(session, getSessionGameId(session), "newGame", "", "", function callbackFunc(result) {
+                console.log("CONFIRMED-"+confirmation + ": sessionId: " + session.sessionId+", result: "+result.code);
+                response.tellWithCard("Auf wiederhören, bis zum nächsten Mal.", "Vier-Gewinnt Skill", "Auf wiederhören, bis zum nächsten Mal.");
+                clearSessionData(session);
+            });
+    	}
+    	else if (confirmation === "AMAZON.StartOverIntent") {
+	    	sendCommand(session, getSessionGameId(session), "newGame", "", "", function callbackFunc(result) {
+	            console.log("CONFIRMED-"+confirmation + ": sessionId: " + session.sessionId+", result: "+result.code);
+	            speech.respond(confirmation, result.code, response);
+	        });
+    	}
+    	else {
+    		response.tellWithCard("Das sollte nicht passieren, unbekannte Bestätigung! Das Spiel wird beendet, sorry.", "Vier-Gewinnt Skill", "Das sollte nicht passieren, unbekannte Bestätigung '"+confirmation+"'! Das Spiel wird beendet, sorry.");
+    	}
+    },
+    
+    "AMAZON.NoIntent": function (intent, session, response) {
+    	var confirmation = getConfirmation(session, "?");
+    	if (confirmation === "?") {
+    		setShortHelp(session);
+    		phaseHelp("Ich hatte keine Ja Nein Frage gestellt. ", session, response);
+    		return;
+    	}
+        response.askWithCard("Okay, weiter gehts!", "Vier-Gewinnt Skill", "OK, weiter gehts!");
+    }
+
     
 };
 
 // Create the handler that responds to the Alexa Request.
 exports.handler = function (event, context) {
-    // Create an instance of the EchoShowSkill skill.
-    var echoShowSkill = new EchoShowSkill();
-    echoShowSkill.execute(event, context);
+    // Create an instance of the ConnectFourSkill skill.
+    var connectFourSkill = new ConnectFourSkill();
+    connectFourSkill.execute(event, context);
 };
 
-
-function execReconnectGame(session, response) {
-// DEBUG:
-//	console.log("EXECRECONNECTGAME: "+JSON.stringify(session));    	
-    console.log("reconnect");
-	setPhase("init", session);
-	speech.ask("Sage Hilfe um ein Display Template zu sehen.", response);
+//initialize tests
+exports.initTests = function (url, param, callback) {
+	endpoint = url;
+	sendCommand([], "?", "initTests", param, "", function callbackFunc(result) {
+		console.log(result);
+		callback();
+	});
 }
 
 
-
-function execAnswerIntent(intent, session, response, event, context) {
-	var answer = getAnswer(intent);
-    console.log("answer: " + answer);
-	if (isInPhase("init", session)) {
-		var text = "Ich habe gehört "+answer;
-    	setPhase("answer", session);
-    	if (answer === "test") {
-        	setPhase("test", session);
-    	}
-    	speech.ask(text, response);
-	}		
-    else if (isInPhase("answer", session)) {
-		var text = "antwort ist "+answer;
-        console.log("text: " + text);
-    	setPhase("init", session);
-    	speech.ask(text, response);
-    }
-    else {
-		var text = "unbekannte phase "+getPhaseFromSession(session, "?");
-        console.log("text: " + text);
-    	setPhase("init", session);
-    	speech.tell(text, response);
-    }
+function checkPhase(comparePhase, session, response) {
+	var confirmation = getConfirmation(session, "?");
+	clearConfirmation(session);
+	if (confirmation !== "?") {
+	    response.askWithCard("Ich werte das als Nein, weiter gehts!", "Vier-Gewinnt Skill", "ich werte das als Nein, weiter gehts!");
+	    return false;
+	}
+	if (!isInPhase(comparePhase, session)) {
+		wrongPhaseResponse(session, response);
+		return false;
+	}
+	return true;
 }
-
 
 function clearSessionData(session) {
 	session.attributes = {};
 }
 
+function wrongPhaseResponse(session, response) {
+	phaseHelp("Ich habe dein Kommando nicht verstanden. ", session, response);
+}
+
+function phaseHelp(prefix, session, response) {
+	var phase = getPhaseFromSession(session, "?");
+	var speechOutput = "";
+	var display = "";
+	if (phase === "init") {
+		speechOutput = prefix + " Öffne die Webseite Kalk Box Punkt D E in einem Browser und nennen mir die angezeigte Spiel Ei Di, um das Spiel auf dem Monitor zu verfolgen oder sage: Starte ein Blindspiel.";
+		display = prefix + " Öffne die Webseite http://calcbox.de/alexalink in einem Browser und nennen mir die angezeigte Spiel-ID um das Spiel auf dem Monitor zu verfolgen oder sage: 'Starte ein Blindspiel'.";
+	}
+	else if (phase === "name") {
+		speechOutput = prefix + " Bitte sage mir deinen Namen und verwende dazu die Floskel: Mein Name ist";
+		display = prefix + " Bitte sage mir deinen Namen und verwende dazu die Floskel: 'Mein Name ist ...'";
+	}
+	else if (phase === "play") {
+		if (isLongHelp(session)) {
+			speechOutput = prefix + " Du kannst einen Zug machen, indem du das Schlüsselwort Reihe und eine Nummer von eins bis sieben sagst, zum Beispiel Reihe vier. Mit dem Schlüsselwort Spielstärke kannst du die Spielstärke auf einen Wert von eins bis sieben ändern. Mit Neu Starten wird ein neues Spiel gestartet. Mit Stop beendest du den Vier Gewinnt Skill.";
+			display = prefix + " Du kannst einen Zug machen, indem du das Schlüsselwort 'Reihe' und eine Nummer von 1-7 sagst, zum Beispiel 'Reihe 4'. Mit dem Schlüsselwort 'Spielstärke' kannst du die Spielstärke auf einen Wert von 1..7 ändern. Mit 'Neu Starten' wird ein neues Spiel gestartet. Mit 'Stop' beendest du den Vier-Gewinnt Skill.";
+			// give the long version only once. 
+			setShortHelp(session);
+		}
+		else {
+			speechOutput = prefix + " Mit Hilfe bekommst du eine Liste der möglichen Kommandos.";
+			display = prefix + " Mit 'Hilfe' bekommst du eine Liste der möglichen Kommandos.";
+		}
+	}
+	else {
+		speechOutput = " Ich befinde mich in einer unbekannten Phase und beende mich jetzt lieber, sorry.";
+		display = " Ich befinde mich in einer unbekannten Phase und beende mich jetzt lieber, sorry.";
+		response.tellWithCard(speechOutput, "Vier-Gewinnt Skill", display);
+	    return;
+	}
+    response.askWithCard(speechOutput, "Vier-Gewinnt Skill", display);	
+}
+
+
+function setConfirmation(newConfirmation, session)  {
+	session.attributes.confirmation = newConfirmation;
+}
+function getConfirmation(session, defaultValue)  {
+	if (!session || (!session.attributes) || (!session.attributes.confirmation)) {
+		return defaultValue;
+	}
+	return session.attributes.confirmation;
+}
+function clearConfirmation(session)  {
+	setConfirmation(null, session);
+}
 
 function setPhase(newPhase, session)  {
 	session.attributes.phase = newPhase;
 }
 function isInPhase(comparePhase, session)  {
-	var phase = getPhaseFromSession(session, "?");
-	return phase.startsWith(comparePhase);
+	return getPhaseFromSession(session, "?") === comparePhase;
 }
 function getPhaseFromSession(session, defaultValue)  {
 	if (!session || (!session.attributes) || (!session.attributes.phase)) {
@@ -189,14 +346,66 @@ function getPhaseFromSession(session, defaultValue)  {
 	return session.attributes.phase;
 }
 
-function getAnswer(intent) {
-	return getFromIntent(intent, "answer", "?");
+function setShortHelp(session)  {
+	session.attributes.shortHelp = true;
+}
+function setLongHelp(session)  {
+	session.attributes.shortHelp = false;
+}
+function isShortHelp(session)  {
+	if (!session || (!session.attributes) || (!session.attributes.shortHelp)) {
+		return false;
+	}
+	return session.attributes.shortHelp === true;
+}
+function isLongHelp(session)  {
+	return !isShortHelp(session);
+}
+
+
+
+function getPlayerName(intent) {
+	return getFromIntent(intent, "player_name", "?");
+}
+
+function getAILevel(intent) {
+	return getFromIntent(intent, "ai_level", "?");
+}
+
+function getSlot(intent) {
+	return getFromIntent(intent, "slot", "?");
+}
+
+function setSessionGameId(session, gameId) {
+	session.attributes.gameId = gameId;
+}
+function getSessionGameId(session) {
+	return session.attributes.gameId;
+}
+
+function setSessionPlayername(session, playername) {
+	session.attributes.playername = playername;
+}
+function getSessionPlayername(session) {
+	return session.attributes.playername;
+}
+
+
+
+function getGameId(intent) {
+	return getGameIdLetter(intent, "?") + getGameIdNumber(intent, "?");
+}
+
+
+function getGameIdLetter(intent, defaultValue) {
+	return getFromIntent(intent, "gameid_letter", defaultValue);
+}
+
+function getGameIdNumber(intent, defaultValue) {
+	return getFromIntent(intent, "gameid_number", defaultValue);
 }
 
 function getFromIntent(intent, attribute_name, defaultValue) {
-	if (!intent.slots) {
-		return defaultValue;
-	}
 	var result = intent.slots[attribute_name];
 	if (!result || !result.value) {
 		return defaultValue;
@@ -204,97 +413,36 @@ function getFromIntent(intent, attribute_name, defaultValue) {
 	return result.value;
 }
 
-//==============================================================================
-//=========================== Helper Functions  ================================
-//==============================================================================
 
-function supportsDisplay(event) {
-  var hasDisplay =
-    event.context &&
-    event.context.System &&
-    event.context.System.device &&
-    event.context.System.device.supportedInterfaces &&
-    event.context.System.device.supportedInterfaces.Display
-  return hasDisplay;
+function sendCommand(session, gameId, cmd, param1, param2, callback) {
+
+	var result = "";
+	
+    var queryString = '?gameId=' + gameId + '&cmd=' + cmd+ '&param1=' + param1+ '&param2=' + param2; 
+    var url = endpoint + queryString;
+    
+    console.log('CALL: ' + url);
+    http.get(url, function (res) {
+        var responseString = '';
+        if (res.statusCode != 200) {
+            result = {"speechOut": "Verbindungsproblem, H T T P Status "+res.statusCode, "display": "Verbindungsproblem, HTTP Status "+res.statusCode};
+            callback(result);
+        }
+        res.on('data', function (data) {
+        	responseString += data;
+        });
+        res.on('end', function () {
+            console.log("get-end: " + responseString);
+            var responseObject = JSON.parse(responseString);
+            callback(responseObject);
+        });
+    }).on('error', function (e) {
+        console.log("Communications error: " + e.message);
+        result = {"speechOut": "Ausnahmefehler", "display": "Ausnahmefehler: " + e.message};
+        callback(result);
+    });
 }
 
-function isSimulator(event) {
-  var isSimulator = !event.context; //simulator doesn't send context
-  return isSimulator;
-}
 
-function renderTemplate (content, response, event, context) {
-
-//create a template for each screen you want to display.
-//This example has one that I called "factBodyTemplate".
-//define your templates using one of several built in Display Templates
-//https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/display-interface-reference#display-template-reference
-
-
- switch(content.templateToken) {
-     case "factBodyTemplate":
-        // for reference, here's an example of the content object you'd
-        // pass in for this template.
-        //  var content = {
-        //     "hasDisplaySpeechOutput" : "display "+speechOutput,
-        //     "hasDisplayRepromptText" : randomFact,
-        //     "simpleCardTitle" : this.t('SKILL_NAME'),
-        //     "simpleCardContent" : randomFact,
-        //     "bodyTemplateTitle" : this.t('GET_FACT_MESSAGE'),
-        //     "bodyTemplateContent" : randomFact,
-        //     "templateToken" : "factBodyTemplate",
-        //     "sessionAttributes": {}
-        //  };
-
-         var response = {
-           "version": "1.0",
-           "response": {
-             "directives": [
-               {
-                 "type": "Display.RenderTemplate",
-                 "template": {
-                   "type": "BodyTemplate1",
-                   "title": content.bodyTemplateTitle,
-                   "token": content.templateToken,
-                   "textContent": {
-                     "primaryText": {
-                       "type": "RichText",
-                       "text": "<font size = '5'>"+content.bodyTemplateContent+"</font><br/>"
-                         + "<font size = '3'> und nun in klein: "+content.bodyTemplateContent+"</font><br/>"
-                         + "IMG1: <img src='https://calcbox.de/schiffeversenken-108.png' width='108' height='108' alt='battles image' /><br/>"
-                         + "IMG2: <img src='https://calcbox.de/4wins-108.png' width='108' height='108' alt='conn4 image' /><br/>"
-                     }
-                   },
-                   "backButton": "HIDDEN"
-                 }
-               }
-             ],
-             "outputSpeech": {
-               "type": "SSML",
-               "ssml": "<speak>"+content.hasDisplaySpeechOutput+"</speak>"
-             },
-             "reprompt": {
-               "outputSpeech": {
-                 "type": "SSML",
-                 "ssml": "<speak>"+content.hasDisplayRepromptText+"</speak>"
-               }
-             },
-             "shouldEndSession": content.askOrTell==":tell",
-             "card": {
-               "type": "Simple",
-               "title": content.simpleCardTitle,
-               "content": content.simpleCardContent
-             }
-           },
-           "sessionAttributes": content.sessionAttributes
-         }
-         context.succeed(response);
-         break;
-
-     default:
-        speech.tell("Thanks for chatting, goodbye", response);
- 	}
-
-}
 
 
