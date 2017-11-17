@@ -259,7 +259,10 @@ function renderTemplate (content, response, event, context) {
                    "textContent": {
                      "primaryText": {
                        "type": "RichText",
-                       "text": "<font size = '5'>"+content.bodyTemplateContent+"</font> <font size = '3'> und nun in klein: "+content.bodyTemplateContent+"</font>"
+                       "text": "<font size = '5'>"+content.bodyTemplateContent+"</font><br/>"
+                         + "<font size = '3'> und nun in klein: "+content.bodyTemplateContent+"</font><br/>"
+                         + "IMG1: <img src='https://calcbox.de/schiffeversenken-108.png' width='108' height='108' alt='battles image' /><br/>"
+                         + "IMG2: <img src='https://calcbox.de/4wins-108.png' width='108' height='108' alt='conn4 image' /><br/>"
                      }
                    },
                    "backButton": "HIDDEN"
