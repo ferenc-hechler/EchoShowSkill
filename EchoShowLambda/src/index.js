@@ -26,7 +26,8 @@ var APP_ID = "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; //replace w
 
 var endpoint = 'http://calcbox.de/conn4/rest';
 
-var imgBaseUrl = "http://calcbox.de/c4imgs/";
+var imgBaseUrl = "https://calcbox.de/c4imgs/64px/";
+var imgBaseSize = 64;
 
 /**
  * The AlexaSkill prototype and helper functions
@@ -82,9 +83,11 @@ function execStartBlindGame(session, response) {
         if (result.code === "S_OK") {
             console.log("Start BlindGame with GameId: " + result.gameId);
             setSessionGameId(session, result.gameId);
-        	setPhase("name", session);
+//        	setPhase("name", session);
+        	setPhase("play", session);
         }
-        speech.respond("BlindGameIntent", result.code, response);
+    	var msg = speech.createMsg("BlindGameIntent", result.code);
+    	execRespondWithDisplay(msg, session, response);
     });
 };
 
@@ -108,7 +111,8 @@ ConnectFourSkill.prototype.intentHandlers = {
             if (result.code === "S_OK") {
 	            console.log("Start Game with GameId: " + result.gameId);
             	setSessionGameId(session, result.gameId);
-            	setPhase("name", session);
+//            	setPhase("name", session);
+            	setPhase("play", session);
             }
             speech.respond(intent.name, result.code, response);
         });
@@ -340,6 +344,7 @@ function execRespondWithDisplay(msg, session, response) {
         console.log("getGameData: " + result.code);
         if (result.code === "S_OK") {
         	var fieldText = createFieldText(result.field);
+        	console.log("fieldText="+fieldText);
         	var directives = [
 	        	{
 		          "type": "Display.RenderTemplate",
@@ -349,8 +354,8 @@ function execRespondWithDisplay(msg, session, response) {
 		            "textContent": {
 		              "primaryText": {
 		                "type": "RichText",
-		                "text": "<font size = '3'>"+msg.display+"</font><br/><br/>"
-		                  + fieldText
+		                "text": "<font size = '2'>"+msg.display+"<br/>"
+		                  + fieldText + "</font>"
 		              }
 		            },
 		            "backButton": "HIDDEN"
@@ -367,17 +372,24 @@ function execRespondWithDisplay(msg, session, response) {
 
 function createFieldText(field) {
 	var result = "";
+//	result = result + addImage("space_3", 3);
+	result = result + addImage("frameset_top", 7);
+	result = result + "<br/>";
 	for (var y = 0; y < 6; y++) {
-		result = result + "     ";
+//		result = result + addImage("space_3", 3);
 		for (var x = 0; x < 7; x++) {
 			var col = field[y][x];   // col = 0..4
-			result = result + "<img src='"+imgBaseUrl+"circle"+col+".png' width='40' height='40' alt='"+col+"'/>";
+			result = result + addImage("circle-"+col, 1);
 		}
 		result = result + "<br/>";
 	}
 	return result;
 }
 
+function addImage(imgName, size) {
+	var result = "<img src='"+imgBaseUrl+imgName+".png' width='"+(size*imgBaseSize)+"' height='"+imgBaseSize+"'/>";
+	return result;
+}
 
 
 function setConfirmation(newConfirmation, session)  {

@@ -34,8 +34,8 @@ function init_messages(language) {
 				
 				BlindGameIntent: {
 					S_OK: { 
-						speechOut: "Blindspiel wird gestartet, sage mir jetzt Deinen Namen und verwende dabei die Floskel: Mein Name ist",
-						display :  "Blindspiel wird gestartet, sage mir jetzt Deinen Namen und verwende dabei die Floskel: 'Mein Name ist ...'."
+						speechOut: "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst",
+						display :  "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst."
 					},
 					E_UNKNOWN_GAMEID: { 
 						speechOut: "Es gab ein Problem beim Erstellen der Spiel Ei Di, bitte versuche es noch einmal.",
