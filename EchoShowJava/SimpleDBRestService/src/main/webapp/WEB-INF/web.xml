@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+
+    <display-name>Connect Four Rest Service</display-name>
+
+    <servlet>
+        <servlet-name>SimpleDBRestService</servlet-name>
+        <servlet-class>de.hechler.simpledb.rest.SimpleDBRestService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SimpleDBRestService</servlet-name>
+        <url-pattern>/rest/db/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HealthCheckServlet</servlet-name>
+        <servlet-class>de.hechler.simpledb.rest.HealthCheckServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HealthCheckServlet</servlet-name>
+        <url-pattern>/health/*</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+		<listener-class>de.hechler.simpledb.listeners.StartupShutdownListener</listener-class>
+	</listener>
+	
+</web-app>    

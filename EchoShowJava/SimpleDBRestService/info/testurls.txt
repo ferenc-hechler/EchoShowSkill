@@ -1,0 +1,225 @@
+###
+# DEBUG LOGGING STABLE
+#
+https://calcbox.de/simdb/rest/db?cmd=enableDebugLogging&param1=true
+https://calcbox.de/aigames/rest/bs?cmd=enableDebugLogging&param1=true
+https://calcbox.de/conn4/rest/c4?cmd=enableDebugLogging&param1=true
+
+### 
+# SIMPLEDB LOKAL
+#
+#
+http://localhost:8080/SimpleDBRestService/rest/db?cmd=enableDebugLogging&param1=true
+
+http://localhost:8080/SimpleDBRestService/rest/db?cmd=getUserByAppAndName&param1=app&param2=u1
+
+localhost:8080/SimpleDBRestService/rest/db?cmd=getOrCreateUserByAppAndName&param1=app&param2=u2
+
+localhost:8080/SimpleDBRestService/rest/db?cmd=updateUserData&param1=77&param2=%7Bphase:"play"%7D
+
+
+
+
+
+
+
+http://localhost:8080/ConnectFourRestService/rest/solo?cmd=getDescription&gameId=B7
+
+http://localhost:8080/ConnectFourRestService/rest/solo?cmd=answer&param1=liste&gameId=S3
+
+http://localhost:8080/ConnectFourRestService/rest/solo?cmd=answer&param1=ja&gameId=B7
+
+http://localhost:8080/ConnectFourRestService/rest/solo?cmd=restart&param1=eins&gameId=B7
+
+http://localhost:8080/ConnectFourRestService/rest/solo?cmd=activateFlag&param1=diskutiermodus&gameId=B7
+
+
+# UPLOAD
+http://localhost:8080/ConnectFourRestService/solo
+
+http://localhost:8080/ConnectFourRestService/rest/solo?cmd=upload&param1=feri&param2=W3
+
+http://localhost:8080/ConnectFourRestService/rest/solo?cmd=directJump&param1=13&param2=2&gameId=S3
+ 
+
+### 
+# SOLOABENTEUER CALCBOX
+#
+#
+
+# UPLOAD
+https://calcbox.de/solo/solo
+https://calcbox.de/solo/rest/solo?cmd=upload&param1=Josef%20Bohnhoff&param2=T6
+
+# enable debugging
+https://calcbox.de/solo/rest/solo?cmd=enableDebugging&param1=true
+ 
+# aktiviere Kurztexte
+https://calcbox.de/solo/rest/solo?cmd=activateShortText&param1=true
+
+# deaktiviere Kurztexte
+https://calcbox.de/solo/rest/solo?cmd=activateShortText&param1=false
+
+
+https://calcbox.de/solo/rest/solo?cmd=connect&param1=feri
+{"gameId":"R2","code":"S_OK"}
+
+https://calcbox.de/solo/rest/solo?cmd=getDescription&gameId=R2
+
+
+
+### 
+# SCHIFFEVERSENKEN LOKAL 
+#
+#
+http://localhost:8080/ConnectFourRestService/bs
+
+http://localhost:8080/ConnectFourRestService/rest/bs?cmd=enableDebugLogging&param1=true
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/bs?cmd=activateGame&gameId=C4
+{"gameId":"C4","code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/bs?cmd=setPlayerNames&param1=feri&param2=Alexa&gameId=C4
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/bs?cmd=doMove&param1=Q&param2=B&param3=4&gameId=C4
+{"move":{"type":"ANSWER","row":"B","col":2,"content":"WATER"},"code":"S_OK"}
+
+
+http://localhost:8080/ConnectFourRestService/rest/bs?cmd=doAIMove&gameId=B2
+{"move":{"type":"QUERY","row":"A","col":3,"content":"UNKNOWN"},"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/bs?cmd=doMove&param1=A&param2=A&param3=3&param4=S&gameId=C4
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/bs?cmd=newGame&gameId=C4
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/bs?cmd=changeGameParameter&param1=FIELDSIZE&param2=6&gameId=C4
+{"code":"S_OK"}
+
+
+
+### 
+# VIERGEWINNT LOKAL 
+#
+#
+http://localhost:8080/ConnectFourRestService/c4
+
+http://localhost:8080/ConnectFourRestService/rest/c4?cmd=enableDebugLogging&param1=true
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/c4?cmd=activateGame&gameId=B2
+{"gameId":"Y7","code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/c4?cmd=setPlayerNames&param1=feri&param2=Alexa&gameId=B2
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/c4?cmd=doMove&param1=4&gameId=B2
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest/c4?cmd=doAIMove&gameId=B2
+{"move":{"slot":3},"code":"S_OK"}
+
+
+
+http://localhost:8080/ConnectFourRestService/rest?cmd=enableDebugLogging&param1=true
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest?cmd=activateGame&gameId=B2
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest?cmd=setPlayerNames&param1=feri&param2=Alexa&gameId=B2
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest?cmd=doMove&param1=4&gameId=B2
+{"code":"S_OK"}
+
+http://localhost:8080/ConnectFourRestService/rest?cmd=doAIMove&gameId=B2
+{"move":{"slot":3},"code":"S_OK"}
+
+
+
+### 
+# CALCBOX 
+#
+#
+http://calcbox.de/solo/rest/solo?cmd=enableDebugLogging&param1=true
+http://calcbox.de/conn4/rest?cmd=enableDebugLogging&param1=true
+
+http://calcbox.de/conn4dev/rest/bs?cmd=enableDebugLogging&param1=true
+http://calcbox.de/conn4dev/rest/c4?cmd=enableDebugLogging&param1=true
+
+
+
+###
+# MYSQL
+#
+
+# UPLOAD aus Generator:
+https://calcbox.de/solo/rest/solo?cmd=upload&param1=feri&param2=T6
+
+# UPLOAD aus dev-Generator:
+https://calcbox.de/solodev/rest/solo?cmd=upload&param1=feri&param2=T6
+
+
+mysql -u<userrname> -p<password> calcboxdb
+
+
+update SOLOROLEPLAY as TARGET
+  left join SOLOROLEPLAY as SOURCE on SOURCE.ID=0
+  set TARGET.SOLOTEXT = SOURCE.SOLOTEXT 
+  where TARGET.NAME=99;
+
+update SOLOROLEPLAY as TARGET
+  left join SOLOROLEPLAY as SOURCE on SOURCE.NAME='Goblinraub 2'
+  set TARGET.SOLOTEXT = SOURCE.SOLOTEXT 
+  where TARGET.NAME='Goblinraub';
+  
+update SOLOROLEPLAY as TARGET
+  left join SOLOROLEPLAY as SOURCE on SOURCE.NAME='Kennenlernabenteuer 2'
+  set TARGET.SOLOTEXT = SOURCE.SOLOTEXT 
+  where TARGET.NAME='Kennenlernabenteuer';
+  
+update SOLOROLEPLAY as TARGET
+  left join SOLOROLEPLAY as SOURCE on SOURCE.NAME='Tolkien Rätsel 2'
+  set TARGET.SOLOTEXT = SOURCE.SOLOTEXT 
+  where TARGET.NAME='Tolkien Rätsel';
+  
+update SOLOROLEPLAY as TARGET
+  left join SOLOROLEPLAY as SOURCE on SOURCE.NAME='Der Hauptmann von Punin 2'
+  set TARGET.SOLOTEXT = SOURCE.SOLOTEXT 
+  where TARGET.NAME='Der Hauptmann von Punin';  
+
+select solotext from SOLOROLEPLAY where name='Goblinraub';
+
+update SOLOROLEPLAY set name='GoblinraubOLD' where name='Goblinraub';
+update SOLOROLEPLAY set status='OLD' where name='GoblinraubOLD';
+
+update SOLOROLEPLAY set name='Goblinraub' where name='Goblinraub 2';
+update SOLOROLEPLAY set status='PUBLISHED' where name='Goblinraub';
+
+commit;
+
+delete from SOLOROLEPLAY where name='GoblinraubOLD';
+commit;
+
+update SOLOROLEPLAY set id=2 where id=6;
+commit;
+
+
+update SOLOROLEPLAY set name='KennenlernabenteuerOLD' where name='Kennenlernabenteuer';
+update SOLOROLEPLAY set status='OLD' where name='KennenlernabenteuerOLD';
+update SOLOROLEPLAY set name='Kennenlernabenteuer' where name='Kennenlernabenteuer 2';
+update SOLOROLEPLAY set status='PUBLISHED' where name='Kennenlernabenteuer';
+commit;
+delete from SOLOROLEPLAY where name='KennenlernabenteuerOLD';
+commit;
+update SOLOROLEPLAY set id=1 where id=6;
+
+
+select id, name, status, owner, CREATIONDATE, LASTUPDATE from SOLOROLEPLAY;
+
+
+
