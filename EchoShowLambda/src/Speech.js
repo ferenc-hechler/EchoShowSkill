@@ -21,6 +21,40 @@ function init_messages(language) {
 		if (language === "DE") {
 
 			messages = {
+					
+				SEND_getOrCreateUserByAppAndName: {
+					E_DB_ERROR: {
+						speechOut: "Bei der Abfrage der Benutzerdatenbank ist ein Fehler aufgetreten.",
+						display: "Bei der Abfrage der Benutzerdatenbank ist ein Fehler aufgetreten."
+					}
+				},
+				
+				SEND_createSessionlessGame: {
+					S_OK: { 
+						speechOut: "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst",
+						display :  "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst."
+					}
+				},
+				
+				INTERN: {
+					NO_AMZ_USERID: {
+						speechOut: "Der Request enthält keine User-ID.",
+						display: "Der Request enthält keine User-ID."
+					},
+					INVALID_USERDATA: {
+						speechOut: "Die Benutzerdaten sind nicht lesbar.",
+						display: "Die Benutzerdaten sind nicht lesbar."
+					},
+					YOUR_MOVE: {
+						speechOut: "In welche Reihe wirfst Du?",
+						display: "In welche Reihe wirfst Du?"
+					},
+					WELCOME: {
+						speechOut: "Willkommen zum Vier-Gewinnt Skill mit Anzeige Du beginnst. In welche Reihe wirfst Du?",
+						display: "In welche Reihe wirfst Du?"
+					}					
+				},
+				
 				ConnectGameIntent: {
 					S_OK: { 
 						speechOut: "Erfolgreich mit Spiel Verbunden, sage mir jetzt Deinen Namen und verwende dabei die Floskel: Mein Name ist",
@@ -131,10 +165,11 @@ function init_messages(language) {
 						speechOut: "Es ist ein unerwarteter Fehler aufgetreten.",
 						display: "Es ist ein unerwarteter Fehler aufgetreten.",
 					},
-					E_UNKNOWN_GAMEID: { 
-						speechOut: "Deine Verbindung wurde beendet. Bitte baue eine neue Verbindung mit Kalk Box Punkt D E auf oder sage: Starte ein Blindspiel.",
-						display:   "Deine Verbindung wurde beendet. Bitte baue eine neue Verbindung mit https://calcbox.de/conn4 auf oder sage: 'Starte ein Blindspiel'." 
+					E_CONNECT: { 
+						speechOut: "Es gibt Verbindungsprobleme zum Server.",
+						display:   "Es gibt Verbindungsprobleme zum Server." 
 					}
+
 				}
 			}
 			

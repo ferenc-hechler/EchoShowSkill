@@ -1,45 +1,44 @@
 /**
-    Copyright 2016 Ferenc Hechler
-*/
-
-/**
- * This example shows how to link your amazon echo to an WebSite as a display, without any input possibility.
- * This skill needs the rest service alexalink to manage the actions.
+ * Diese Datei ist Teil des Alexa Skills Vier Gewinnt.
+ * Copyright (C) 2016-2017 Ferenc Hechler (github@fh.anderemails.de)
  *
- * Examples:
- *  open a browser showing the link-page https://calcbox.de/alexalink
- *  User:  "Alexa start fourwins"
- *  Alexa: "Please say the Alexa-Link-Code you can see"
- *  User:  "E37"
- *  Alexa: "Established connection to your display, please tell me your name"
- *  User:  "feri"
- *  Alexa: "Hello feri, I open the game with a move to slot 3"
- *  User:  "I select slot 5"
- *  Alexa: ...
- *  
+ * Der Alexa Skills Rollenspiel Soloabenteuer ist Freie Software: 
+ * Sie koennen es unter den Bedingungen
+ * der GNU General Public License, wie von der Free Software Foundation,
+ * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spaeteren
+ * veroeffentlichten Version, weiterverbreiten und/oder modifizieren.
+ *
+ * Der Alexa Skills Vier Gewinnt wird in der Hoffnung, 
+ * dass es nuetzlich sein wird, aber
+ * OHNE JEDE GEWAEHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+ * Gewaehrleistung der MARKTFAEHIGKEIT oder EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
+ * Siehe die GNU General Public License fuer weitere Details.
+ * 
+ * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+ * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
  */
 
-/**
- * App ID for the skill
- */
+/* App ID for the skill */
 var APP_ID = "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 
-var endpoint = 'http://calcbox.de/conn4/rest';
+var endpoint = 'https://calcbox.de/conn4/rest';   // process.env.ENDPOINT;
+var dbEndpoint = 'https://calcbox.de/simdb/rest';   // process.env.ENDPOINT;
 
-var imgBaseUrl = "https://calcbox.de/c4imgs/64px/";
-var imgBaseSize = 64;
+var URL = require('url');
+var authUsername = process.env.AUTH_USERNAME;   // 'rest';
+var authPassword = process.env.AUTH_PASSWORD;   // 'geheim';
 
-/**
- * The AlexaSkill prototype and helper functions
- */
 var AlexaSkill = require('./AlexaSkill');
 
 var speech = require('./Speech');
 speech.init_messages("DE");
 
 var http = require('http');
+var querystring = require("querystring");
 
 
+var imgBaseUrl = "https://calcbox.de/c4imgs/48px/";
+var imgBaseSize = 48;
 
 
 /**
@@ -57,38 +56,94 @@ ConnectFourSkill.prototype.eventHandlers.onSessionStarted = function (sessionSta
     console.log("ConnectFourSkill onSessionStarted requestId: " + sessionStartedRequest.requestId + ", sessionId: " + session.sessionId);
     // any initialization logic goes here
     clearSessionData(session);
-    setPhase("init", session);
 };
 
 ConnectFourSkill.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
-//	execWelcome(launchRequest, session, response);
-	setPhase("init", session);
-	execStartBlindGame(session, response);
+	execRestart(session, response);
 };
 
-function execWelcome(launchRequest, session, response) {
-    console.log("ConnectFourSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Willkommen zum Vier Gewinnt Spiel. Zuerst musst du eine Verbindung mit der Webseite Kalk Box Punkt D E aufbauen, damit du das Spiel auf deinem Monitor mitverfolgen kannst. Um ein Spiel ohne Monitor zu starten sage: Starte ein Blindspiel.";
-    var repromptText = "Bitte sage mir die Spiel Ei Di, die du auf der Webseite Kalk Box Punkt D E siehst. Verwende dazu die folgende Floskel: Meine Spiel Ei Di ist";
-    var display = "Willkommen zum Vier Gewinnt Spiel. Zuerst musst Du eine Verbindung mit der Webseite http://calcbox.de/conn4 aufbauen, damit Du das Spiel auf dem Monitor mitverfolgen kannst. Um ein Spiel ohne Monitor zu starten sage: 'Starte ein Blindspiel'.";
-    response.askWithCard(speechOutput, repromptText, "Vier-Gewinnt Skill", display);
+
+
+function execRestart(session, response) {
+    initUser(session, response, function callbackFunc() {
+		execShowStatus(session, response);
+    });
 };
 
-function execStartBlindGame(session, response) {
-	if (!checkPhase("init", session, response)) {
-		return;
+
+function execShowStatus(session, response) {
+	var phase = getPhaseFromUserData(session, "init");
+	if (phase === "init") {
+		execWelcome(session, response);
 	}
+	else if (phase === "play") {
+		execShowCurrentBoard(session, response);
+	} 
+	else {
+		// unexpected phase?
+		execWelcome(session, response);
+	}
+}
+
+function execShowCurrentBoard(session, response) {
+	var msg = speech.createMsg("INTERN", "YOUR_MOVE");
+	execRespondWithDisplay(msg, session, response);
+}
+
+function execWelcome(session, response) {
 	sendCommand(session, "", "createSessionlessGame", "", "", function callbackFunc(result) {
         console.log("createSessionlessGame: sessionId: " + session.sessionId+", res: "+result.code);
         if (result.code === "S_OK") {
+        	setGameIdInUserData(result.gameId);
             console.log("Start BlindGame with GameId: " + result.gameId);
             setSessionGameId(session, result.gameId);
 //        	setPhase("name", session);
         	setPhase("play", session);
         }
-    	var msg = speech.createMsg("BlindGameIntent", result.code);
+    	var msg = speech.createMsg("SEND_createSessionlessGame", result.code);
     	execRespondWithDisplay(msg, session, response);
     });
+}
+
+
+
+
+function initUser(session, response, successCallback) {
+	if (hasDBUserInSession(session)) {
+		successCallback();
+	}
+	else {
+		var amzUserId = getAmzUserIdFromSession(session);
+		if (!amzUserId) {
+        	speech.respond("INTERN", "NO_AMZ_USERID", response);
+		}
+		else {
+			sendDBCommand(session, "getOrCreateUserByAppAndName", amzUserId, function (result) {
+		        if ((result.code === "S_OK") || (result.code === "S_CREATED")) {
+		        	var dbUser = result.user;
+		        	console.log(dbUser);
+		        	var userDataOk = unmarshallUserData(dbUser); 
+		        	if (!userDataOk) {
+			        	speech.respond("INTERN", "INVALID_USERDATA", response);
+		        	}
+		        	else {
+			        	console.log(dbUser);
+		        		setDBUserInSession(session, dbUser);
+		        		successCallback();
+		        	}
+		        }
+		        else {
+		        	speech.respond("SEND_getOrCreateUserByAppAndName", result.code, response);
+		        }
+			});
+		}
+	}
+} 
+
+function execStartBlindGame(session, response) {
+	if (!checkPhase("init", session, response)) {
+		return;
+	}
 };
 
 
@@ -365,7 +420,7 @@ function execRespondWithDisplay(msg, session, response) {
             speech.respondMsgWithDirectives(response, msg, directives);
         }
         else {
-        	speech.responeMsg(msg);
+        	speech.respondMsg(response, msg);
         }
 	});
 }
@@ -490,14 +545,29 @@ function sendCommand(session, gameId, cmd, param1, param2, callback) {
 
 	var result = "";
 	
-    var queryString = '?gameId=' + gameId + '&cmd=' + cmd+ '&param1=' + param1+ '&param2=' + param2; 
-    var url = endpoint + queryString;
-    
+	var query = querystring.stringify({
+		"gameId": gameId,
+		"cmd": cmd,
+		"param1": param1,
+		"param2": param2
+	});
+    var url = getSessionEndpoint(session) + "?" + query;
     console.log('CALL: ' + url);
-    http.get(url, function (res) {
+    
+    var urlObj = URL.parse(url);
+    var options = {
+    		protocol: urlObj.protocol,
+    		host: urlObj.hostname,
+    	    port: urlObj.port,
+    	    path: urlObj.path,
+    		auth: authUsername+':'+authPassword
+    };
+    
+    http.get(options, function (res) {
         var responseString = '';
         if (res.statusCode != 200) {
-            result = {"speechOut": "Verbindungsproblem, H T T P Status "+res.statusCode, "display": "Verbindungsproblem, HTTP Status "+res.statusCode};
+            console.log("ERROR HTTP STATUS " + res.statusCode);
+            result = {code:"E_CONNECT", errmsg: "h.t.t.p. Status "+res.statusCode};
             callback(result);
         }
         res.on('data', function (data) {
@@ -505,16 +575,205 @@ function sendCommand(session, gameId, cmd, param1, param2, callback) {
         });
         res.on('end', function () {
             console.log("get-end: " + responseString);
-            var responseObject = JSON.parse(responseString);
+            var responseObject;
+            try {
+                responseObject = JSON.parse(responseString);
+            } catch(e) {
+                console.log("E_CONNECT INVALID JSON-FORMAT: " + e.message);
+                responseObject = {
+                		code: "E_CONNECT", errmsg: "Die Serverantwort ist nicht valide."
+                };
+            }
             callback(responseObject);
+            
         });
     }).on('error', function (e) {
-        console.log("Communications error: " + e.message);
-        result = {"speechOut": "Ausnahmefehler", "display": "Ausnahmefehler: " + e.message};
+        console.log("E_CONNECT: " + e.message);
+        result = {
+        		code: "E_CONNECT", errmsg: e.message
+        };
         callback(result);
     });
 }
 
 
+function sendDBCommand(session, cmd, param1, param2, callback) {
+
+	var result = "";
+	
+	var query = querystring.stringify({
+		"cmd": cmd,
+		"param1": param1,
+		"param2": param2
+	});
+    var url = dbEndpoint + "?" + query;
+    console.log('CALL: ' + url);
+    
+    var urlObj = URL.parse(url);
+    var options = {
+    		protocol: urlObj.protocol,
+    		host: urlObj.hostname,
+    	    port: urlObj.port,
+    	    path: urlObj.path,
+    		auth: authUsername+':'+authPassword
+    };
+    
+    http.get(options, function (res) {
+        var responseString = '';
+        if (res.statusCode != 200) {
+            console.log("ERROR HTTP STATUS " + res.statusCode);
+            result = {code:"E_CONNECT", errmsg: "h.t.t.p. Status "+res.statusCode};
+            callback(result);
+        }
+        res.on('data', function (data) {
+        	responseString += data;
+        });
+        res.on('end', function () {
+            console.log("get-end: " + responseString);
+            var responseObject;
+            try {
+                responseObject = JSON.parse(responseString);
+            } catch(e) {
+                console.log("E_CONNECT INVALID JSON-FORMAT: " + e.message);
+                responseObject = {
+                		code: "E_CONNECT", errmsg: "Die Serverantwort ist nicht valide."
+                };
+            }
+            callback(responseObject);
+            
+        });
+    }).on('error', function (e) {
+        console.log("E_CONNECT: " + e.message);
+        result = {
+        		code: "E_CONNECT", errmsg: e.message
+        };
+        callback(result);
+    });
+}
+
+
+function unmarshallUserData(dbUser) {
+	if (!dbUser) {
+		return false;
+	}
+	if (!dbUser.data) {
+		dbUser.data = {};
+		return true;
+	}
+    try {
+    	var data = JSON.parse(dbUser.data);
+        dbUser.data = data; 
+        return true;
+    } catch(e) {
+    	return false;
+    }
+}
+
+function saveUserData(session, response, callbackSuccess) {
+	if (!hasUserDataChanged(session)) {
+		callbackSuccess();
+	}
+	else {
+		clearUserDataChanged(session);
+		updateUserDataInDB();
+		
+	}
+}
+
+function updateUserDataInDB(session, response, callbackSuccess) {
+	var userDataString = getMarshalledUserData(session);
+	var userId = get
+}
+
+function getMarshalledUserData(session) {
+	var data = getUserDataFromSession(session);
+	if (!data) {
+		return undefined;
+	}
+	var result = JSON.stringify(data);
+	return result;
+}
+
+
+function setDBUserInSession(session, dbUser) {
+	session.attributes.dbuser = dbUser;
+}
+function hasDBUserInSession(session)  {
+	if (!session || (!session.attributes) || (!session.attributes.dbuser)) {
+		return false;
+	}
+	return true;
+}
+
+function getDBUserFromSession(session)  {
+	if (!session || (!session.attributes) || (!session.attributes.dbuser)) {
+		return undefined;
+	}
+	return session.attributes.dbuser;
+}
+
+function getDBUserIdFromSession(session)  {
+	if (!session || (!session.attributes) || (!session.attributes.dbuser) || (!session.attributes.dbuser.userId)) {
+		return undefined;
+	}
+	return session.attributes.dbuser.userId;
+}
+
+
+function setGameIdInUserData(session, gameId) {
+	var userData = getUserDataFromSession(session);
+	if (!userData) {
+		return false;
+	}
+	userData.gameId = gameId;
+	userData.changed = true;
+}
+
+function getUserDataFromSession(session)  {
+	if (!session || (!session.attributes) || (!session.attributes.dbuser) || (!session.attributes.dbuser.data)) {
+		return undefined;
+	}
+	return session.attributes.dbuser.data;
+}
+
+function getPhaseFromUserData(session, defaultValue)  {
+	var userData = getUserDataFromSession(session);
+	if (!userData || (!userData.phase)) {
+		return defaultValue;
+	}
+	return userData.phase;
+}
+
+function getAmzUserIdFromSession(session) {
+	if (!session || (!session.user) || (!session.user.userId)) {
+		return undefined;
+	}
+	return session.user.userId;
+}
+
+
+function hasUserDataChanged(session)  {
+	var userData = getUserDataFromSession(session);
+	if (!userData || (!userData.changed)) {
+		return false;
+	}
+	return true;
+}
+
+function setUserDataChanged(session)  {
+	var userData = getUserDataFromSession(session);
+	if (!userData) {
+		return;
+	}
+	userData.changed = true;
+}
+
+function clearUserDataChanged(session)  {
+	var userData = getUserDataFromSession(session);
+	if (!userData) {
+		return;
+	}
+	delete userData.changed;
+}
 
 

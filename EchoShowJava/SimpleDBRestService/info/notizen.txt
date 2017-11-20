@@ -1,0 +1,9 @@
+{
+	"code": "S_OK",
+	"user": {
+		"userId":   77,
+		"userName": "u2",
+		"app":      "app",
+		"data":     "{phase:\"play\"}"
+	}
+}

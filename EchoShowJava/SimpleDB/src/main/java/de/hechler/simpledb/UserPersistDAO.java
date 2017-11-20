@@ -53,6 +53,52 @@ public class UserPersistDAO {
 		}
 	}
 	
+
+	/* ============= */
+	/* CREATE TABLES */
+	/* ============= */
+
+	private static boolean missingTablesCreated = false;
+	
+	public synchronized void createMissingTables() {
+		if (missingTablesCreated) {
+			return;
+		}
+		PreparedStatement pst1 = null;
+		PreparedStatement pst2 = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try {
+			conn = ConnectionMgmt.getConnection();
+			pst1 = conn.prepareStatement(
+					"CREATE TABLE IF NOT EXISTS USERDATA (" + 
+					"  ID INT AUTO_INCREMENT PRIMARY KEY," + 
+					"  APP VARCHAR(15) NOT NULL," + 
+					"  USERNAME VARCHAR(255) NOT NULL," + 
+					"  DATA TEXT," + 
+					"  VERSION INT not null DEFAULT 1," + 
+					"  LOCKEDBY VARCHAR(64)," + 
+					"  CREATIONDATE DATETIME NOT NULL DEFAULT now()," + 
+					"  LASTUPDATE DATETIME NOT NULL DEFAULT now()" + 
+					");");
+			pst1.execute();
+			pst2 = conn.prepareStatement("CREATE UNIQUE INDEX IF NOT EXISTS unameidx ON USERDATA(USERNAME, APP);");
+			pst2.execute();
+		} catch (RuntimeException e) {
+			ConnectionMgmt.fail(conn);
+			throw e;
+		} catch (SQLException e) {
+			ConnectionMgmt.fail(conn);
+			throw new RuntimeException(e);
+		} finally {
+			try { if (rs != null) rs.close(); } catch (SQLException e)		{ logger.log(Level.SEVERE, e.toString(), e); }
+			try { if (pst1 != null) pst1.close(); } catch (SQLException e) 	{ logger.log(Level.SEVERE, e.toString(), e); }
+			try { if (pst2 != null) pst2.close(); } catch (SQLException e) 	{ logger.log(Level.SEVERE, e.toString(), e); }
+			ConnectionMgmt.releaseConnection(conn);
+		}
+		missingTablesCreated = true;
+	}
+
 	
 	/* ============ */
 	/* FIND USER-ID */
@@ -198,7 +244,7 @@ public class UserPersistDAO {
 		return result;
 	}
 
-	public boolean saveOrUpdate(String app, String userName, String data) {
+	public synchronized boolean saveOrUpdate(String app, String userName, String data) {
 		int cnt = update(app, userName, data);
 		if (cnt == 0) {
 			int auto_id = save(app, userName, data);
@@ -215,7 +261,7 @@ public class UserPersistDAO {
 	/* ==== */
 
 
-	public boolean save(UserInfo userInfo) {
+	public synchronized boolean save(UserInfo userInfo) {
 		int auto_id = save(userInfo.getApp(), userInfo.getUserName(), userInfo.getData());
 		if (auto_id > 0) {
 			userInfo.setUserId(auto_id);
@@ -224,7 +270,7 @@ public class UserPersistDAO {
 		
 	}
 
-	public int save(String app, String userName, String data) {
+	public synchronized int save(String app, String userName, String data) {
 		int auto_id = 0;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -261,7 +307,7 @@ public class UserPersistDAO {
 	/* ====== */
 
 	
-	public boolean update(UserInfo userInfo) {
+	public synchronized boolean update(UserInfo userInfo) {
 		int cnt;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -288,7 +334,7 @@ public class UserPersistDAO {
 		return cnt == 1;
 	}
 
-	public boolean updateData(int userId, String data) {
+	public synchronized boolean updateData(int userId, String data) {
 		int cnt;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -313,7 +359,7 @@ public class UserPersistDAO {
 		return cnt == 1;
 	}
 
-	public int update(String app, String userName, String data) {
+	public synchronized int update(String app, String userName, String data) {
 		int cnt;
 		PreparedStatement pst = null;
 		ResultSet rs = null;

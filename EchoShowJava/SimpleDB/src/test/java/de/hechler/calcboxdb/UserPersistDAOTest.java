@@ -17,6 +17,7 @@ public class UserPersistDAOTest {
 	public static void setUpBefore() throws Exception {
 		System.setProperty("simpledb-conf", "localconf");
 		userPersistDAO = new UserPersistDAO();
+		userPersistDAO.createMissingTables();
 		userPersistDAO.save("JUNIT-2", "USER-A", "INITIAL DATA FOR JUNIT-2.USER-A");
 		userPersistDAO.save("JUNIT-3", "USER-A", "INITIAL DATA FOR JUNIT-3.USER-A");
 		userPersistDAO.save("JUNIT-3", "USER-B", "INITIAL DATA FOR JUNIT-3.USER-B");
@@ -212,7 +213,7 @@ public class UserPersistDAOTest {
 				fail("saving duplicate entrys did not fail.");
 			}
 			catch (Exception e) {
-				assertTrue(e.toString().toLowerCase().contains("constraint"));
+				assertTrue("'unameidx' nicht enthalten in '"+e.toString()+"'", e.toString().toLowerCase().contains("unameidx"));
 			}
 			
 			UserInfo userInfo = userPersistDAO.getUserInfo(userId);
