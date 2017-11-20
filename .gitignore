@@ -12,3 +12,9 @@
 /EchoShowJava/ConnFourGameRestService/.classpath
 /EchoShowJava/ConnFourGameRestService/.project
 /EchoShowJava/.settings
+<<<<<<< HEAD
+=======
+/EchoShowJava/ConnFourGameAPI/.settings
+/EchoShowJava/ConnFourGameImpl/.settings
+/EchoShowJava/ConnFourGameRestService/.settings
+>>>>>>> f679e50... ignore eclipse files.
