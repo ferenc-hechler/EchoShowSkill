@@ -8,6 +8,9 @@
   <modules>
 	<module>SimpleDB</module>
 	<module>SimpleDBRestService</module>
+	<module>ConnFourGameAPI</module>
+	<module>ConnFourGameImpl</module>
+	<module>ConnFourGameRestService</module>
   </modules>
        
 </project>
