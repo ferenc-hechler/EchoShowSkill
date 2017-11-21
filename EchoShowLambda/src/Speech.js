@@ -36,6 +36,17 @@ function init_messages(language) {
 					}
 				},
 				
+				SEND_doMove: {
+					"E_INVALID_PARAMETER": { 
+						speechOut: "Ich habe die Reihe nicht richtig verstanden.",
+						display :  "Ich habe die Reihe nicht richtig verstanden."
+					},
+					"E_INVALID_RANGE": { 
+						speechOut: "Die Reihe muss einen Wert von 1 bis 7 haben.",
+						display :  "Die Reihe muss einen Wert von 1 bis 7 haben."
+					}
+				},
+				
 				INTERN: {
 					NO_AMZ_USERID: {
 						speechOut: "Der Request enthält keine User-ID.",
