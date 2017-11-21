@@ -9,7 +9,7 @@
 */
 
 'use strict';
-
+ 
 var messages;
 
 function init_messages(language) {

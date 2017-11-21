@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//@WebServlet(urlPatterns = "/soloadv", loadOnStartup = 1)
+//@WebServlet(urlPatterns = "/soloadv", loadOnStartup = 1) 
 public class HealthCheckServlet extends HttpServlet {
 	
 	/** the svuid. */

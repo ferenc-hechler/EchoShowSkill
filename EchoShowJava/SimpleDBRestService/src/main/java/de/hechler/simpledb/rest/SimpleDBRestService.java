@@ -39,7 +39,7 @@ import de.hechler.simpledb.rest.dto.JSonResult.CodeEnum;
 import de.hechler.simpledb.util.TextUtil;
 
 
-//@WebServlet(urlPatterns = "/soloadv", loadOnStartup = 1)
+//@WebServlet(urlPatterns = "/soloadv", loadOnStartup = 1) 
 public class SimpleDBRestService extends HttpServlet {
 	
 	/** the svuid */

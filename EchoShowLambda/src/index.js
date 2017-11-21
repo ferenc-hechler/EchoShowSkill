@@ -35,8 +35,8 @@ speech.init_messages("DE");
 var http = require('http');
 var querystring = require("querystring");
 
-var imgBaseUrl = "https://calcbox.de/c4imgs/48px/";
-var imgBaseSize = 48;
+var imgBaseUrl = "https://calcbox.de/c4imgs/64px/";
+var imgBaseSize = 64;
 
 
 /**
@@ -198,8 +198,8 @@ function respondField(session, response, gameData) {
             "textContent": {
               "primaryText": {
                 "type": "RichText",
-                "text": "<font size = '2'>"+statusMsg.display+"<br/>"
-                  + fieldText + "</font>"
+                "text": "<font size = '2'>" // statusMsg.display+"<br/>" 
+                		+ fieldText + "</font>"
               }
             },
             "backButton": "HIDDEN"

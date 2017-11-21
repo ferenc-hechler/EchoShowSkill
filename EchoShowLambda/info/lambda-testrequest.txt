@@ -1,3 +1,106 @@
+"Alexa starte show skill"
+----------------------------------
+{
+  "session": {
+    "new": true,
+    "sessionId": "SessionId.29fe2a15-99dc-4030-96b4-4ddfe49abc90",
+    "application": {
+      "applicationId": "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "amzn1.ask.account.AFNXPCDIPDZBTVQ7HPOLWWCVUXBFZHG5VRIKRLDEDXFEXWGCLGPECADKGRLJXWV3DXXSSAGQVMSFCD5N3EV5IMVYPVOYOPZE76QU7ZI5ZRGCS7XFFUHI7ZFF6CHXTNGEZ42ZA5J5LQCR6REMWCMJMN63GSBGGT63ZJR3DMOCOLQYQ556FY6JE4CEYUB2OF5GGMS3LL5NSXBPYHI"
+    }
+  },
+  "request": {
+    "type": "LaunchRequest",
+    "requestId": "EdwRequestId.f15e81b2-02b2-4cb9-a5cf-3c0407dc418b",
+    "locale": "de-DE",
+    "timestamp": "2017-11-21T15:07:17Z"
+  },
+  "context": {
+    "AudioPlayer": {
+      "playerActivity": "IDLE"
+    },
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.AFNXPCDIPDZBTVQ7HPOLWWCVUXBFZHG5VRIKRLDEDXFEXWGCLGPECADKGRLJXWV3DXXSSAGQVMSFCD5N3EV5IMVYPVOYOPZE76QU7ZI5ZRGCS7XFFUHI7ZFF6CHXTNGEZ42ZA5J5LQCR6REMWCMJMN63GSBGGT63ZJR3DMOCOLQYQ556FY6JE4CEYUB2OF5GGMS3LL5NSXBPYHI"
+      },
+      "device": {
+        "supportedInterfaces": {
+          "Display": {
+            "templateVersion": "1",
+            "markupVersion": "1"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
+
+
+"Ich werfe in Reihe drei"
+-------------------------
+{
+  "session": {
+    "new": false,
+    "sessionId": "SessionId.29fe2a15-99dc-4030-96b4-4ddfe49abc90",
+    "application": {
+      "applicationId": "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"
+    },
+    "attributes": {
+      "gameId": "T3"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.AFNXPCDIPDZBTVQ7HPOLWWCVUXBFZHG5VRIKRLDEDXFEXWGCLGPECADKGRLJXWV3DXXSSAGQVMSFCD5N3EV5IMVYPVOYOPZE76QU7ZI5ZRGCS7XFFUHI7ZFF6CHXTNGEZ42ZA5J5LQCR6REMWCMJMN63GSBGGT63ZJR3DMOCOLQYQ556FY6JE4CEYUB2OF5GGMS3LL5NSXBPYHI"
+    }
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.479a3012-37b0-4486-a025-6a2c89d21adf",
+    "intent": {
+      "name": "PlayerMoveIntent",
+      "slots": {
+        "slot": {
+          "name": "slot",
+          "value": "3"
+        }
+      }
+    },
+    "locale": "de-DE",
+    "timestamp": "2017-11-21T15:08:17Z"
+  },
+  "context": {
+    "AudioPlayer": {
+      "playerActivity": "IDLE"
+    },
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.AFNXPCDIPDZBTVQ7HPOLWWCVUXBFZHG5VRIKRLDEDXFEXWGCLGPECADKGRLJXWV3DXXSSAGQVMSFCD5N3EV5IMVYPVOYOPZE76QU7ZI5ZRGCS7XFFUHI7ZFF6CHXTNGEZ42ZA5J5LQCR6REMWCMJMN63GSBGGT63ZJR3DMOCOLQYQ556FY6JE4CEYUB2OF5GGMS3LL5NSXBPYHI"
+      },
+      "device": {
+        "supportedInterfaces": {
+          "Display": {
+            "templateVersion": "1",
+            "markupVersion": "1"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
+
+
+
+
 REQUEST: "Alexa sage Rollenspiel Sonne"
 applicationId muss korrekt gesetzt werden (passend zur Umgebungsvariable process.ENV.APP_ID)
 ---------------------------------------------

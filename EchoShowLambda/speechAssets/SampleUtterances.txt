@@ -3,3 +3,4 @@ NewGameIntent Starte ein neues Spiel
 PlayerMoveIntent Reihe {slot}
 PlayerMoveIntent Ich setze in Reihe {slot}
 PlayerMoveIntent Ich werfe in Reihe {slot}
+ 

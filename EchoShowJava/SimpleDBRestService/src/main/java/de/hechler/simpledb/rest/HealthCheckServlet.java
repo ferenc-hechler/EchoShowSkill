@@ -36,7 +36,7 @@ import de.hechler.simpledb.DBConnection;
 public class HealthCheckServlet extends HttpServlet {
 	
 	/** the svuid. */
-	private static final long serialVersionUID = 4472826308561137485L;
+	private static final long serialVersionUID = 4472826308561137485L; 
 	
 	private final static Logger logger = Logger.getLogger(HealthCheckServlet.class.getName());
 

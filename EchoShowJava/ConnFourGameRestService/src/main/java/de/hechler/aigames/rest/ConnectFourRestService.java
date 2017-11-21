@@ -49,7 +49,7 @@ import de.hechler.aigames.api.fieldview.ConnectFourFieldView;
 import de.hechler.aigames.api.move.ConnectFourMove;
 import de.hechler.utils.RandUtils;
 
-//@WebServlet(urlPatterns = "/main", loadOnStartup = 1)
+//@WebServlet(urlPatterns = "/main", loadOnStartup = 1) 
 public class ConnectFourRestService extends HttpServlet {
 	
 	/** the svuid */ private static final long serialVersionUID = -3679002890645814953L;
