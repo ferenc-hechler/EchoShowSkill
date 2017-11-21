@@ -79,6 +79,15 @@ public class ConnectFourRestService extends HttpServlet {
 	        throws ServletException, IOException {
 		try {
 			String responseString;
+			
+		    PrintWriter writer = response.getWriter();
+
+		    if (!checkAuth(request)) {
+				responseString = unauthResponse(response);
+				writer.println(responseString);
+				return;
+			}
+			
 			String gameId = normalizeGameId(request.getParameter("gameId"));
 			String cmd = request.getParameter("cmd");
 			String param1 = request.getParameter("param1");
@@ -169,7 +178,6 @@ public class ConnectFourRestService extends HttpServlet {
 			response.addHeader("Cache-Control", "post-check=0, pre-check=0");
 			response.setHeader("Pragma", "no-cache");
 			
-		    PrintWriter writer = response.getWriter();
 		    responseString = encode(responseString); 
 	    	writer.println(responseString);
 	    	if (debugloggingEnabled) {
@@ -318,6 +326,37 @@ public class ConnectFourRestService extends HttpServlet {
 			getGameDataResult = connectFourImpl.getGameData(gameId);
 		}
 		return gson.toJson(getGameDataResult);
+	}
+
+	
+	/* ==== */
+	/* AUTH */
+	/* ==== */
+
+
+	private final static String DEFAULT_AUTH = System.getProperty("c4.rest.auth", "rest:geheim");
+
+	private boolean checkAuth(HttpServletRequest request) throws IOException {
+		String auth = request.getHeader("Authorization");
+		if ((auth == null) || !auth.startsWith("Basic ")) {
+			return false;
+		}
+		String userpass;
+		try {
+			userpass = new String(java.util.Base64.getDecoder().decode(auth.substring(6)), StandardCharsets.ISO_8859_1);   // ISO-8859-1 is the standard for basic auth.
+		}
+		catch (Exception e) {
+			System.out.println("basic auth decode failed: "+e);
+			return false;
+		}
+		boolean result = userpass.equals(DEFAULT_AUTH);
+		return result;
+	}
+
+	private String unauthResponse(HttpServletResponse response) {
+		response.setStatus(401);
+		response.setHeader("WWW-Authenticate", "Basic realm=\"c4-rest-service\"");
+		return "";
 	}
 
 

@@ -21,7 +21,7 @@
 /* App ID for the skill */
 var APP_ID = "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 
-var endpoint = process.env.ENDPOINT;            // 'http://calcbox.de/connfour/rest/c4'; 
+var endpoint = process.env.ENDPOINT;            // 'https://calcbox.de/connfour/rest/c4'; 
 
 var URL = require('url');
 var authUsername = process.env.AUTH_USERNAME;   // 'rest';
@@ -177,6 +177,7 @@ function execDisplayField(session, response) {
 	var gameId = getSessionGameId(session);
 	send(session, response, gameId, "getGameData", "", "", function callbackFunc(result) {
     	respondField(session, response, result);
+    	speech.respondMsg(response, msg);
 	});
 }
 
@@ -187,7 +188,7 @@ function execDisplayField(session, response) {
 
 function respondField(session, response, gameData) {
 	var statusMsg = createStatusMsg(gameData.winner);
-	var fieldText = createFieldText(gameData.fieldView.field);
+	var fieldText = createFieldText(gameData.field);
 	console.log("fieldText="+fieldText);
 	var directives = [
     	{
@@ -206,7 +207,7 @@ function respondField(session, response, gameData) {
           }
         }
     ];
-    speech.respondMsgWithDirectives(response, statusMsg, directives);
+    speech.respondMsgWithDirectives(response, msg, directives);
 }
 
 function createStatusMsg(gameData) {
@@ -329,7 +330,7 @@ function sendCommand(session, gameId, cmd, param1, param2, callback) {
 		"param1": param1,
 		"param2": param2
 	});
-    var url = endpoint + "?" + query;
+    var url = getSessionEndpoint(session) + "?" + query;
     console.log('CALL: ' + url);
     
     var urlObj = URL.parse(url);
@@ -382,7 +383,7 @@ function sendCommand(session, gameId, cmd, param1, param2, callback) {
 
 /*
 
-var dbEndpoint = process.env.DBENDPOINT;        // 'http://calcbox.de/simdb/rest/db';   
+var dbEndpoint = process.env.DBENDPOINT;        // 'https://calcbox.de/simdb/rest/db';   
 
 
 function initUser(session, response, successCallback) {

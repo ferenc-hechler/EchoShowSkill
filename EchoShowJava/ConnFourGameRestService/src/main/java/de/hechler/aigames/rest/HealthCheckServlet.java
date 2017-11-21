@@ -57,15 +57,15 @@ public class HealthCheckServlet extends HttpServlet {
 //			logger.info("encoding : " + response.getCharacterEncoding());
 		    PrintWriter writer = response.getWriter();
 
-		    String ibookDbStatus = getDbStatus();
+		    String dbStatus = getDbStatus();
 		    
 		    String html = "<html><body><table border='1'>"
 		    		+ "<tr><th>Object</th><th>Status</th></tr>"
-		    		+ "<tr><td>Solo-DB</td><td>"+ibookDbStatus+"</td></tr>"
+		    		+ "<tr><td>C4-DB</td><td>"+dbStatus+"</td></tr>"
 		    		+ "</table></body></html>";
 	    	writer.println(html);
 		    
-		    boolean ok = "OK".equals(ibookDbStatus);
+		    boolean ok = "OK".equals(dbStatus);
 		    if (!ok) {
 				response.setStatus(500);
 		    }

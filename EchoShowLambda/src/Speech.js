@@ -29,10 +29,10 @@ function init_messages(language) {
 					}
 				},
 				
-				SEND_createSessionlessGame: {
+				SEND_connect: {
 					S_OK: { 
-						speechOut: "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst",
-						display :  "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst."
+						speechOut: "Du bist am Zug. In welche Reihe wirfst Du?",
+						display :  "Du bist am Zug. In welche Reihe wirfst Du?"
 					}
 				},
 				
@@ -55,14 +55,29 @@ function init_messages(language) {
 					}					
 				},
 				
+				STATUS: {
+					PLAYER_WINS: { 
+						speechOut: "Herzlichen Glückwunsch, Du hast gewonnen.",
+						display :  "Herzlichen Glückwunsch, Du hast gewonnen."
+					},
+					DRAW: { 
+						speechOut: "Das Spiel endet unentschieden.",
+						display :  "Das Spiel endet unentschieden."
+					},
+					AI_PLAYER_WINS: { 
+						speechOut: "Ich habe gewonnne.",
+						display :  "Ich habe gewonnne."
+					},
+					MAKE_YOUR_MOVE: { 
+						speechOut: "In welche Reihe wirfst Du?",
+						display :  "In welche Reihe wirfst Du?"
+					}
+				},
+				
 				ConnectGameIntent: {
 					S_OK: { 
 						speechOut: "Erfolgreich mit Spiel Verbunden, sage mir jetzt Deinen Namen und verwende dabei die Floskel: Mein Name ist",
 						display:   "Erfolgreich mit Spiel Verbunden, sage mir jetzt Deinen Namen und verwende dabei die Floskel: 'Mein Name ist ...''."
-					},
-					E_UNKNOWN_GAMEID: { 
-						speechOut: "Die genannte Spiel Ei Di ist nicht bekannt, bitte versuche es noch einmal.",
-						display:   "Die genannte Spiel-ID ist nicht bekannt, bitte versuche es noch einmal." 
 					}
 				},
 				
@@ -70,10 +85,6 @@ function init_messages(language) {
 					S_OK: { 
 						speechOut: "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst",
 						display :  "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst."
-					},
-					E_UNKNOWN_GAMEID: { 
-						speechOut: "Es gab ein Problem beim Erstellen der Spiel Ei Di, bitte versuche es noch einmal.",
-						display:   "Es gab ein Problem beim Erstellen der Spiel-ID, bitte versuche es noch einmal." 
 					}
 				},
 	
@@ -164,6 +175,10 @@ function init_messages(language) {
 					E_UNKNOWN_ERROR: {
 						speechOut: "Es ist ein unerwarteter Fehler aufgetreten.",
 						display: "Es ist ein unerwarteter Fehler aufgetreten.",
+					},
+					E_UNKNOWN_GAMEID: { 
+						speechOut: "Die genannte Spiel Ei Di ist nicht bekannt, bitte versuche es noch einmal.",
+						display:   "Die genannte Spiel-ID ist nicht bekannt, bitte versuche es noch einmal." 
 					},
 					E_CONNECT: { 
 						speechOut: "Es gibt Verbindungsprobleme zum Server.",

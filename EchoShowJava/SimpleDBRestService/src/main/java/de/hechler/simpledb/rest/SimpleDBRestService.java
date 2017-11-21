@@ -202,6 +202,8 @@ public class SimpleDBRestService extends HttpServlet {
 	/* AUTH */
 	/* ==== */
 	
+	private final static String DEFAULT_AUTH = System.getProperty("simdb.rest.auth", "rest:geheim");
+	
 	private boolean checkAuth(HttpServletRequest request) throws IOException {
 		String auth = request.getHeader("Authorization");
 		if ((auth == null) || !auth.startsWith("Basic ")) {
@@ -221,7 +223,7 @@ public class SimpleDBRestService extends HttpServlet {
 
 	private String unauthResponse(HttpServletResponse response) {
 		response.setStatus(401);
-		response.setHeader("WWW-Authenticate", "Basic realm=\"solo-rest-service\"");
+		response.setHeader("WWW-Authenticate", "Basic realm=\"simdb-rest-service\"");
 		return "";
 	}
 
