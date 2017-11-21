@@ -56,7 +56,7 @@ public class ConnectFourRestService extends HttpServlet {
 
 	private final static Logger logger = Logger.getLogger(ConnectFourRestService.class.getName());
 
-	private static final int DEFAULT_AI_LEVEL = 3;
+	private static final int DEFAULT_AI_LEVEL = 2;
 
 	private static boolean debugloggingEnabled = Boolean.getBoolean("cfrest.debugging");
 	

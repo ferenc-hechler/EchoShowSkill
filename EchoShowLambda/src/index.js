@@ -149,7 +149,7 @@ function connect(session, response, successCallback) {
 
 function execDoNewGame(intent, session, response) {
 	var gameId = getSessionGameId(session);
-	send(session, response, gameId, "closeGame", "", "", function callbackFunc(result) {
+	sendCommand(session, gameId, "closeGame", "", "", function callbackFunc(result) {
     	clearSessionData(session);
     	doLaunch(session, response);
 	});
@@ -217,16 +217,16 @@ function respondField(session, response, gameData) {
     speech.respondMsgWithDirectives(response, statusMsg, directives);
 }
 
-function createStatusMsg(gameData, lastAIMove) {
+function createStatusMsg(winner, lastAIMove) {
 	var msg;
 	var status = !lastAIMove ? "STATUS" : "STATUS_AIMOVE";
-	if (gameData.winner == 1) {
+	if (winner == 1) {
     	msg = speech.createMsg(status, "PLAYER_WINS", lastAIMove);
 	}
-	else if (gameData.winner == 2) {
+	else if (winner == 2) {
     	msg = speech.createMsg(status, "AI_PLAYER_WINS", lastAIMove);
 	}
-	else if (gameData.winner == -1) {
+	else if (winner == -1) {
     	msg = speech.createMsg(status, "DRAW", lastAIMove);
 	}
 	else {
@@ -235,15 +235,15 @@ function createStatusMsg(gameData, lastAIMove) {
 	return msg;
 }
 
-function createHintMsg(gameData) {
+function createHintMsg(winner) {
 	var msg;
-	if (gameData.winner == 1) {
+	if (winner == 1) {
     	msg = speech.createMsg("HINT", "PLAYER_WINS");
 	}
-	else if (gameData.winner == 2) {
+	else if (winner == 2) {
     	msg = speech.createMsg("HINT", "AI_PLAYER_WINS");
 	}
-	else if (gameData.winner == -1) {
+	else if (winner == -1) {
     	msg = speech.createMsg("HINT", "DRAW");
 	}
 	else {
@@ -356,7 +356,7 @@ function getAmzUserIdFromSession(session) {
 /* ========= */
 
 
-function send(session, respond, gameId, cmd, param1, param2, successCallback) {
+function send(session, response, gameId, cmd, param1, param2, successCallback) {
 	sendCommand(session, gameId, cmd, param1, param2, function callbackFunc(result) {
 		var code = ((!result) || (!result.code)) ? "?" : result.code;
 		if (code.startsWith("S_")) {

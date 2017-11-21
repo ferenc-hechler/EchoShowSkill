@@ -65,8 +65,8 @@ function init_messages(language) {
 						display :  "Das Spiel endet unentschieden."
 					},
 					AI_PLAYER_WINS: { 
-						speechOut: "Ich habe gewonnne.",
-						display :  "Ich habe gewonnne."
+						speechOut: "Ich habe gewonnnen.",
+						display :  "Ich habe gewonnnen."
 					},
 					MAKE_YOUR_MOVE: { 
 						speechOut: "In welche Reihe wirfst Du?",
@@ -84,8 +84,8 @@ function init_messages(language) {
 						display :  "Ich werfe in Reihe %1, das Spiel endet unentschieden."
 					},
 					AI_PLAYER_WINS: { 
-						speechOut: "Ich werfe in Reihe %1 und habe gewonnne.",
-						display :  "Ich werfe in Reihe %1 und habe gewonnne."
+						speechOut: "Ich werfe in Reihe %1 und habe gewonnnen.",
+						display :  "Ich werfe in Reihe %1 und habe gewonnnen."
 					},
 					MAKE_YOUR_MOVE: { 
 						speechOut: "Ich werfe in Reihe %1.",
@@ -215,8 +215,12 @@ function init_messages(language) {
 						display: "Es ist ein unerwarteter Fehler aufgetreten.",
 					},
 					E_UNKNOWN_GAMEID: { 
-						speechOut: "Die genannte Spiel Ei Di ist nicht bekannt, bitte versuche es noch einmal.",
-						display:   "Die genannte Spiel-ID ist nicht bekannt, bitte versuche es noch einmal." 
+						speechOut: "Das Spiel wurde auf dem Server beendet. Starte bitte ein neues Spiel.",
+						display:   "Das Spiel wurde auf dem Server beendet. Starte bitte ein neues Spiel." 
+					},
+					E_GAME_FINISHED: { 
+						speechOut: "Das Spiel wurde auf dem Server beendet. Starte bitte ein neues Spiel.",
+						display:   "Das Spiel wurde auf dem Server beendet. Starte bitte ein neues Spiel." 
 					},
 					E_CONNECT: { 
 						speechOut: "Es gibt Verbindungsprobleme zum Server.",
@@ -272,7 +276,7 @@ function respondMsg(response, msg) {
 }
 
 function respondMsgWithDirectives(response, msg, directives) {
-	response.askWithDirectives(msg.speechOut, "Vier-Gewinnt Skill", msg.display, undefined, directives);
+	response.askWithDirectives(msg.speechOut, undefined, msg.display, undefined, directives);
 }
 
 
