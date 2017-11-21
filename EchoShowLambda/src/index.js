@@ -168,6 +168,7 @@ function execDoMove(intent, session, response) {
 
 function execDoAIMove(session, response) {
 	send(session, response, getSessionGameId(session), "doAIMove", "", "", function successFunc(result) {
+		setSessionLastAIMove(session, result.move.slot);
 	    execDisplayField(session, response);
 	});
 }
@@ -186,15 +187,18 @@ function execDisplayField(session, response) {
 
 
 function respondField(session, response, gameData) {
-	var statusMsg = createStatusMsg(gameData.winner);
+	var lastAIMove = getSessionLastAIMove(session);
+	removeSessionLastAIMove(session);
+	var statusMsg = createStatusMsg(gameData.winner, lastAIMove);
+	var hintMsg = createHintMsg(gameData.winner);
 	var fieldText = createFieldText(gameData.fieldView.field);
-	console.log("fieldText="+fieldText);
+//	console.log("fieldText="+fieldText);
 	var directives = [
     	{
           "type": "Display.RenderTemplate",
           "template": {
             "type": "BodyTemplate1",
-//            "title": "Vier-Gewinnt-Brett",
+            "title": statusMsg.display,
             "textContent": {
               "primaryText": {
                 "type": "RichText",
@@ -202,40 +206,63 @@ function respondField(session, response, gameData) {
                 		+ fieldText + "</font>"
               }
             },
-            "backButton": "HIDDEN"
+            "backButton": "HIDDEN",
+            "hint": {
+            	"type": "PlainText",
+                "text": hintMsg.display
+            }
           }
         }
     ];
     speech.respondMsgWithDirectives(response, statusMsg, directives);
 }
 
-function createStatusMsg(gameData) {
+function createStatusMsg(gameData, lastAIMove) {
 	var msg;
+	var status = !lastAIMove ? "STATUS" : "STATUS_AIMOVE";
 	if (gameData.winner == 1) {
-    	msg = speech.createMsg("STATUS", "PLAYER_WINS");
+    	msg = speech.createMsg(status, "PLAYER_WINS", lastAIMove);
 	}
 	else if (gameData.winner == 2) {
-    	msg = speech.createMsg("STATUS", "AI_PLAYER_WINS");
+    	msg = speech.createMsg(status, "AI_PLAYER_WINS", lastAIMove);
 	}
 	else if (gameData.winner == -1) {
-    	msg = speech.createMsg("STATUS", "DRAW");
+    	msg = speech.createMsg(status, "DRAW", lastAIMove);
 	}
 	else {
-    	msg = speech.createMsg("STATUS", "MAKE_YOUR_MOVE");
+    	msg = speech.createMsg(status, "MAKE_YOUR_MOVE", lastAIMove);
+	}
+	return msg;
+}
+
+function createHintMsg(gameData) {
+	var msg;
+	if (gameData.winner == 1) {
+    	msg = speech.createMsg("HINT", "PLAYER_WINS");
+	}
+	else if (gameData.winner == 2) {
+    	msg = speech.createMsg("HINT", "AI_PLAYER_WINS");
+	}
+	else if (gameData.winner == -1) {
+    	msg = speech.createMsg("HINT", "DRAW");
+	}
+	else {
+    	msg = speech.createMsg("HINT", "MAKE_YOUR_MOVE");
 	}
 	return msg;
 }
 
 function createFieldText(field) {
 	var result = "";
+	result = result + addImage("space_3", 3);
 	result = result + addImage("frameset_top", 7);
-	result = result + "<br/>";
 	for (var y = 0; y < 6; y++) {
+		result = result + "<br/>";
+		result = result + addImage("space_3", 3);
 		for (var x = 0; x < 7; x++) {
 			var col = field[y][x];   // col = 0..4
 			result = result + addImage("circle-"+col, 1);
 		}
-		result = result + "<br/>";
 	}
 	return result;
 }
@@ -275,7 +302,7 @@ function clearSessionData(session) {
 
 function setSessionGameId(session, gameId) {
 	if (!session || (!session.attributes)) {
-		return undefined;
+		return;
 	}
 	session.attributes.gameId = gameId;
 }
@@ -285,6 +312,28 @@ function getSessionGameId(session) {
 	}
 	return session.attributes.gameId;
 }
+
+function setSessionLastAIMove(session, lastAIMove) {
+	if (!session || (!session.attributes)) {
+		return;
+	}
+	session.attributes.lastAIMove = lastAIMove;
+}
+
+function getSessionLastAIMove(session) {
+	if (!session || (!session.attributes)) {
+		return undefined;
+	}
+	return session.attributes.lastAIMove;
+}
+
+function removeSessionLastAIMove(session) {
+	if (!session || (!session.attributes)) {
+		return;
+	}
+	delete session.attributes.lastAIMove;
+}
+
 
 function isConnectedToGame(session) {
 	var gameId = getSessionGameId(session);
@@ -375,6 +424,10 @@ function sendCommand(session, gameId, cmd, param1, param2, callback) {
     });
 }
 
+
+function logObject(prefix, object) {
+	console.log(prefix+": "+JSON.stringify(object));
+}
 
 /* ===================== */
 /* USER DB (deactivated) */

@@ -74,6 +74,44 @@ function init_messages(language) {
 					}
 				},
 				
+				STATUS_AIMOVE: {
+					PLAYER_WINS: { 
+						speechOut: "Herzlichen Glückwunsch, Du hast gewonnen.",
+						display :  "Herzlichen Glückwunsch, Du hast gewonnen."
+					},
+					DRAW: { 
+						speechOut: "Ich werfe in Reihe %1, das Spiel endet unentschieden.",
+						display :  "Ich werfe in Reihe %1, das Spiel endet unentschieden."
+					},
+					AI_PLAYER_WINS: { 
+						speechOut: "Ich werfe in Reihe %1 und habe gewonnne.",
+						display :  "Ich werfe in Reihe %1 und habe gewonnne."
+					},
+					MAKE_YOUR_MOVE: { 
+						speechOut: "Ich werfe in Reihe %1.",
+						display :  "Ich werfe in Reihe %1."
+					}
+				},
+				
+				HINT: {
+					PLAYER_WINS: { 
+						speechOut: "starte ein neues Spiel.",
+						display :  "starte ein neues Spiel."
+					},
+					DRAW: { 
+						speechOut: "starte ein neues Spiel.",
+						display :  "starte ein neues Spiel."
+					},
+					AI_PLAYER_WINS: { 
+						speechOut: "starte ein neues Spiel.",
+						display :  "starte ein neues Spiel."
+					},
+					MAKE_YOUR_MOVE: { 
+						speechOut: "ich werfe in Reihe ...",
+						display :  "ich werfe in Reihe ..."
+					}
+				},
+				
 				ConnectGameIntent: {
 					S_OK: { 
 						speechOut: "Erfolgreich mit Spiel Verbunden, sage mir jetzt Deinen Namen und verwende dabei die Floskel: Mein Name ist",
