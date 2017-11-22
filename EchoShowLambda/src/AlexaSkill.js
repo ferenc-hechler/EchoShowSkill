@@ -174,6 +174,17 @@ Response.prototype = (function () {
                 shouldEndSession: true
             }));
         },
+        tellWithDirectives: function (speechOutput, cardTitle, cardContent, directives) {
+        	var resp = buildSpeechletResponse({
+                session: this._session,
+                output: speechOutput,
+                cardTitle: cardTitle,
+                cardContent: cardContent,
+                shouldEndSession: true
+            });
+        	resp.response.directives = directives;
+            this._context.succeed(resp);
+        },
         ask: function (speechOutput, repromptSpeech) {
             this._context.succeed(buildSpeechletResponse({
                 session: this._session,

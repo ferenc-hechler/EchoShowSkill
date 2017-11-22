@@ -29,7 +29,6 @@ public interface GameAPI<FV extends FieldView, M extends Move> {
 	public GenericResult hasChanges(String gameId, int lastChange);
 	public GetGameDataResult<FV> getGameData(String gameId);
 	
-	public GenericResult activateGame(String gameId, String userId);
 	public GetGameDataResult<FV> getGameDataByUserId(String userId);
 	
 	public DoMoveResult<M> doMove(String gameId, M move);

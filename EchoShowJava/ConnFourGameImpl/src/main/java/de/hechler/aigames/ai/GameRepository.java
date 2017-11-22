@@ -34,7 +34,6 @@ public class GameRepository<G extends AIGameIF> {
 	public static Random testRandom;
 	
 	private static final int TIMEOUT_CHECK_INTERVAL_MS = 5000;
-	private static final int AUTOSAVE_INTERVAL_MS = 10*1000;
 	private static final int TIMEOUT_4H = 4*60*60*1000;
 
 	public static class GameState<G extends AIGameIF> {
@@ -42,12 +41,9 @@ public class GameRepository<G extends AIGameIF> {
 		private long creationTimestamp;
 		private long lastUpdate;
 		private int version;
-		private int persistedVersion;
 		private String userId;
-		private String role;
 		private G game;
 		private long timeoutMillis;
-		private boolean active;
 		public GameState(String gameId, G game, long timeoutMillis) {
 			this.gameId = gameId;
 			this.game = game;
@@ -55,8 +51,6 @@ public class GameRepository<G extends AIGameIF> {
 			this.creationTimestamp = System.currentTimeMillis();
 			this.lastUpdate = this.creationTimestamp;
 			this.version = 0;
-			this.persistedVersion = 0;
-			this.active = false;
 		}
 		public String getGameId() {
 			return gameId;
@@ -82,30 +76,7 @@ public class GameRepository<G extends AIGameIF> {
 		}
 		public boolean isExpired(long now) {
 			boolean expired = now > lastUpdate + timeoutMillis;
-			if (!expired && !isActive()) {
-				expired = now > creationTimestamp + 60*1000;
-			}
 			return expired;
-		}
-		public boolean isAutosaveNeeded(long now) {
-			if (version == persistedVersion) {
-				return false;
-			}
-			if (now < lastUpdate + AUTOSAVE_INTERVAL_MS) {
-				return false;
-			}
-			return true;
-		}
-		public void activate() {
-			this.active = true;
-			update();
-		}
-		public boolean isActive() {
-			return active;
-		}
-		public void deactivate() {
-			update();
-			this.active = false;
 		}
 		public void setUserId(String userId) {
 			this.userId = userId;
@@ -113,19 +84,7 @@ public class GameRepository<G extends AIGameIF> {
 		public String getUserId() {
 			return userId;
 		}
-		public String getRole() {
-			return role;
-		}
-		@Override public String toString() { return "GS["+getGameId()+"|"+getRole()+"]"; }
-	
-		public boolean isPersisted() {
-			return version == persistedVersion;
-		}
-		public void ignoreTransientChanges() {
-			persistedVersion = version;
-		}
-		
-		
+		@Override public String toString() { return "GS["+getGameId()+"]"; }
 	}
 
 	private Class<G> gameClazz;

@@ -3,9 +3,11 @@
 #
 http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=enableDebugLogging&param1=true
 
-http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=doMove&gameId=C4&param1=3
+http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=connect&param1=feri
+http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=doMove&param1=3&gameId=C4
+http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=getGameData&gameId=C4
+http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=doAIMove&gameId=C4
 
-http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=connect&param1=feri2
 
 
 ### 

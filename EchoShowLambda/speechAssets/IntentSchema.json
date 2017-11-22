@@ -15,6 +15,23 @@
       ]
     },
 
+    {
+      "intent": "ChangeAILevelIntent",
+      "slots": [
+        {
+          "name": "aiLevel",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+
+    {
+      "intent": "ActivateInstantAnswerIntent"
+    },
+    {
+      "intent": "DeactivateInstantAnswerIntent"
+    },
+
 	{
 	  "intent": "AMAZON.StartOverIntent"
 	},

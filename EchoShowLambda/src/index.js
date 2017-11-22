@@ -2,7 +2,7 @@
  * Diese Datei ist Teil des Alexa Skills Vier-Gewinnt.
  * Copyright (C) 2016-2017 Ferenc Hechler (github@fh.anderemails.de)
  *
- * Der Alexa Skills Rollenspiel Soloabenteuer ist Freie Software: 
+ * Der Alexa Skill Vier-Gewinnt ist Freie Software: 
  * Sie koennen es unter den Bedingungen
  * der GNU General Public License, wie von der Free Software Foundation,
  * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spaeteren
@@ -79,10 +79,30 @@ ConnectFourSkill.prototype.intentHandlers = {
     	doPlayerMove(intent, session, response);
     },
 
+    "ChangeAILevelIntent":           doChangeAILevel,
+    "ActivateInstantAnswerIntent":   doActivateInstantAnswer,
+    "DeactivateInstantAnswerIntent": doDeactivateInstantAnswer,
+    
+    "AMAZON.HelpIntent": 			 doHelpIntent,
+
+    "AMAZON.StartOverIntent": 		 doStartOverIntent,
+    "AMAZON.YesIntent": 			 doYesIntent,
+    "AMAZON.NoIntent": 				 doNoIntent,
+    "AMAZON.PreviousIntent": 		 doPreviousIntent,
+    "AMAZON.NextIntent": 			 doNextIntent,
+    "AMAZON.ScrollUpIntent": 		 doScrollUpIntent,
+    "AMAZON.ScrollLeftIntent": 		 doScrollLeftIntent,
+    "AMAZON.ScrollDownIntent": 		 doScrollDownIntent,
+    "AMAZON.ScrollRightIntent": 	 doScrollRightIntent,
+    "AMAZON.PageUpIntent": 			 doPageUpIntent,
+    "AMAZON.PageDownIntent": 		 doPageDownIntent,
+    "AMAZON.MoreIntent": 			 doMoreIntent,
+    "AMAZON.NavigateSettingsIntent": doNavigateSettingsIntent,
+    
     "AMAZON.StopIntent": function (intent, session, response) {
         clearSessionData(session);
         speech.goodbye(intent.name, "*", response);
-    },
+    }
 
     
 };
@@ -117,6 +137,7 @@ function doLaunch(session, response) {
 }
 
 function doNewGame(intent, session, response) {
+	// TODO: confirm with yes / no
 	connect(session, response, function successFunc() {
 		execDoNewGame(intent, session, response);
 	});
@@ -127,6 +148,86 @@ function doPlayerMove(intent, session, response) {
 		execDoMove(intent, session, response);
 	});
 }
+
+
+function doChangeAILevel(intent, session, response) {
+	connect(session, response, function successFunc() {
+		execDoMove(intent, session, response);
+	});
+}
+
+function doActivateInstantAnswer(intent, session, response) {
+	setSessionInstantAnswer(true);
+	doLaunch(session, response);
+}
+
+function doDeactivateInstantAnswer(intent, session, response) {
+	setSessionInstantAnswer(false);
+	doLaunch(session, response);
+}
+
+
+function doHelpIntent(intent, session, response) {
+	msg = speech.createMsg("INTERN", "HELP", response);
+	execDisplayField(session, response, msg)
+}
+
+function doStartOverIntent(intent, session, response) {
+	doNewGame(session, response);
+}
+
+function doYesIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doYesIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doNoIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doPreviousIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doNextIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doScrollUpIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doScrollLeftIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doScrollDownIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doScrollRightIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doPageUpIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doPageDownIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doMoreIntent(intent, session, response) {
+	didNotUnterstand(intent, session, response);
+}
+
+function doNavigateSettingsIntent(intent, session, response) {
+	changeSettings(intent, session, response);
+}
+
 
 /* ============= */
 /* SEND METHODEN */
@@ -174,21 +275,46 @@ function execDoAIMove(session, response) {
 }
 
 
-function execDisplayField(session, response) {
+function execDisplayField(session, response, msg) {
 	var gameId = getSessionGameId(session);
 	send(session, response, gameId, "getGameData", "", "", function callbackFunc(result) {
-    	respondField(session, response, result);
+    	respondField(session, response, result, msg);
 	});
 }
+
+function execChangeAILevel(intent, session, response) {
+	var aiLevel = getAILevel(intent);
+	send(session, response, getSessionGameId(session), "setAILevel", aiLevel, "", function successFunc(result) {
+	    execDisplayField(session, response);
+	});
+}
+
+
+
+function didNotUnterstand(intent, session, response) {
+	msg = speech.createMsg("INTERN", "DID_NOT_UNDERSTAND", response);
+	execDisplayField(session, response, msg)
+}
+
+function changeSettings(intent, session, response) {
+	msg = speech.createMsg("INTERN", "CHANGE_SETTINGS", response);
+	execDisplayField(session, response, msg)
+}
+
+
+
 
 /* ============= */
 /* FIELD DISPLAY */
 /* ============= */
 
 
-function respondField(session, response, gameData) {
+function respondField(session, response, gameData, msg) {
 	var lastAIMove = getSessionLastAIMove(session);
 	removeSessionLastAIMove(session);
+	if (!msg) {
+		msg = createStatusMsg(gameData.winner, lastAIMove);
+	}
 	var statusMsg = createStatusMsg(gameData.winner, lastAIMove);
 	var hintMsg = createHintMsg(gameData.winner);
 	var fieldText = createFieldText(gameData.fieldView.field);
@@ -198,7 +324,7 @@ function respondField(session, response, gameData) {
           "type": "Display.RenderTemplate",
           "template": {
             "type": "BodyTemplate1",
-            "title": statusMsg.display,
+            "title": msg.display,
             "textContent": {
               "primaryText": {
                 "type": "RichText",
@@ -214,7 +340,18 @@ function respondField(session, response, gameData) {
           }
         }
     ];
-    speech.respondMsgWithDirectives(response, statusMsg, directives);
+	if (gameData.winner != 0) {
+	    speech.outputMsgWithDirectives(response, msg, directives);
+	}
+	else {
+		var instantAnswer = getSessionInstantAnswer(session);
+		if (instantAnswer) {
+			speech.respondMsgWithDirectives(response, msg, directives, instantAnswer);
+		}
+		else {
+		    speech.outputMsgWithDirectives(response, msg, directives);
+		}
+	}
 }
 
 function createStatusMsg(winner, lastAIMove) {
@@ -282,6 +419,10 @@ function getSlot(intent) {
 	return getFromIntent(intent, "slot", "?");
 }
 
+function getAILevel(intent) {
+	return getFromIntent(intent, "aiLevel", "?");
+}
+
 function getFromIntent(intent, attribute_name, defaultValue) {
 	var result = intent.slots[attribute_name];
 	if (!result || !result.value) {
@@ -332,6 +473,20 @@ function removeSessionLastAIMove(session) {
 		return;
 	}
 	delete session.attributes.lastAIMove;
+}
+
+
+function setSessionInstantAnswer(session, flag) {
+	if (!session || (!session.attributes)) {
+		return;
+	}
+	session.attributes.instantAnswer = flag;
+}
+function getSessionInstantAnswer(session) {
+	if (!session || (!session.attributes) || (!session.attributes.instantAnswer)) {
+		return true;
+	}
+	return session.attributes.instantAnswer;
 }
 
 

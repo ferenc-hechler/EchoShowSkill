@@ -63,7 +63,19 @@ function init_messages(language) {
 					WELCOME: {
 						speechOut: "Willkommen zum Vier-Gewinnt Skill mit Anzeige Du beginnst. In welche Reihe wirfst Du?",
 						display: "In welche Reihe wirfst Du?"
-					}					
+					},
+					HELP: {
+						speechOut: "Hier muss noch die Steuerung dieses Skills erklärt werden. Reihe, Einstellung, Neues Spiel",
+						display: "Ich werfe in Reihe ... / Ändere die Einstellungen / Starte ein neues Spiel."
+					},
+					DID_NOT_UNDERSTAND: {
+						speechOut: "Ich verstehe Deine Antwort nicht, Sage Hilfe um die Steuerung dieses Skills kennen zu lernen.",
+						display: "Sage 'Hilfe' um eine Hilfe zu erhalten. "
+					},
+					CHANGE_SETTINGS: {
+						speechOut: "Du kannst die Spielstärke mit dem Kommando 'Setze die Spielstärke auf' und der Angabe eines Wertes von 1 bis 7 ändern.",
+						display: "Sage 'Setze die Spielstärke auf ... (1..7)'. "
+					}
 				},
 				
 				STATUS: {
@@ -289,6 +301,10 @@ function respondMsg(response, msg) {
 function respondMsgWithDirectives(response, msg, directives) {
 	response.askWithDirectives(msg.speechOut, undefined, msg.display, undefined, directives);
 }
+         
+function outputMsgWithDirectives(response, msg, directives) {
+	response.tellWithDirectives(msg.speechOut, msg.display, undefined, directives);
+}
 
 
 function goodbye(intentName, resultCode, response, param1) {
@@ -321,4 +337,4 @@ function setParams(msg, param1) {
 }
 
 
-module.exports = {init_messages, respond, createMsg, respondMsg, respondMsgWithDirectives, goodbye};
+module.exports = {init_messages, respond, createMsg, respondMsg, respondMsgWithDirectives, outputMsgWithDirectives, goodbye};

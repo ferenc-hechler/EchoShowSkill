@@ -23,7 +23,6 @@ public class GetGameDataResult<FV extends FieldView> extends GenericResult {
 
 	public String gameId;
 	public int aiLevel;
-	public boolean active;
 	public String player1Name;
 	public String player2Name;
 	public int currentPlayer;

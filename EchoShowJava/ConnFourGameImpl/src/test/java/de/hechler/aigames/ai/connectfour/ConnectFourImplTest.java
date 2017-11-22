@@ -391,20 +391,15 @@ public class ConnectFourImplTest {
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 
-		GenericResult result = cfi.activateGame(gameId, null);
-		assertEquals(ResultCodeEnum.S_OK, result.code);
-		
 		GetGameDataResult<ConnectFourFieldView> ggdResult = cfi.getGameData(gameId);
 		assertEquals(ResultCodeEnum.S_OK, ggdResult.code);
-		assertEquals(true, ggdResult.active);
 		assertEquals(gameId, ggdResult.gameId);
 
-		result = cfi.closeGame(gameId);
+		GenericResult result = cfi.closeGame(gameId);
 		assertEquals(ResultCodeEnum.S_OK, result.code);
 		
 		GetGameDataResult<ConnectFourFieldView> gdResult = cfi.getGameData(gameId);
-		assertEquals(ResultCodeEnum.S_OK, gdResult.code);
-		assertEquals(false, gdResult.active);
+		assertEquals(ResultCodeEnum.E_UNKNOWN_GAMEID, gdResult.code);
 	}
 
 	

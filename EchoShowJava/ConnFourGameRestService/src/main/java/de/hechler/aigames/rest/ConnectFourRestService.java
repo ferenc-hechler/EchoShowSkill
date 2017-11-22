@@ -36,7 +36,6 @@ import com.google.gson.Gson;
 
 import de.hechler.aigames.ai.AIGame;
 import de.hechler.aigames.ai.GameRepository;
-import de.hechler.aigames.ai.GameRepository.GameState;
 import de.hechler.aigames.ai.connectfour.ConnectFourField;
 import de.hechler.aigames.ai.connectfour.ConnectFourGame;
 import de.hechler.aigames.ai.connectfour.ConnectFourImpl;
@@ -111,14 +110,6 @@ public class ConnectFourRestService extends HttpServlet {
 				responseString = initTests(param1);
 				break;
 			}
-			case "createSessionlessGame": {
-				responseString = createSessionlessGame(param1);
-				break;
-			}
-			case "activateGame": {
-				responseString = activateGame(gameId, param1);
-				break;
-			}
 			case "newGame": {
 				responseString = newGame(gameId);
 				break;
@@ -129,10 +120,6 @@ public class ConnectFourRestService extends HttpServlet {
 			}
 			case "clearSession": {
 				responseString = clearSession(request.getSession());
-				break;
-			}
-			case "getGameId": {
-				responseString = getGameId(request.getSession(true), gameId);
 				break;
 			}
 			case "hasChanges": {
@@ -227,20 +214,6 @@ public class ConnectFourRestService extends HttpServlet {
 		return gson.toJson(GenericResult.genericInvalidParameterResult);
 	}
 	
-	private String createSessionlessGame(String userId) {
-		NewGameResult newGameResult= connectFourImpl.createNewGame(DEFAULT_AI_LEVEL, true);
-		String gameId = newGameResult.gameId;
-		GenericResult activateResult = connectFourImpl.activateGame(gameId, userId);
-		if (activateResult.code != ResultCodeEnum.S_OK) {
-			return gson.toJson(activateResult);
-		}
-		return gson.toJson(newGameResult);
-	}
-
-	private String activateGame(String gameId, String userId) {
-		return gson.toJson(connectFourImpl.activateGame(gameId, userId));
-	}
-
 	private String newGame(String gameId) {
 		return gson.toJson(connectFourImpl.restart(gameId)); 
 	}
@@ -256,25 +229,6 @@ public class ConnectFourRestService extends HttpServlet {
 		return gson.toJson(GenericResult.genericOkResult);
 	}
 	
-	private String getGameId(HttpSession session, String gameId) {
-		NewGameResult result;
-		GameState<ConnectFourGame> gameState = connectFourImpl.findGameId(gameId);
-		if (gameState != null) {
-			if (gameState.isActive()) {
-				result = new NewGameResult(ResultCodeEnum.S_ACTIVATED, gameId);
-			}
-			else {
-				result = new NewGameResult(ResultCodeEnum.S_OK, gameId);
-			}
-		}
-		else {
-			result = connectFourImpl.createNewGame(DEFAULT_AI_LEVEL, true);
-			gameId = result.gameId;
-			session.setAttribute("gameId", gameId);
-		}
-		return gson.toJson(result);
-	}
-
 	private String hasChanges(String gameId, String versionName) {
 		try { 
 			int version = Integer.parseInt(versionName);
@@ -322,7 +276,6 @@ public class ConnectFourRestService extends HttpServlet {
 		if (getGameDataResult.code != ResultCodeEnum.S_OK) {
 			NewGameResult newGameResult = connectFourImpl.createNewGame(DEFAULT_AI_LEVEL, true);
 			String gameId = newGameResult.gameId;
-			connectFourImpl.activateGame(gameId, userId);
 			getGameDataResult = connectFourImpl.getGameData(gameId);
 		}
 		return gson.toJson(getGameDataResult);

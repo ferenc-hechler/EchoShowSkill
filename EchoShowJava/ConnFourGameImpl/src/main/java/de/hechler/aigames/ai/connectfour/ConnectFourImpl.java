@@ -101,7 +101,6 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 		result.gamePhase = game.getGamePhase();
 		result.fieldView = game.getField();
 		result.version = gameState.getVersion();
-		result.active= gameState.isActive();
 		result.gameId = gameState.getGameId();
 		result.winner = game.getWinner();
 		if (result.winner > 0) {
@@ -125,7 +124,6 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 		result.gamePhase = game.getGamePhase();
 		result.fieldView = game.getField();
 		result.version = gameState.getVersion();
-		result.active= gameState.isActive();
 		result.gameId = gameState.getGameId();
 		result.winner = game.getWinner();
 		if (result.winner > 0) {
@@ -226,7 +224,7 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 		if (gameState == null) {
 			return new GenericResult(ResultCodeEnum.E_UNKNOWN_GAMEID);
 		}
-		gameState.deactivate();
+		gameRepository.removeGame(gameId);
 		return new GenericResult(ResultCodeEnum.S_OK);
 	}
 
@@ -239,17 +237,6 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 
 	public GameState<ConnectFourGame> findGameId(String gameId) {
 		return gameRepository.getGameStateByGameId(gameId);
-	}
-
-	@Override
-	public GenericResult activateGame(String gameId, String userId) {
-		GameState<ConnectFourGame> gameState = gameRepository.getGameStateByGameId(gameId);
-		if (gameState == null) {
-			return new GenericResult(ResultCodeEnum.E_UNKNOWN_GAMEID);
-		}
-		gameState.activate();
-		gameRepository.connectUser(gameId, userId);
-		return new NewGameResult(ResultCodeEnum.S_OK, gameId);
 	}
 
 	@Override
