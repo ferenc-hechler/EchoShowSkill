@@ -217,7 +217,7 @@ public class SimpleDBRestService extends HttpServlet {
 			System.out.println("basic auth decode failed: "+e);
 			return false;
 		}
-		boolean result = userpass.equals("rest:geheim");
+		boolean result = userpass.equals(DEFAULT_AUTH);
 		return result;
 	}
 

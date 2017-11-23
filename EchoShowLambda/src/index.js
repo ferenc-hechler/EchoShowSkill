@@ -17,9 +17,7 @@
  */
 
 /* App ID for the skill */
-var APP_ID = "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; // replace
-																		// with
-																		// "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
+var APP_ID = "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; 
 
 var endpoint = process.env.ENDPOINT; // 'http://calcbox.de/connfour/rest/c4';
 var dbEndpoint = process.env.DBENDPOINT; // 'http://calcbox.de/simdb/rest/db';
