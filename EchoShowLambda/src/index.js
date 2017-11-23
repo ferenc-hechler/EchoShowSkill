@@ -168,9 +168,9 @@ function doDeactivateInstantAnswer(intent, session, response) {
 }
 
 function doHelpIntent(intent, session, response) {
-	initUser(session, response, function successFunc() {
-		var helpCalls = getUserProperty("helpCalls", 1);
-		setUserProperty("helpCalls", 1 + helpCalls);
+	initUserAndConnect(session, response, function successFunc() {
+		var helpCalls = getUserProperty(session, "helpCalls", 1);
+		setUserProperty(session, "helpCalls", helpCalls+1);
 		msg = speech.createMsg("INTERN", "HELP", response);
 		execDisplayField(session, response, msg)
 	});
@@ -527,13 +527,10 @@ function initUser(session, response, successCallback) {
 		} else {
 			sendDB(session, response, "getOrCreateUserByAppAndName", "C4.USER", amzUserId, function callback(result) {
 						var dbUser = result.user;
-						logObject("dbUser", dbUser);
 						var userDataOk = unmarshallUserData(dbUser);
 						if (!userDataOk) {
-							speech.respond("INTERN", "INVALID_USERDATA",
-									response);
+							speech.respond("INTERN", "INVALID_USERDATA", response);
 						} else {
-							logObject("dbUser-unmarsh", dbUser);
 							setDBUserInSession(session, dbUser);
 							successCallback();
 						}
@@ -546,10 +543,13 @@ function initUser(session, response, successCallback) {
 
 function saveUserData(session, response, callbackSuccess) {
 	if (!hasUserDataChanged(session)) {
+		console.log("saveUserData: !hasUserDataChanged");
 		callbackSuccess();
 	} else {
+		console.log("saveUserData: userDataChanged");
 		clearUserDataChanged(session);
 		updateUserDataInDB(session, response, function callback() {
+			console.log("saveUserData: callback");
 			callbackSuccess();
 		});
 
@@ -574,6 +574,7 @@ function unmarshallUserData(dbUser) {
 }
 
 function updateUserDataInDB(session, response, callbackSuccess) {
+	console.log("updateUserDataInDB")
 	var userId = getDBUserIdFromSession(session);
 	var marshalledUserData = getMarshalledUserData(session);
 	sendDB(session, response, "updateUserData", userId, marshalledUserData, function callback(result) {
@@ -609,7 +610,7 @@ function getUserProperty(session, key, defaultValue) {
 	if (!result) {
 		result = defaultValue;
 	}
-	return;
+	return result;
 }
 
 /* user data changed flag */

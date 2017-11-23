@@ -70,8 +70,6 @@ public class SimpleDBRestService extends HttpServlet {
 		String cmd = null;
 		String param1 = null;
 		String param2 = null;
-		String param3 = null;
-		String param4 = null;
 		String responseString;
 		
 		try {
@@ -95,8 +93,6 @@ public class SimpleDBRestService extends HttpServlet {
 			cmd = request.getParameter("cmd");
 			param1 = request.getParameter("param1");
 			param2 = request.getParameter("param2");
-			param3 = request.getParameter("param3");
-			param4 = request.getParameter("param4");
 			
 			switch(cmd) {
 			case "initTests": {
@@ -132,12 +128,12 @@ public class SimpleDBRestService extends HttpServlet {
 	    	
 	    	if (debugloggingEnabled) {
 	    		if (!(responseString.contains("S_NO_CHANGES"))) {
-	    			logger.info("RQ[cmd="+cmd+",p1="+param1+",p2="+param2+",p3="+param3+",p4="+param4+"] -> "+responseString);
+	    			logger.info("RQ[cmd="+cmd+",p1="+param1+",p2="+param2+"] -> "+responseString);
 	    		}
 	    	}
 	    }
 		catch (RuntimeException | IOException e) {
-			logger.log(Level.SEVERE, "RQ[cmd="+cmd+",p1="+param1+",p2="+param2+",p3="+param3+",p4="+param4+"] -> "+e.toString(), e);
+			logger.log(Level.SEVERE, "RQ[cmd="+cmd+",p1="+param1+",p2="+param2+"] -> "+e.toString(), e);
 			throw e;
 		}
 	}
