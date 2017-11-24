@@ -21,8 +21,7 @@ package de.hechler.aigames.api;
 
 public interface GameAPI<FV extends FieldView, M extends Move> {
 
-	public NewGameResult createNewGame(int aiLevel);
-	public NewGameResult createNewGame(int aiLevel, boolean weak);
+	public NewGameResult createNewGame(String userId, int aiLevel, boolean weak);
 
 	public GenericResult setPlayerNames(String gameId, String playerName1, String playerName2);
 	public GenericResult setAILevel(String gameId, int aiLevel);

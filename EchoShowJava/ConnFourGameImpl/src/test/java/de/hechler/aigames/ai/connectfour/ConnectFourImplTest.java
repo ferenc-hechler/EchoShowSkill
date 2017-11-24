@@ -42,7 +42,7 @@ public class ConnectFourImplTest {
 	public void testAI1() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(1);
+		NewGameResult newGameResult = createNewGame(cfi, 1);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String gameId = newGameResult.gameId;
 		String moves = "";
@@ -58,12 +58,12 @@ public class ConnectFourImplTest {
 		}
 		assertEquals("4433552", moves);
 	}
-
+	
 	@Test
 	public void testAI2() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(2);
+		NewGameResult newGameResult = createNewGame(cfi, 2);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String gameId = newGameResult.gameId;
 		String moves = "";
@@ -84,7 +84,7 @@ public class ConnectFourImplTest {
 	public void testAI3() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(3);
+		NewGameResult newGameResult = createNewGame(cfi, 3);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String gameId = newGameResult.gameId;
 		String moves = "";
@@ -105,7 +105,7 @@ public class ConnectFourImplTest {
 	public void testAI4() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String gameId = newGameResult.gameId;
 		String moves = "";
@@ -126,7 +126,7 @@ public class ConnectFourImplTest {
 	public void testAI5() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(5);
+		NewGameResult newGameResult = createNewGame(cfi, 5);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String gameId = newGameResult.gameId;
 		String moves = "";
@@ -148,7 +148,7 @@ public class ConnectFourImplTest {
 	public void testAI6() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(6);
+		NewGameResult newGameResult = createNewGame(cfi, 6);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String gameId = newGameResult.gameId;
 		String moves = "";
@@ -170,7 +170,7 @@ public class ConnectFourImplTest {
 	public void testAI7() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(7);
+		NewGameResult newGameResult = createNewGame(cfi, 7);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String gameId = newGameResult.gameId;
 		String moves = "";
@@ -191,10 +191,10 @@ public class ConnectFourImplTest {
 	public void testPlayAI2AgainstAI5() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(2);
+		NewGameResult newGameResult = createNewGame(cfi, 2);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String ai2GameId = newGameResult.gameId;
-		newGameResult = cfi.createNewGame(5);
+		newGameResult = createNewGame(cfi, 5);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String ai5GameId = newGameResult.gameId;
 		String moves = "";
@@ -224,7 +224,7 @@ public class ConnectFourImplTest {
 	public void testPlayChangingAI2andAI5() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(2);
+		NewGameResult newGameResult = createNewGame(cfi, 2);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String gameId = newGameResult.gameId;
 		String moves = "";
@@ -250,10 +250,10 @@ public class ConnectFourImplTest {
 	public void testPlayAI5AgainstAI5() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(5);
+		NewGameResult newGameResult = createNewGame(cfi, 5);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String ai5aGameId = newGameResult.gameId;
-		newGameResult = cfi.createNewGame(5);
+		newGameResult = createNewGame(cfi, 5);
 		assertEquals(newGameResult.code, ResultCodeEnum.S_OK);
 		String ai5bGameId = newGameResult.gameId;
 		String moves = "";
@@ -293,7 +293,7 @@ public class ConnectFourImplTest {
 		String moves = "12345612345612345671234561234561234567777";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length(); i++) {
@@ -318,7 +318,7 @@ public class ConnectFourImplTest {
 		String moves = "1234561234561234567123456123456123456";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length(); i++) {
@@ -351,7 +351,7 @@ public class ConnectFourImplTest {
 	public void testSetPlayerNames() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(3);
+		NewGameResult newGameResult = createNewGame(cfi, 3);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		
@@ -371,7 +371,7 @@ public class ConnectFourImplTest {
 	public void testSetAILevel() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(5);
+		NewGameResult newGameResult = createNewGame(cfi, 5);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		
@@ -387,7 +387,7 @@ public class ConnectFourImplTest {
 	public void testCloseGame() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(3);
+		NewGameResult newGameResult = createNewGame(cfi, 3);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 
@@ -407,7 +407,7 @@ public class ConnectFourImplTest {
 	public void testHasChanges() {
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(3);
+		NewGameResult newGameResult = createNewGame(cfi, 3);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		GetGameDataResult<ConnectFourFieldView> getGameDataresult = cfi.getGameData(gameId);
@@ -497,7 +497,7 @@ public class ConnectFourImplTest {
 		String moves = "1234567123456717263512322";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length(); i++) {
@@ -536,7 +536,7 @@ public class ConnectFourImplTest {
 		String moves = "1212121";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length()-1; i++) {
@@ -566,7 +566,7 @@ public class ConnectFourImplTest {
 		String moves = "121231212121";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length()-1; i++) {
@@ -595,7 +595,7 @@ public class ConnectFourImplTest {
 		String moves = "4455667";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length()-1; i++) {
@@ -624,7 +624,7 @@ public class ConnectFourImplTest {
 		String moves = "334466775";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length()-1; i++) {
@@ -653,7 +653,7 @@ public class ConnectFourImplTest {
 		String moves = "12234334454";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length()-1; i++) {
@@ -683,7 +683,7 @@ public class ConnectFourImplTest {
 		String moves = "76654554434";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length()-1; i++) {
@@ -714,7 +714,7 @@ public class ConnectFourImplTest {
 		String moves = "67677676767";
 		RandUtils.setPRNG(1);
 		ConnectFourImpl cfi = new ConnectFourImpl();
-		NewGameResult newGameResult = cfi.createNewGame(4);
+		NewGameResult newGameResult = createNewGame(cfi, 4);
 		assertEquals(ResultCodeEnum.S_OK, newGameResult.code);
 		String gameId = newGameResult.gameId;
 		for (int i=0; i<moves.length()-1; i++) {
@@ -737,4 +737,10 @@ public class ConnectFourImplTest {
 				+ "[0,0,0,0,0,1,2]]";
 		assertEquals(expected, actual);
 	}
+
+	private NewGameResult createNewGame(ConnectFourImpl cfi, int aiLevel) {
+		return cfi.createNewGame("junitUser", aiLevel, false);
+	}
+	
+
 }

@@ -92,30 +92,37 @@ public class ConnectFourRestService extends HttpServlet {
 			String param1 = request.getParameter("param1");
 			String param2 = request.getParameter("param2");
 			
-			if (gameId == null) {
-				gameId = (String) request.getSession(true).getAttribute("gameId");
-				if (gameId == null) {
-					NewGameResult newGameResult= connectFourImpl.createNewGame(DEFAULT_AI_LEVEL, true);
-					gameId = newGameResult.gameId;
-					request.getSession(true).setAttribute("gameId", gameId);
-				}
-			}
-
 			switch(cmd) {
 			case "enableDebugLogging": {
 				responseString = enableDebugLogging(param1);
 				break;
 			}
-			case "initTests": {
-				responseString = initTests(param1);
+			case "connect": {
+				responseString = connect(param1);
 				break;
 			}
-			case "newGame": {
-				responseString = newGame(gameId);
+			case "doMove": {
+				responseString = doMove(gameId, param1);
+				break;
+			}
+			case "doAIMove": {
+				responseString = doAIMove(gameId);
+				break;
+			}
+			case "getGameData": {
+				responseString = getGameData(gameId);
+				break;
+			}
+			case "restartGame": {
+				responseString = restartGame(gameId);
 				break;
 			}
 			case "closeGame": {
 				responseString = closeGame(gameId);
+				break;
+			}
+			case "initTests": {
+				responseString = initTests(param1);
 				break;
 			}
 			case "clearSession": {
@@ -132,22 +139,6 @@ public class ConnectFourRestService extends HttpServlet {
 			}
 			case "setAILevel": {
 				responseString = setAILevel(gameId, param1);
-				break;
-			}
-			case "doMove": {
-				responseString = doMove(gameId, param1);
-				break;
-			}
-			case "doAIMove": {
-				responseString = doAIMove(gameId);
-				break;
-			}
-			case "getGameData": {
-				responseString = getGameData(gameId);
-				break;
-			}
-			case "connect": {
-				responseString = connect(param1);
 				break;
 			}
 			default: {
@@ -214,7 +205,7 @@ public class ConnectFourRestService extends HttpServlet {
 		return gson.toJson(GenericResult.genericInvalidParameterResult);
 	}
 	
-	private String newGame(String gameId) {
+	private String restartGame(String gameId) {
 		return gson.toJson(connectFourImpl.restart(gameId)); 
 	}
 
@@ -274,7 +265,7 @@ public class ConnectFourRestService extends HttpServlet {
 	private String connect(String userId) {
 		GetGameDataResult<ConnectFourFieldView> getGameDataResult = connectFourImpl.getGameDataByUserId(userId);
 		if (getGameDataResult.code != ResultCodeEnum.S_OK) {
-			NewGameResult newGameResult = connectFourImpl.createNewGame(DEFAULT_AI_LEVEL, true);
+			NewGameResult newGameResult = connectFourImpl.createNewGame(userId, DEFAULT_AI_LEVEL, true);
 			String gameId = newGameResult.gameId;
 			getGameDataResult = connectFourImpl.getGameData(gameId);
 		}

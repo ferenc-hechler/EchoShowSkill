@@ -39,16 +39,13 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 	private static GameRepository<ConnectFourGame> gameRepository = new GameRepository<ConnectFourGame>(ConnectFourGame.class);
 	
 	@Override
-	public NewGameResult createNewGame(int aiLevel) {
-		return createNewGame(aiLevel, false);
-	}
-
-	@Override
-	public NewGameResult createNewGame(int aiLevel, boolean weak) {
+	public NewGameResult createNewGame(String userId, int aiLevel, boolean weak) {
 		GameState<ConnectFourGame> newGameState = gameRepository.createNewGame();
+		String gameId = newGameState.getGameId();
+		gameRepository.connectUser(gameId, userId);
 		newGameState.getGame().setAILevel(aiLevel);
 		newGameState.getGame().setWeak(weak);
-		NewGameResult result = new NewGameResult(ResultCodeEnum.S_OK, newGameState.getGameId());
+		NewGameResult result = new NewGameResult(ResultCodeEnum.S_OK, gameId);
 		return result;
 	}
 
@@ -248,6 +245,7 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 	public GetGameParameterResult getGameParameter(String gameId, String paramName) {
 		return new GetGameParameterResult(ResultCodeEnum.E_INVALID_PARAMETER);
 	}
+
 
 
 }
