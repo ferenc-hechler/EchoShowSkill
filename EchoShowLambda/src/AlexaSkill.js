@@ -212,9 +212,7 @@ Response.prototype = (function () {
                 cardContent: cardContent,
                 shouldEndSession: false
             });
-        	console.log(resp);
         	resp.response.directives = directives;
-        	console.log(resp);
             this._context.succeed(resp);
         }
     };

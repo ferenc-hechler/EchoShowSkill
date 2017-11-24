@@ -6,6 +6,7 @@ PlayerMoveIntent Reihe {slot}
 PlayerMoveIntent Ich setze in Reihe {slot}
 PlayerMoveIntent Ich werfe in Reihe {slot}
 
+AIStartsIntent Du bist dran
 AIStartsIntent Du darfst anfangen
 AIStartsIntent Fang Du an
 AIStartsIntent Mach Du den ersten Zug

@@ -154,8 +154,8 @@ function doPlayerMove(intent, session, response) {
 
 function doAIStarts(intent, session, response) {
 	initUserAndConnect(session, response, function successFunc() {
-		if ()
-		execDoAIMove(intent, session, response);
+		// TODO: Bedingung erster Zug pruefen
+		execDoAIMove(session, response);
 	});
 }
 
@@ -266,7 +266,7 @@ function connect(session, response, successCallback) {
 				function callbackFunc(result) {
 					console.log("Connectet with GameId: " + result.gameId);
 					setSessionGameId(session, result.gameId);
-					setSessionGameMovesCount(session, result.gameMovesCount);
+					setSessionGameMovesCount(session, result.movesCount);
 					successCallback();
 				});
 	}
@@ -310,9 +310,7 @@ function execDisplayField(session, response, msg) {
 function execChangeAILevel(intent, session, response) {
 	var aiLevel = getAILevel(intent);
 	send(session, response, getSessionGameId(session), "setAILevel", aiLevel, "", function successFunc(result) {
-		logObject("session-before-set", session);
 		setUserAILevel(session, aiLevel);
-		logObject("session-after-set", session);
 		execDisplayField(session, response);
 	});
 }
@@ -400,7 +398,7 @@ function createGameStatusInfo(gameData) {
 	if (!gameData) {
 		return "";
 	}
-	return "[AI:"+gameData.aiLevel+"] - ";
+	return "[Zug:"+(gameData.movesCount+1)+"/AI:"+gameData.aiLevel+"] - ";
 }
 
 function createStatusMsg(winner, lastAIMove) {
@@ -484,6 +482,13 @@ function clearSessionData(session) {
 	session.attributes = {};
 }
 
+function getSessionGameMovesCount(session, defaultValue) {
+	return getFromSession(session, "gameMovesCount", defaultValue);
+}
+function setSessionGameMovesCount(session, value) {
+	setInSession(session, "gameMovesCount", value);
+}
+
 function setSessionGameId(session, gameId) {
 	if (!session || (!session.attributes)) {
 		return;
@@ -495,6 +500,23 @@ function getSessionGameId(session) {
 		return undefined;
 	}
 	return session.attributes.gameId;
+}
+
+function getFromSession(session, key, defaultValue) {
+	if (!session || (!session.attributes)) {
+		return defaultValue;
+	}
+	var result = session.attributes[key];
+	if (!result) {
+		result = defaultValue;
+	}
+	return result;
+}
+function setInSession(session, key, value) {
+	if (!session || (!session.attributes)) {
+		return;
+	}
+	session.attributes[key] = value;
 }
 
 function setSessionLastAIMove(session, lastAIMove) {
@@ -577,13 +599,10 @@ function initUser(session, response, successCallback) {
 
 function saveUserData(session, response, callbackSuccess) {
 	if (!hasUserDataChanged(session)) {
-		console.log("saveUserData: !hasUserDataChanged");
 		callbackSuccess();
 	} else {
-		console.log("saveUserData: userDataChanged");
 		clearUserDataChanged(session);
 		updateUserDataInDB(session, response, function callback() {
-			console.log("saveUserData: callback");
 			callbackSuccess();
 		});
 
@@ -608,7 +627,6 @@ function unmarshallUserData(dbUser) {
 }
 
 function updateUserDataInDB(session, response, callbackSuccess) {
-	console.log("updateUserDataInDB")
 	var userId = getDBUserIdFromSession(session);
 	var marshalledUserData = getMarshalledUserData(session);
 	sendDB(session, response, "updateUserData", userId, marshalledUserData, function callback(result) {
