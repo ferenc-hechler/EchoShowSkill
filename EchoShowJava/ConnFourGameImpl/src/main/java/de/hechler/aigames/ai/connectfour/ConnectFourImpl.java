@@ -99,6 +99,7 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 		result.fieldView = game.getField();
 		result.version = gameState.getVersion();
 		result.gameId = gameState.getGameId();
+		result.movesCount = game.getMovesCount();
 		result.winner = game.getWinner();
 		if (result.winner > 0) {
 			markConnectedFour(result.fieldView.field);
@@ -122,6 +123,7 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 		result.fieldView = game.getField();
 		result.version = gameState.getVersion();
 		result.gameId = gameState.getGameId();
+		result.movesCount = game.getMovesCount();
 		result.winner = game.getWinner();
 		if (result.winner > 0) {
 			markConnectedFour(result.fieldView.field);

@@ -16,6 +16,10 @@
     },
 
     {
+      "intent": "AIStartsIntent"
+    },
+
+    {
       "intent": "ChangeAILevelIntent",
       "slots": [
         {
@@ -23,13 +27,6 @@
           "type": "AMAZON.NUMBER"
         }
       ]
-    },
-
-    {
-      "intent": "ActivateInstantAnswerIntent"
-    },
-    {
-      "intent": "DeactivateInstantAnswerIntent"
     },
 
 	{

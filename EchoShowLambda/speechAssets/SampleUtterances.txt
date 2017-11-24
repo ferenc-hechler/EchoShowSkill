@@ -1,10 +1,15 @@
 NewGameIntent Starte ein neues Spiel
+NewGameIntent Ich möchte ein neues Spiel starten
+NewGameIntent Bitte starte ein neues Spiel
 
 PlayerMoveIntent Reihe {slot}
 PlayerMoveIntent Ich setze in Reihe {slot}
 PlayerMoveIntent Ich werfe in Reihe {slot}
 
-ChangeAILevelIntent Setze die Spielstärke auf {aiLevel}
+AIStartsIntent Du darfst anfangen
+AIStartsIntent Fang Du an
+AIStartsIntent Mach Du den ersten Zug
+AIStartsIntent Du hast den ersten Zug
 
-ActivateInstantAnswerIntent Aktiviere den sofort Antworten Modus 
-DeactivateInstantAnswerIntent Deaktiviere den sofort Antworten Modus
+ChangeAILevelIntent Setze die Spielstärke auf {aiLevel}
+ChangeAILevelIntent Ändere die Spielstärke auf {aiLevel}

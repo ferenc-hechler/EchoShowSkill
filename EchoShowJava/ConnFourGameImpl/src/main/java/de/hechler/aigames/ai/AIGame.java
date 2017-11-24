@@ -36,6 +36,7 @@ public abstract class AIGame<FV extends FieldView, M extends Move> implements AI
 	protected boolean weak;
 	protected int currentPlayer;
 	protected String gamePhase;
+	protected int movesCount;
 	protected int winner;
 
 	public AIGame() {
@@ -47,6 +48,7 @@ public abstract class AIGame<FV extends FieldView, M extends Move> implements AI
 	}
 
 	protected void initGame() {
+		movesCount = 0;
 		currentPlayer = 1;
 		winner = 0;
 		gamePhase = null;
@@ -95,6 +97,7 @@ public abstract class AIGame<FV extends FieldView, M extends Move> implements AI
 	 */
 	@Override
 	public void changePlayer() {
+		movesCount += 1;
 		currentPlayer = 3-currentPlayer;
 	}
 	
@@ -107,19 +110,29 @@ public abstract class AIGame<FV extends FieldView, M extends Move> implements AI
 		return gamePhase;
 	}
 
-	int[] lowerAILevelBounds = {1,1,1,2,3,4,7};
-	int[] upperAILevelBounds = {1,2,3,4,5,6,7};
+	public int getMovesCount() {
+		return movesCount;
+	}
+
+
+
+	int[][] aiLevelDistribution = {
+			{1},
+			{1,2},
+			{1,2,2,2,3},
+			{2,3,3,3,4},
+			{2,3,4,4,4},
+			{3,4},
+			{4,5}
+	};
 	
 	protected int getEffectiveAILevel() {
 		if (!weak) {
 			return aiLevel;
 		}
-		int upper = upperAILevelBounds[aiLevel];
-		int lower = lowerAILevelBounds[aiLevel];
-		if (upper == lower) {
-			return upper;
-		}
-		return lower + RandUtils.randomInt(testRandom, upper-lower);
+		int[] dist = aiLevelDistribution[aiLevel];
+		int result = dist[RandUtils.randomInt(testRandom, dist.length)];
+		return result;
 	}
 
 	protected boolean hasWinner() {

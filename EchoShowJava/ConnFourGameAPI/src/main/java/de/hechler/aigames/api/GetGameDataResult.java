@@ -29,6 +29,7 @@ public class GetGameDataResult<FV extends FieldView> extends GenericResult {
 	public String gamePhase;
 	public int version;
 	public int winner;
+	public int movesCount;
 	public FV fieldView;
 	
 	public GetGameDataResult(ResultCodeEnum resultCode) {

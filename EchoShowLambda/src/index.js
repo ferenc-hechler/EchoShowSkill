@@ -79,6 +79,12 @@ ConnectFourSkill.prototype.intentHandlers = {
 	"PlayerMoveIntent" : function(intent, session, response) {
 		doPlayerMove(intent, session, response);
 	},
+    
+	"AIStartsIntent" : function(intent, session, response) {
+		doAIStarts(intent, session, response);
+	},
+
+
 
 	"ChangeAILevelIntent" : doChangeAILevel,
 	"ActivateInstantAnswerIntent" : doActivateInstantAnswer,
@@ -143,6 +149,13 @@ function doNewGame(intent, session, response) {
 function doPlayerMove(intent, session, response) {
 	initUserAndConnect(session, response, function successFunc() {
 		execDoMove(intent, session, response);
+	});
+}
+
+function doAIStarts(intent, session, response) {
+	initUserAndConnect(session, response, function successFunc() {
+		if ()
+		execDoAIMove(intent, session, response);
 	});
 }
 
@@ -253,6 +266,7 @@ function connect(session, response, successCallback) {
 				function callbackFunc(result) {
 					console.log("Connectet with GameId: " + result.gameId);
 					setSessionGameId(session, result.gameId);
+					setSessionGameMovesCount(session, result.gameMovesCount);
 					successCallback();
 				});
 	}
