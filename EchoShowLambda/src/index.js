@@ -260,8 +260,7 @@ function connect(session, response, successCallback) {
 
 function execDoNewGame(intent, session, response) {
 	var gameId = getSessionGameId(session);
-	sendCommand(session, gameId, "closeGame", "", "", function callbackFunc(
-			result) {
+	sendCommand(session, gameId, "restartGame", "", "", function callbackFunc(result) {
 		clearSessionData(session);
 		doLaunch(session, response);
 	});
@@ -312,6 +311,13 @@ function changeSettings(intent, session, response) {
 	execDisplayField(session, response, msg)
 }
 
+function closeGame(session, response, successCallback) {
+	send(session, response, getSessionGameId(session), "closeGame", "", "", function callbackFunc(result) {
+		successCallback();
+	});
+}
+
+
 /* ============= */
 /* FIELD DISPLAY */
 /* ============= */
@@ -346,12 +352,13 @@ function respondField(session, response, gameData, msg) {
 		}
 	} ];
 	if (gameData.winner != 0) {
-		outputMsgWithDirectives(session, response, msg, directives);
+		closeGame(session, response, function closedCallback() {
+			outputMsgWithDirectives(session, response, msg, directives);
+		});
 	} else {
 		var instantAnswer = getSessionInstantAnswer(session);
 		if (instantAnswer) {
-			respondMsgWithDirectives(session, response, msg, directives,
-					instantAnswer);
+			respondMsgWithDirectives(session, response, msg, directives, instantAnswer);
 		} else {
 			outputMsgWithDirectives(session, response, msg, directives);
 		}
