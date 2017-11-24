@@ -330,6 +330,7 @@ function respondField(session, response, gameData, msg) {
 	if (!msg) {
 		msg = createStatusMsg(gameData.winner, lastAIMove);
 	}
+	var gameStatusInfo = createGameStatusInfo(gameData);
 	var statusMsg = createStatusMsg(gameData.winner, lastAIMove);
 	var hintMsg = createHintMsg(gameData.winner);
 	var fieldText = createFieldText(gameData.fieldView.field);
@@ -338,7 +339,7 @@ function respondField(session, response, gameData, msg) {
 		"type" : "Display.RenderTemplate",
 		"template" : {
 			"type" : "BodyTemplate1",
-			"title" : msg.display,
+			"title" : gameStatusInfo + msg.display,
 			"textContent" : {
 				"primaryText" : {
 					"type" : "RichText",
@@ -379,6 +380,13 @@ function respondMsgWithDirectives(session, response, msg, directives,
 		speech.respondMsgWithDirectives(response, msg, directives,
 				instantAnswer);
 	});
+}
+
+function createGameStatusInfo(gameData) {
+	if (!gameData) {
+		return "";
+	}
+	return "[AI:"+gameData.aiLevel+"] - ";
 }
 
 function createStatusMsg(winner, lastAIMove) {

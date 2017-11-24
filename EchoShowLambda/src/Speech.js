@@ -47,6 +47,17 @@ function init_messages(language) {
 					}
 				},
 				
+				SEND_setAILevel: {
+					"E_INVALID_PARAMETER": { 
+						speechOut: "Die Spielstärke muss eine Zahl von 1 bis 7 sein.",
+						display :  "Die Spielstärke muss eine Zahl von 1 bis 7 sein."
+					},
+					"E_INVALID_RANGE": { 
+						speechOut: "Die Spielstärke muss eine Zahl von 1 bis 7 sein.",
+						display :  "Die Spielstärke muss eine Zahl von 1 bis 7 sein."
+					}
+				},
+				
 				INTERN: {
 					NO_AMZ_USERID: {
 						speechOut: "Der Request enthält keine User-ID.",
