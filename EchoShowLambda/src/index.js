@@ -66,8 +66,7 @@ ConnectFourSkill.prototype.eventHandlers.onSessionEnded = function(
 	clearSessionData(session);
 };
 
-ConnectFourSkill.prototype.eventHandlers.onLaunch = function(launchRequest,
-		session, response) {
+ConnectFourSkill.prototype.eventHandlers.onLaunch = function(launchRequest, session, response) {
 	doLaunch(session, response);
 };
 
@@ -155,14 +154,14 @@ function doChangeAILevel(intent, session, response) {
 
 function doActivateInstantAnswer(intent, session, response) {
 	initUser(session, response, function successFunc() {
-		setUserProperty("instantAnswer", true);
+		setUserProperty(session, "instantAnswer", true);
 		doLaunch(session, response);
 	});
 }
 
 function doDeactivateInstantAnswer(intent, session, response) {
 	initUser(session, response, function successFunc() {
-		setUserProperty("instantAnswer", true);
+		setUserProperty(session, "instantAnswer", true);
 		doLaunch(session, response);
 	});
 }
@@ -248,8 +247,9 @@ function connect(session, response, successCallback) {
 	if (isConnectedToGame(session)) {
 		successCallback();
 	} else {
-		var amzUserId = getAmzUserIdFromSession(session);
-		send(session, response, "", "connect", amzUserId, "",
+		var userId = getDBUserIdFromSession(session);
+		var userAILevel = getUserAILevel(session, 2);
+		send(session, response, "", "connect", userId, userAILevel,
 				function callbackFunc(result) {
 					console.log("Connectet with GameId: " + result.gameId);
 					setSessionGameId(session, result.gameId);
@@ -295,10 +295,12 @@ function execDisplayField(session, response, msg) {
 
 function execChangeAILevel(intent, session, response) {
 	var aiLevel = getAILevel(intent);
-	send(session, response, getSessionGameId(session), "setAILevel", aiLevel,
-			"", function successFunc(result) {
-				execDisplayField(session, response);
-			});
+	send(session, response, getSessionGameId(session), "setAILevel", aiLevel, "", function successFunc(result) {
+		logObject("session-before-set", session);
+		setUserAILevel(session, aiLevel);
+		logObject("session-after-set", session);
+		execDisplayField(session, response);
+	});
 }
 
 function didNotUnterstand(intent, session, response) {
@@ -413,7 +415,10 @@ function createFieldText(field) {
 	result = result + addImage("space_3", 3);
 	result = result + addImage("frameset_top", 7);
 	for (var y = 0; y < 6; y++) {
+		
 		result = result + "<br/>";
+//		result = result + addImage("space_3", 3);  // use this as linebreak to avoid a gap between lines. Does not work on simulator (no 1024px width?)
+		
 		result = result + addImage("space_3", 3);
 		for (var x = 0; x < 7; x++) {
 			var col = field[y][x]; // col = 0..4
@@ -599,6 +604,15 @@ function getMarshalledUserData(session) {
 }
 
 /* user properties */
+
+function getUserAILevel(session, defaultValue) {
+	return getUserProperty(session, "aiLevel", defaultValue);
+}
+
+function setUserAILevel(session, value) {
+	return setUserProperty(session, "aiLevel", value);
+}
+
 
 function setUserProperty(session, key, value) {
 	var userData = getUserDataFromSession(session);

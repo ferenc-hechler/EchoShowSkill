@@ -98,7 +98,7 @@ public class ConnectFourRestService extends HttpServlet {
 				break;
 			}
 			case "connect": {
-				responseString = connect(param1);
+				responseString = connect(param1, param2);
 				break;
 			}
 			case "doMove": {
@@ -262,12 +262,23 @@ public class ConnectFourRestService extends HttpServlet {
 		return gson.toJson(connectFourImpl.getGameData(gameId));
 	}
 
-	private String connect(String userId) {
+	private String connect(String userId, String aiLevelStr) {
+		int aiLevel = DEFAULT_AI_LEVEL;
+		if (aiLevelStr.matches("[1-7]")) {
+			aiLevel = Integer.parseInt(aiLevelStr);
+		}
 		GetGameDataResult<ConnectFourFieldView> getGameDataResult = connectFourImpl.getGameDataByUserId(userId);
 		if (getGameDataResult.code != ResultCodeEnum.S_OK) {
-			NewGameResult newGameResult = connectFourImpl.createNewGame(userId, DEFAULT_AI_LEVEL, true);
+			NewGameResult newGameResult = connectFourImpl.createNewGame(userId, aiLevel, true);
 			String gameId = newGameResult.gameId;
 			getGameDataResult = connectFourImpl.getGameData(gameId);
+		}
+		else {
+			String gameId = getGameDataResult.gameId;
+			if (aiLevel != getGameDataResult.aiLevel) {
+				connectFourImpl.setAILevel(gameId, aiLevel);
+				getGameDataResult.aiLevel = aiLevel;
+			}
 		}
 		return gson.toJson(getGameDataResult);
 	}

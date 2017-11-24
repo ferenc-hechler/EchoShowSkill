@@ -1,0 +1,11 @@
+{
+	"callbackWaitsForEmptyEventLoop": true,
+	"logGroupName": "/aws/lambda/ShowSkillLambda",
+	"logStreamName": "2017/11/24/[$LATEST]b8e3fcff3f7f4128a9fe5af49cb2bca4",
+	"functionName": "ShowSkillLambda",
+	"memoryLimitInMB": "128",
+	"functionVersion": "$LATEST",
+	"invokeid": "93ad715f-d147-11e7-8e5f-259e0e425e9e",
+	"awsRequestId": "93ad715f-d147-11e7-8e5f-259e0e425e9e",
+	"invokedFunctionArn": "arn:aws:lambda:eu-west-1:562675157628:function:ShowSkillLambda"
+}

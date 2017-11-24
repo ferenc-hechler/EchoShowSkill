@@ -88,8 +88,8 @@ function init_messages(language) {
 						display :  "Das Spiel endet unentschieden."
 					},
 					AI_PLAYER_WINS: { 
-						speechOut: "Ich habe gewonnnen.",
-						display :  "Ich habe gewonnnen."
+						speechOut: "Ich habe gewonnen.",
+						display :  "Ich habe gewonnen."
 					},
 					MAKE_YOUR_MOVE: { 
 						speechOut: "In welche Reihe wirfst Du?",
@@ -107,8 +107,8 @@ function init_messages(language) {
 						display :  "Ich werfe in Reihe %1, das Spiel endet unentschieden."
 					},
 					AI_PLAYER_WINS: { 
-						speechOut: "Ich werfe in Reihe %1 und habe gewonnnen.",
-						display :  "Ich werfe in Reihe %1 und habe gewonnnen."
+						speechOut: "Ich werfe in Reihe %1 und habe gewonnen.",
+						display :  "Ich werfe in Reihe %1 und habe gewonnen."
 					},
 					MAKE_YOUR_MOVE: { 
 						speechOut: "Ich werfe in Reihe %1.",
