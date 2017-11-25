@@ -49,8 +49,8 @@ function init_messages(language) {
 				
 				SEND_setAILevel: {
 					"E_INVALID_PARAMETER": { 
-						speechOut: "Die Spielstärke muss eine Zahl von 1 bis 7 sein.",
-						display :  "Die Spielstärke muss eine Zahl von 1 bis 7 sein."
+						speechOut: "Ich habe die Spielstärke nicht richtig verstanden.",
+						display :  "Ich habe die Spielstärke nicht richtig verstanden."
 					},
 					"E_INVALID_RANGE": { 
 						speechOut: "Die Spielstärke muss eine Zahl von 1 bis 7 sein.",
