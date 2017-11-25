@@ -17,7 +17,7 @@
  */
 
 /* App ID for the skill */
-var APP_ID = "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; 
+var APP_ID = process.env.APP_ID; // "amzn1.ask.skill.46c8454a-d474-4e38-a75e-c6c8017b1fe1"; 
 
 var endpoint = process.env.ENDPOINT; // 'http://calcbox.de/connfour/rest/c4';
 var dbEndpoint = process.env.DBENDPOINT; // 'http://calcbox.de/simdb/rest/db';
@@ -84,9 +84,8 @@ ConnectFourSkill.prototype.intentHandlers = {
 		doAIStarts(intent, session, response);
 	},
 
-
-
 	"ChangeAILevelIntent" : doChangeAILevel,
+	
 	"ActivateInstantAnswerIntent" : doActivateInstantAnswer,
 	"DeactivateInstantAnswerIntent" : doDeactivateInstantAnswer,
 
@@ -135,7 +134,13 @@ exports.initTests = function(url, param, callback) {
 
 function doLaunch(session, response) {
 	initUserAndConnect(session, response, function successFunc() {
-		execDisplayField(session, response);
+		logObject("READY: session ", session);
+//		if (!getUserHadIntro(session)) {
+			execIntro(session, response);
+//		}
+//		else {
+//			execDisplayField(session, response);
+//		}
 	});
 }
 
@@ -160,7 +165,7 @@ function doAIStarts(intent, session, response) {
 			execDoAIMove(session, response);
 		}
 		else {
-			msg = speech.createMsg("INTERN", "AI_STARTS_NOT_ALLOWED", response);
+			msg = speech.createMsg("INTERN", "AI_STARTS_NOT_ALLOWED");
 			execDisplayField(session, response, msg)
 		}
 	});
@@ -174,24 +179,21 @@ function doChangeAILevel(intent, session, response) {
 
 function doActivateInstantAnswer(intent, session, response) {
 	initUser(session, response, function successFunc() {
-		setUserProperty(session, "instantAnswer", true);
+		setUserInstantAnswer(session, true);
 		doLaunch(session, response);
 	});
 }
 
 function doDeactivateInstantAnswer(intent, session, response) {
 	initUser(session, response, function successFunc() {
-		setUserProperty(session, "instantAnswer", true);
+		setUserInstantAnswer(session, false);
 		doLaunch(session, response);
 	});
 }
 
 function doHelpIntent(intent, session, response) {
 	initUserAndConnect(session, response, function successFunc() {
-		var helpCalls = getUserProperty(session, "helpCalls", 1);
-		setUserProperty(session, "helpCalls", helpCalls+1);
-		msg = speech.createMsg("INTERN", "HELP", response);
-		execDisplayField(session, response, msg)
+		askYesNoText(session, response, "HELP");
 	});
 }
 
@@ -200,16 +202,42 @@ function doStartOverIntent(intent, session, response) {
 }
 
 function doYesIntent(intent, session, response) {
-	didNotUnterstand(intent, session, response);
-}
-
-function doYesIntent(intent, session, response) {
-	didNotUnterstand(intent, session, response);
+	var yesNoQuery = getSessionYesNoQuery(session);
+	removeSessionYesNoQuery(session);
+	initUserAndConnect(session, response, function successFunc() {
+		if (!yesNoQuery) {
+			noQuestionAsked(session, response);
+		}
+		else {
+			var MSG_KEY = NEXT_MSG_KEY_FOR_YES[yesNoQuery]; 
+			askYesNoText(session, response, MSG_KEY);
+		}
+	});
 }
 
 function doNoIntent(intent, session, response) {
-	didNotUnterstand(intent, session, response);
+	logObject("doNoIntent", session);
+	var yesNoQuery = getSessionYesNoQuery(session);
+	removeSessionYesNoQuery(session);
+	console.log("yesNoQuery=" + yesNoQuery)
+	logObject("AFTER REMOVE-session", session);
+	initUserAndConnect(session, response, function successFunc() {
+		if (!yesNoQuery) {
+			console.log("noQuestionAsked=" + yesNoQuery)
+			noQuestionAsked(session, response);
+		}
+		else {
+			console.log("execDisplayField=" + yesNoQuery)
+			execDisplayField(session, response)
+		}
+	});
 }
+
+function noQuestionAsked(session, response) {
+	var msg = speech.createMsg("INTERN", "NO_QUESTION_ASKED");
+	execDisplayField(session, response, msg)
+}
+
 
 function doPreviousIntent(intent, session, response) {
 	didNotUnterstand(intent, session, response);
@@ -258,7 +286,14 @@ function doNavigateSettingsIntent(intent, session, response) {
 function initUserAndConnect(session, response, successCallback) {
 	initUser(session, response, function successFunc1() {
 		connect(session, response, function successFunc2() {
-			successCallback();
+			var yesNoQuery = getSessionYesNoQuery(session);
+			if (!yesNoQuery) {
+				successCallback();
+			}
+			else {
+				var msg = speech.createMsg("INTERN", "NOT_YES_NO_ANSWER");
+				execDisplayField(session, response, msg)
+			}
 		});
 	});
 }
@@ -307,6 +342,25 @@ function execDoAIMove(session, response) {
 			});
 }
 
+var NEXT_MSG_KEY_FOR_YES = {
+	"HELP": "HELP_REGELN",
+	"INTRO": "HELP_REGELN",
+	"HELP_REGELN": "HELP_REGELN"
+}
+
+function execIntro(session, response) {
+	setUserHadIntro(session, true);
+	askYesNoText(session, response, "INTRO");
+}
+
+function askYesNoText(session, response, MSG_KEY) {
+	var msg = speech.createMsg("INTERN", MSG_KEY);
+	logObject("MSG", msg);
+	setSessionYesNoQuery(session, MSG_KEY);
+	speech.respondMsg(response, msg);
+}
+
+
 function execDisplayField(session, response, msg) {
 	var gameId = getSessionGameId(session);
 	send(session, response, gameId, "getGameData", "", "",
@@ -325,12 +379,12 @@ function execChangeAILevel(intent, session, response) {
 }
 
 function didNotUnterstand(intent, session, response) {
-	msg = speech.createMsg("INTERN", "DID_NOT_UNDERSTAND", response);
+	msg = speech.createMsg("INTERN", "DID_NOT_UNDERSTAND");
 	execDisplayField(session, response, msg)
 }
 
 function changeSettings(intent, session, response) {
-	msg = speech.createMsg("INTERN", "CHANGE_SETTINGS", response);
+	msg = speech.createMsg("INTERN", "CHANGE_SETTINGS");
 	execDisplayField(session, response, msg)
 }
 
@@ -380,7 +434,7 @@ function respondField(session, response, gameData, msg) {
 			outputMsgWithDirectives(session, response, msg, directives);
 		});
 	} else {
-		var instantAnswer = getSessionInstantAnswer(session);
+		var instantAnswer = getUserInstantAnswer(session, true);
 		if (instantAnswer) {
 			respondMsgWithDirectives(session, response, msg, directives, instantAnswer);
 		} else {
@@ -395,11 +449,9 @@ function outputMsgWithDirectives(session, response, msg, directives) {
 	});
 }
 
-function respondMsgWithDirectives(session, response, msg, directives,
-		instantAnswer) {
+function respondMsgWithDirectives(session, response, msg, directives, instantAnswer) {
 	saveUserData(session, response, function successCallback() {
-		speech.respondMsgWithDirectives(response, msg, directives,
-				instantAnswer);
+		speech.respondMsgWithDirectives(response, msg, directives, instantAnswer);
 	});
 }
 
@@ -492,43 +544,64 @@ function getFromIntent(intent, attribute_name, defaultValue) {
 /* SESSION VARIABLES ACCESS */
 /* ======================== */
 
+function isConnectedToGame(session) {
+	return getSessionGameId(session) !== undefined;
+}
+
+function getAmzUserId(session) {
+	if (!session || (!session.user)) {
+		return undefined;
+	}
+	return session.user.userId;
+}
+
+
 function clearSessionData(session) {
 	session.attributes = {};
 }
 
+function getSessionGameId(session, defaultValue) {
+	return getFromSession(session, "gameId", defaultValue);
+}
 function getSessionGameMovesCount(session, defaultValue) {
 	return getFromSession(session, "gameMovesCount", defaultValue);
 }
-function setSessionGameMovesCount(session, value) {
-	setInSession(session, "gameMovesCount", value);
+function getSessionLastAIMove(session, defaultValue) {
+	return getFromSession(session, "lastAIMove", defaultValue);
+}
+function getSessionYesNoQuery(session, defaultValue) {
+	return getFromSession(session, "yesNoQuery", defaultValue);
 }
 
 function setSessionGameId(session, gameId) {
-	if (!session || (!session.attributes)) {
-		return;
-	}
-	session.attributes.gameId = gameId;
+	setInSession(session, "gameId", gameId);
 }
-function getSessionGameId(session) {
-	if (!session || (!session.attributes)) {
-		return undefined;
-	}
-	return session.attributes.gameId;
+function setSessionGameMovesCount(session, gameMovesCount) {
+	setInSession(session, "gameMovesCount", gameMovesCount);
+}
+function setSessionLastAIMove(session, lastAIMove) {
+	setInSession(session, "lastAIMove", lastAIMove);
+}
+function setSessionYesNoQuery(session, lastAIMove) {
+	setInSession(session, "yesNoQuery", lastAIMove);
 }
 
+function removeSessionLastAIMove(session) {
+	removeFromSession(session, "lastAIMove");
+}
+function removeSessionYesNoQuery(session) {
+	removeFromSession(session, "yesNoQuery");
+}
+
+
 function getFromSession(session, key, defaultValue) {
-	logObject("getFromSession-session", session);
 	if (!session || (!session.attributes)) {
-		logObject("nothing found", key);
 		return defaultValue;
 	}
 	var result = session.attributes[key];
-	logObject("result", result);
 	if (result === undefined) {
-		logObject("no result", key);
 		result = defaultValue;
 	}
-	logObject("result", result);
 	return result;
 }
 function setInSession(session, key, value) {
@@ -536,58 +609,15 @@ function setInSession(session, key, value) {
 		return;
 	}
 	session.attributes[key] = value;
-	logObject("setInSession(session, ...", session)
+	logObject("session-"+key, session);
 }
-
-function setSessionLastAIMove(session, lastAIMove) {
+function removeFromSession(session, key, defaultValue) {
 	if (!session || (!session.attributes)) {
-		return;
+		return defaultValue;
 	}
-	session.attributes.lastAIMove = lastAIMove;
+	delete session.attributes[key];
 }
 
-function getSessionLastAIMove(session) {
-	if (!session || (!session.attributes)) {
-		return undefined;
-	}
-	return session.attributes.lastAIMove;
-}
-
-function removeSessionLastAIMove(session) {
-	if (!session || (!session.attributes)) {
-		return;
-	}
-	delete session.attributes.lastAIMove;
-}
-
-function setSessionInstantAnswer(session, flag) {
-	if (!session || (!session.attributes)) {
-		return;
-	}
-	session.attributes.instantAnswer = flag;
-}
-function getSessionInstantAnswer(session) {
-	if (!session || (!session.attributes)
-			|| (!session.attributes.instantAnswer)) {
-		return true;
-	}
-	return session.attributes.instantAnswer;
-}
-
-function isConnectedToGame(session) {
-	var gameId = getSessionGameId(session);
-	if (!gameId) {
-		return false;
-	}
-	return true;
-}
-
-function getAmzUserIdFromSession(session) {
-	if (!session || (!session.user)) {
-		return undefined;
-	}
-	return session.user.userId;
-}
 
 /* ======= */
 /* USER DB */
@@ -597,7 +627,7 @@ function initUser(session, response, successCallback) {
 	if (hasDBUserInSession(session)) {
 		successCallback();
 	} else {
-		var amzUserId = getAmzUserIdFromSession(session);
+		var amzUserId = getAmzUserId(session);
 		if (!amzUserId) {
 			speech.respond("INTERN", "NO_AMZ_USERID", response);
 		} else {
@@ -665,12 +695,25 @@ function getMarshalledUserData(session) {
 
 /* user properties */
 
+function getUserInstantAnswer(session, defaultValue) {
+	return getUserProperty(session, "instantAnswer", defaultValue);
+}
+function getUserHadIntro(session, defaultValue) {
+	return getUserProperty(session, "hadIntro", defaultValue);
+}
+
 function getUserAILevel(session, defaultValue) {
 	return getUserProperty(session, "aiLevel", defaultValue);
 }
 
 function setUserAILevel(session, value) {
 	return setUserProperty(session, "aiLevel", value);
+}
+function setUserHadIntro(session, value) {
+	return setUserProperty(session, "hadIntro", value);
+}
+function setUserInstantAnswer(session, value) {
+	return setUserProperty(session, "instantAnswer", value);
 }
 
 
@@ -688,21 +731,13 @@ function getUserProperty(session, key, defaultValue) {
 		return defaultValue;
 	}
 	var result = userData[key];
-	if (!result) {
+	if (result === undefined) {
 		result = defaultValue;
 	}
 	return result;
 }
 
 /* user data changed flag */
-
-function setUserDataChanged(session) {
-	var userData = getUserDataFromSession(session);
-	if (!userData) {
-		return;
-	}
-	userData.changed = true;
-}
 
 function hasUserDataChanged(session) {
 	var userData = getUserDataFromSession(session);

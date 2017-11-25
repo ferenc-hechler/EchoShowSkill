@@ -76,8 +76,71 @@ function init_messages(language) {
 						display: "In welche Reihe wirfst Du?"
 					},
 					HELP: {
-						speechOut: "Hier muss noch die Steuerung dieses Skills erklärt werden. Reihe, Einstellung, Neues Spiel",
-						display: "Ich werfe in Reihe ... / Ändere die Einstellungen / Starte ein neues Spiel."
+						speechOut: "Hier die Kurzhilfe: " +
+						   			"Du kannst eines der Kommandos 'Hilfe', 'Neues Spiel', 'Ich werfe in Reihe', 'Du darfst Anfangen', 'Setze die Spielstärke auf' oder 'Stop' verwenden. " + 
+						   			"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Hier die Kurzhilfe: " +
+									"Du kannst eines der Kommandos 'Hilfe', 'Neues Spiel', 'Ich werfe in Reihe', 'Du darfst Anfangen', 'Setze die Spielstärke auf' oder 'Stop' verwenden. " + 
+									"Möchtest Du eine ausführliche Anleitung?",
+					},
+					INTRO: {
+						speechOut: 	"Willkommen zum Vier-Gewinnt Skill. Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?",
+						display: 	"Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?"
+					},
+					HELP_REGELN: {
+						speechOut: "Zuerst die Regeln: " +
+								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
+								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
+								   
+								   "Jetzt zur Sprachsteuerung: " +
+								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
+								   "Sage dazu entweder: 'Ich werfe in Reihe punkt punkt punkt' oder: 'Du darfst anfangen'. " +
+								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
+								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe punkt punkt punkt' sagen. " +
+								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
+								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
+								   "Also zum Beispiel: 'Alexa, Reihe punkt punkt punkt'. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit: 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
+								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
+								   
+								   "Und nun zu den weiteren Kommandos: " +
+								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfe Text anzeigen lassen. " +
+								   "Mit dem Kommando 'Neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. " +
+								   "Mit dem Kommando 'Setze die Spielstärke auf punkt punkt punkt' kannst Du die Spielstärke von Alexa ändern. 1 ist dabei am leichtesten und 7 am schwersten. " +
+								   
+								   "Ein Hinweis noch zum Schluss: " +
+								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist Willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. " +
+								   
+								   "Soll ich den Text nochmal wiederholen?",
+								   
+						display:   "Zuerst die Regeln: " +
+								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
+								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
+								   
+								   "Jetzt zur Sprachsteuerung: " +
+								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
+								   "Sage dazu entweder 'Ich werfe in Reihe ...' oder 'Du darfst anfangen'. " +
+								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
+								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe ...' sagen. " +
+								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
+								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
+								   "Also  zum Beispiel 'Alexa, Reihe ...'. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
+								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
+								   
+								   "Und nun zu den weiteren Kommandos: " +
+								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfetext anzeigen lassen. " +
+								   "Mit dem Kommando 'Neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. " +
+								   "Mit dem Kommando 'Setze die Spielstärke auf ...' kannst Du die Spielstärke von Alexa ändern. 1 ist am leichtesten und 7 am schwersten. " +
+								   
+								   "Ein Hinweis noch zum Schluss: " +
+								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist Willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. " +
+								   
+								   "Soll ich den Text nochmal wiederholen?",
 					},
 					DID_NOT_UNDERSTAND: {
 						speechOut: "Ich verstehe Deine Antwort nicht, Sage Hilfe um die Steuerung dieses Skills kennen zu lernen.",
@@ -90,6 +153,14 @@ function init_messages(language) {
 					AI_STARTS_NOT_ALLOWED: {
 						speechOut: "Die Seiten können nur vor dem ersten Zug gewechselt werden.",
 						display: "Die Seiten können nur vor dem ersten Zug gewechselt werden."
+					},
+					NOT_YES_NO_ANSWER: {
+						speechOut: "Das war keine Antwort auf meine Frage, ich werte das jetzt mal als 'Nein'.",
+						display: "Das war keine Antwort auf meine Frage, ich werte das jetzt mal als 'Nein'."
+					},
+					NO_QUESTION_ASKED: {
+						speechOut: "Ich hatte keine Ja/Nein Frage gestellt.",
+						display: "Ich hatte keine Ja/Nein Frage gestellt."
 					}
 				},
 				
@@ -310,7 +381,7 @@ function createMsg(intentName, resultCode, param1) {
 }
 
 function respondMsg(response, msg) {
-	response.askWithCard(msg.speechOut, "Vier-Gewinnt Skill", msg.display);
+	response.askWithCard(msg.speechOut, undefined, "Vier-Gewinnt Skill", msg.display);
 }
 
 function respondMsgWithDirectives(response, msg, directives) {
