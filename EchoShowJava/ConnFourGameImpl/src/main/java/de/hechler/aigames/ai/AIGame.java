@@ -130,7 +130,7 @@ public abstract class AIGame<FV extends FieldView, M extends Move> implements AI
 		if (!weak) {
 			return aiLevel;
 		}
-		int[] dist = aiLevelDistribution[aiLevel];
+		int[] dist = aiLevelDistribution[aiLevel-1];
 		int result = dist[RandUtils.randomInt(testRandom, dist.length)];
 		return result;
 	}
