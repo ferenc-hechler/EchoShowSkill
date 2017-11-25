@@ -94,6 +94,7 @@ ConnectFourSkill.prototype.intentHandlers = {
 	"AMAZON.StartOverIntent" : doStartOverIntent,
 	"AMAZON.YesIntent" : doYesIntent,
 	"AMAZON.NoIntent" : doNoIntent,
+	
 	"AMAZON.PreviousIntent" : doPreviousIntent,
 	"AMAZON.NextIntent" : doNextIntent,
 	"AMAZON.ScrollUpIntent" : doScrollUpIntent,
@@ -135,12 +136,12 @@ exports.initTests = function(url, param, callback) {
 function doLaunch(session, response) {
 	initUserAndConnect(session, response, function successFunc() {
 		logObject("READY: session ", session);
-//		if (!getUserHadIntro(session)) {
+		if (!getUserHadIntro(session)) {
 			execIntro(session, response);
-//		}
-//		else {
-//			execDisplayField(session, response);
-//		}
+		}
+		else {
+			execDisplayField(session, response);
+		}
 	});
 }
 
@@ -354,10 +355,10 @@ function execIntro(session, response) {
 }
 
 function askYesNoText(session, response, MSG_KEY) {
-	var msg = speech.createMsg("INTERN", MSG_KEY);
+	var msg = speech.createMsg("TEXT", MSG_KEY);
 	logObject("MSG", msg);
 	setSessionYesNoQuery(session, MSG_KEY);
-	speech.respondMsg(response, msg);
+	respondText(session, response, msg);
 }
 
 
@@ -394,6 +395,31 @@ function closeGame(session, response, successCallback) {
 	});
 }
 
+
+/* ============ */
+/* TEXT DISPLAY */
+/* ============ */
+
+function respondText(session, response, msg) {
+	var directives = [ {
+		"type" : "Display.RenderTemplate",
+		"template" : {
+			"type" : "BodyTemplate3",
+			"title" : msg.title,
+			"image": {
+				"sources": [ { "url": "https://calcbox.de/c4imgs/help/viergewinnt_help-340.png" } ]
+			},
+			"textContent" : {
+				"primaryText" : {
+					"type" : "RichText",
+					"text" : "<font size = '2'>" + msg.richText + "</font>"
+				}
+			},
+			"backButton" : "HIDDEN",
+		}
+	} ];
+	respondMsgWithDirectives(session, response, msg, directives, true);
+}
 
 /* ============= */
 /* FIELD DISPLAY */

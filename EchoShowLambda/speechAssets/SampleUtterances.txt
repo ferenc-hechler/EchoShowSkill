@@ -2,6 +2,7 @@ NewGameIntent Starte ein neues Spiel
 NewGameIntent Ich möchte ein neues Spiel starten
 NewGameIntent Bitte starte ein neues Spiel
 
+PlayerMoveIntent {slot}
 PlayerMoveIntent Reihe {slot}
 PlayerMoveIntent Ich setze in Reihe {slot}
 PlayerMoveIntent Ich werfe in Reihe {slot}

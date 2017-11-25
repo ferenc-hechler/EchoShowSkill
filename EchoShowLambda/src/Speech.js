@@ -58,6 +58,116 @@ function init_messages(language) {
 					}
 				},
 				
+				TEXT: {
+					HELP: {
+						title:     	"Vier-Gewinnt Schnellhilfe",
+						richText:   "Hier die Kurzhilfe: <br/><br/>" +
+									"Du kannst eines der Kommandos <br/>" +
+									"'Hilfe', <br/>" +
+									"'Neues Spiel', <br/>" +
+									"'Ich werfe in Reihe ...', <br/>" +
+									"'Du darfst Anfangen', <br/>" +
+									"'Setze die Spielstärke auf ...' oder <br/>" +
+									"'Stop' verwenden. <br/><br/>" + 
+									"Möchtest Du eine ausführliche Anleitung?",
+						speechOut: "Hier die Kurzhilfe: " +
+						   			"Du kannst eines der Kommandos 'Hilfe', 'Neues Spiel', 'Ich werfe in Reihe', 'Du darfst Anfangen', 'Setze die Spielstärke auf' oder Stop verwenden. " + 
+						   			"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Hier die Kurzhilfe: " +
+									"Du kannst eines der Kommandos 'Hilfe', 'Neues Spiel', 'Ich werfe in Reihe', 'Du darfst Anfangen', 'Setze die Spielstärke auf' oder 'Stop' verwenden. " + 
+									"Möchtest Du eine ausführliche Anleitung?"
+					},
+					INTRO: {
+						title:     	"Vier-Gewinnt Willkommen!",
+						richText:   "Willkommen zum Vier-Gewinnt Skill. <br/><br/>" +
+									"Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?",
+						speechOut: 	"Willkommen zum Vier-Gewinnt Skill. Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?",
+						display: 	"Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?"
+					},
+					HELP_REGELN: {
+						title:     "Vier-Gewinnt Hilfe",
+						richText:  "Zuerst die Regeln: <br/>" +
+								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
+								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. <br/><br/>" +
+								   
+								   "Jetzt zur Sprachsteuerung: <br/>" +
+								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
+								   "Sage dazu entweder 'Ich werfe in Reihe ...' oder 'Du darfst anfangen'. " +
+								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
+								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe ...' sagen. " +
+								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
+								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
+								   "Also  zum Beispiel 'Alexa, Reihe ...'. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
+								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. <br/><br/>" +
+								   
+								   "Und nun zu den weiteren Kommandos: <br/>" +
+								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfetext anzeigen lassen. <br/>" +
+								   "Mit dem Kommando 'Neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. <br/>" +
+								   "Mit dem Kommando 'Setze die Spielstärke auf ...' kannst Du die Spielstärke von Alexa ändern. 1 ist am leichtesten und 7 am schwersten. <br/><br/>" +
+								   
+								   "Ein Hinweis noch zum Schluss: <br/>" +
+								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist Willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. <br/><br/>" +
+								   
+								   "Soll ich den Text nochmal wiederholen?",
+						speechOut: "Zuerst die Regeln: " +
+								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
+								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
+								   
+								   "Jetzt zur Sprachsteuerung: " +
+								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
+								   "Sage dazu entweder: 'Ich werfe in Reihe punkt punkt punkt' oder: 'Du darfst anfangen'. " +
+								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
+								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe punkt punkt punkt' sagen. " +
+								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
+								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
+								   "Also zum Beispiel: 'Alexa, Reihe punkt punkt punkt'. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit: 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
+								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
+								   
+								   "Und nun zu den weiteren Kommandos: " +
+								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfe Text anzeigen lassen. " +
+								   "Mit dem Kommando 'Neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. " +
+								   "Mit dem Kommando 'Setze die Spielstärke auf punkt punkt punkt' kannst Du die Spielstärke von Alexa ändern. 1 ist dabei am leichtesten und 7 am schwersten. " +
+								   
+								   "Ein Hinweis noch zum Schluss: " +
+								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist Willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. " +
+								   
+								   "Soll ich den Text nochmal wiederholen?",
+								   
+						display:   "Zuerst die Regeln: " +
+								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
+								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
+								   
+								   "Jetzt zur Sprachsteuerung: " +
+								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
+								   "Sage dazu entweder 'Ich werfe in Reihe ...' oder 'Du darfst anfangen'. " +
+								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
+								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe ...' sagen. " +
+								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
+								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
+								   "Also  zum Beispiel 'Alexa, Reihe ...'. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
+								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
+								   
+								   "Und nun zu den weiteren Kommandos: " +
+								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfetext anzeigen lassen. " +
+								   "Mit dem Kommando 'Neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. " +
+								   "Mit dem Kommando 'Setze die Spielstärke auf ...' kannst Du die Spielstärke von Alexa ändern. 1 ist am leichtesten und 7 am schwersten. " +
+								   
+								   "Ein Hinweis noch zum Schluss: " +
+								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist Willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. " +
+								   
+								   "Soll ich den Text nochmal wiederholen?"
+					},
+				},
+				
 				INTERN: {
 					NO_AMZ_USERID: {
 						speechOut: "Der Request enthält keine User-ID.",
