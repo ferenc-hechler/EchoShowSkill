@@ -66,6 +66,9 @@ public class ConnectFourImpl implements GameAPI<ConnectFourFieldView, ConnectFou
 		if (gameState == null) {
 			return new GenericResult(ResultCodeEnum.E_UNKNOWN_GAMEID);
 		}
+		if ((aiLevel < 1) || (aiLevel > 7)) {
+			return GenericResult.genericInvalidRangeResult;
+		}
 		gameState.getGame().setAILevel(aiLevel);
 		gameState.update();
 		return new GenericResult(ResultCodeEnum.S_OK);

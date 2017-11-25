@@ -292,6 +292,7 @@ function initUserAndConnect(session, response, successCallback) {
 				successCallback();
 			}
 			else {
+				removeSessionYesNoQuery(session)
 				var msg = speech.createMsg("INTERN", "NOT_YES_NO_ANSWER");
 				execDisplayField(session, response, msg)
 			}
