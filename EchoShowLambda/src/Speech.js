@@ -86,6 +86,10 @@ function init_messages(language) {
 					CHANGE_SETTINGS: {
 						speechOut: "Du kannst die Spielstärke mit dem Kommando 'Setze die Spielstärke auf' und der Angabe eines Wertes von 1 bis 7 ändern.",
 						display: "Sage 'Setze die Spielstärke auf ... (1..7)'. "
+					},
+					AI_STARTS_NOT_ALLOWED: {
+						speechOut: "Die Seiten können nur vor dem ersten Zug gewechselt werden.",
+						display: "Die Seiten können nur vor dem ersten Zug gewechselt werden."
 					}
 				},
 				

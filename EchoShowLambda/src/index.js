@@ -154,8 +154,15 @@ function doPlayerMove(intent, session, response) {
 
 function doAIStarts(intent, session, response) {
 	initUserAndConnect(session, response, function successFunc() {
-		// TODO: Bedingung erster Zug pruefen
-		execDoAIMove(session, response);
+		logObject("session", session);
+		logObject("getSessionGameMovesCount(session)", getSessionGameMovesCount(session));
+		if (getSessionGameMovesCount(session) === 0) {
+			execDoAIMove(session, response);
+		}
+		else {
+			msg = speech.createMsg("INTERN", "AI_STARTS_NOT_ALLOWED", response);
+			execDisplayField(session, response, msg)
+		}
 	});
 }
 
@@ -267,6 +274,7 @@ function connect(session, response, successCallback) {
 					console.log("Connectet with GameId: " + result.gameId);
 					setSessionGameId(session, result.gameId);
 					setSessionGameMovesCount(session, result.movesCount);
+					logObject("sess", session); 
 					successCallback();
 				});
 	}
@@ -303,6 +311,7 @@ function execDisplayField(session, response, msg) {
 	var gameId = getSessionGameId(session);
 	send(session, response, gameId, "getGameData", "", "",
 			function callbackFunc(result) {
+				setSessionGameMovesCount(session, result.movesCount);
 				respondField(session, response, result, msg);
 			});
 }
@@ -344,7 +353,7 @@ function respondField(session, response, gameData, msg) {
 	}
 	var gameStatusInfo = createGameStatusInfo(gameData);
 	var statusMsg = createStatusMsg(gameData.winner, lastAIMove);
-	var hintMsg = createHintMsg(gameData.winner);
+	var hintMsg = createHintMsg(gameData.winner, lastAIMove);
 	var fieldText = createFieldText(gameData.fieldView.field);
 	// console.log("fieldText="+fieldText);
 	var directives = [ {
@@ -404,11 +413,14 @@ function createGameStatusInfo(gameData) {
 function createStatusMsg(winner, lastAIMove) {
 	var msg;
 	var status = !lastAIMove ? "STATUS" : "STATUS_AIMOVE";
-	if (winner == 1) {
-		msg = speech.createMsg(status, "PLAYER_WINS", lastAIMove);
-	} else if (winner == 2) {
-		msg = speech.createMsg(status, "AI_PLAYER_WINS", lastAIMove);
-	} else if (winner == -1) {
+	if ((winner === 1) || (winner === 2)) {
+		if (!lastAIMove) {
+			msg = speech.createMsg(status, "PLAYER_WINS", lastAIMove);
+		}
+		else {
+			msg = speech.createMsg(status, "AI_PLAYER_WINS", lastAIMove);
+		}
+	} else if (winner === -1) {
 		msg = speech.createMsg(status, "DRAW", lastAIMove);
 	} else {
 		msg = speech.createMsg(status, "MAKE_YOUR_MOVE", lastAIMove);
@@ -416,13 +428,15 @@ function createStatusMsg(winner, lastAIMove) {
 	return msg;
 }
 
-function createHintMsg(winner) {
+function createHintMsg(winner, lastAIMove) {
 	var msg;
-	if (winner == 1) {
-		msg = speech.createMsg("HINT", "PLAYER_WINS");
-	} else if (winner == 2) {
-		msg = speech.createMsg("HINT", "AI_PLAYER_WINS");
-	} else if (winner == -1) {
+	if ((winner === 1) || (winner === 2)) {
+		if (!lastAIMove) {
+			msg = speech.createMsg("HINT", "PLAYER_WINS");
+		} else {
+			msg = speech.createMsg("HINT", "AI_PLAYER_WINS");
+		}
+	} else if (winner === -1) {
 		msg = speech.createMsg("HINT", "DRAW");
 	} else {
 		msg = speech.createMsg("HINT", "MAKE_YOUR_MOVE");
@@ -503,13 +517,18 @@ function getSessionGameId(session) {
 }
 
 function getFromSession(session, key, defaultValue) {
+	logObject("getFromSession-session", session);
 	if (!session || (!session.attributes)) {
+		logObject("nothing found", key);
 		return defaultValue;
 	}
 	var result = session.attributes[key];
-	if (!result) {
+	logObject("result", result);
+	if (result === undefined) {
+		logObject("no result", key);
 		result = defaultValue;
 	}
+	logObject("result", result);
 	return result;
 }
 function setInSession(session, key, value) {
@@ -517,6 +536,7 @@ function setInSession(session, key, value) {
 		return;
 	}
 	session.attributes[key] = value;
+	logObject("setInSession(session, ...", session)
 }
 
 function setSessionLastAIMove(session, lastAIMove) {
