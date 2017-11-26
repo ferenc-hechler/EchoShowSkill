@@ -241,7 +241,18 @@ function noQuestionAsked(session, response) {
 
 
 function doPreviousIntent(intent, session, response) {
-	didNotUnterstand(intent, session, response);
+	var yesNoQuery = getSessionYesNoQuery(session);
+	removeSessionYesNoQuery(session);
+	console.log("yesNoQuery=" + yesNoQuery)
+	initUserAndConnect(session, response, function successFunc() {
+		if (!yesNoQuery) {
+			didNotUnterstand(intent, session, response);
+		}
+		else {
+			execDisplayField(session, response)
+		}
+	});
+	
 }
 
 function doNextIntent(intent, session, response) {
