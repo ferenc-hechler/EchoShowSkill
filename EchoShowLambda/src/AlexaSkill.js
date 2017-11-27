@@ -28,10 +28,15 @@ AlexaSkill.prototype.requestHandlers = {
         this.eventHandlers.onIntent.call(this, event.request, event.session, response);
     },
 
+	"Display.ElementSelected" : function (event, context, response) {
+        this.eventHandlers.onDisplayElementSelected.call(this, event.request, event.session, response);
+    },
+    
     SessionEndedRequest: function (event, context) {
         this.eventHandlers.onSessionEnded(event.request, event.session);
         context.succeed();
     }
+    
 };
 
 /**
@@ -69,6 +74,22 @@ AlexaSkill.prototype.eventHandlers = {
         }
     },
 
+    /**
+     * Called when the user selects an display element.
+     */
+    onDisplayElementSelected: function (actionRequest, session, response) {
+        var actionName = actionRequest.token,
+            actionHandler = this.actionHandlers[actionName];
+        if (actionHandler) {
+            console.log('dispatch action = ' + actionName);
+            actionHandler.call(this, actionName, session, response);
+        } else {
+        	console.log('Unsupported action = ' + actionName);
+            throw 'Unsupported action = ' + actionName;
+        }
+    },
+    
+    
     /**
      * Called when the user ends the session.
      * Subclasses could have overriden this function to close any open resources.
@@ -183,6 +204,7 @@ Response.prototype = (function () {
                 shouldEndSession: true
             });
         	resp.response.directives = directives;
+        	logObject("RESP", resp);
             this._context.succeed(resp);
         },
         ask: function (speechOutput, repromptSpeech) {
@@ -213,9 +235,14 @@ Response.prototype = (function () {
                 shouldEndSession: false
             });
         	resp.response.directives = directives;
+        	logObject("RESP", resp);
             this._context.succeed(resp);
         }
     };
 })();
+
+function logObject(prefix, object) {
+	console.log(prefix + ": " + JSON.stringify(object));
+}
 
 module.exports = AlexaSkill;

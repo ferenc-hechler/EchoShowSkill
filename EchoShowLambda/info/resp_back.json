@@ -1,0 +1,43 @@
+{
+	"version": "1.0",
+	"response": {
+		"outputSpeech": {
+			"type": "PlainText",
+			"text": "Hier die Kurzhilfe: Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst Anfangen', 'Setze die Spielstärke auf' oder Stop verwenden. Möchtest Du eine ausführliche Anleitung?"
+		},
+		"shouldEndSession": false,
+		"directives": {
+			"type": "Display.RenderTemplate",
+			"template": {
+				"type": "BodyTemplate3",
+				"title": "Vier-Gewinnt Schnellhilfe",
+				"image": {
+					"sources": {
+						"url": "https://calcbox.de/c4imgs/help/viergewinnt_help-340.png"
+					}
+				},
+				"textContent": {
+					"primaryText": {
+						"type": "RichText",
+						"text": "Hier die Kurzhilfe: <br/><br/>Du kannst eines der Kommandos <br/>'Hilfe', <br/>'Starte ein neues Spiel', <br/>'Ich werfe in Reihe ...', <br/>'Du darfst Anfangen', <br/>'Setze die Spielstärke auf ...' oder <br/>'Stop' verwenden. <br/><br/>Möchtest Du eine ausführliche Anleitung?"
+					}
+				},
+				"backButton": "VISIBLE"
+			}
+		}
+	},
+	"sessionAttributes": {
+		"gameId": "F6",
+		"dbUser": {
+			"userId": 127,
+			"userName": "amzn1.ask.account.AHPVAI5O7SZCCMQ62R6EDSLKSQS4DQTFGTJNB2FFROBS5CUDLOAIOHL3KLTBNKD2XLTLKGSUS3CSNLKVQQ6MPS3ZMOJLJS6ZQBRBVUBGSAZQRD4SZNAFEEYOTM7YJ4NBLCCHF7L3M5G3ZQMPYUKAZSHIYH3N3J5WWHIUE45SU6XZ2CK3HZOKNZGL2ABLDEPBH7EIXOZADFJOZSA",
+			"app": "C4.USER",
+			"data": {
+				"hadIntro": true,
+				"aiLevel": "1"
+			}
+		},
+		"gameMovesCount": 10,
+		"yesNoQuery": "HELP"
+	}
+}

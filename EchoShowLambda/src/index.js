@@ -36,6 +36,31 @@ var querystring = require("querystring");
 
 var imgBaseUrl = "https://calcbox.de/c4imgs/64px/";
 var imgBaseSize = 64;
+var leftTopSpacer = "spacer_162x64";
+var leftTopSpacerWidth = 162;
+
+
+var TOKEN_TO_YESNOQUERY_MAPPING = {
+		"TOK_HELP" : "HELP_REGELN",
+		"TOK_INTRO": "HELP_REGELN",
+		"TOK_HELP_REGELN": "HELP_REGELN",
+
+		"ACT_ActionHELP": "ActionHOME",
+		"ACT_ActionHELP_REGELN": "ActionHOME",
+		"ACT_ActionHELP_SPRACHSTEUERUNG": "ActionHOME",
+		"ACT_ActionHELP_KOMMANDOS": "ActionHOME",
+		"ACT_ActionHELP_WEITERES": "ActionHOME",
+
+		"TOK_MAIN": undefined
+}
+
+var NEXT_MSG_KEY_FOR_YES = {
+		"HELP": "HELP_REGELN",
+		"INTRO": "HELP_REGELN",
+		"HELP_REGELN": "HELP_REGELN"
+	}
+
+
 
 /**
  * ConnectFourSkill is a child of AlexaSkill.
@@ -105,7 +130,7 @@ ConnectFourSkill.prototype.intentHandlers = {
 	"AMAZON.PageDownIntent" : doPageDownIntent,
 	"AMAZON.MoreIntent" : doMoreIntent,
 	"AMAZON.NavigateSettingsIntent" : doNavigateSettingsIntent,
-
+	
 	"AMAZON.StopIntent" : function(intent, session, response) {
 		clearSessionData(session);
 		speech.goodbye(intent.name, "*", response);
@@ -113,10 +138,23 @@ ConnectFourSkill.prototype.intentHandlers = {
 
 };
 
+
+ConnectFourSkill.prototype.actionHandlers = {
+	"ActionHELP" : doShowAction,
+	"ActionHELP_REGELN" : doShowAction,
+	"ActionHELP_SPRACHSTEUERUNG" : doShowAction,
+	"ActionHELP_KOMMANDOS" : doShowAction,
+	"ActionHELP_WEITERES" : doShowAction,
+	"ActionHOME" : doActionHOME
+};
+
+
 // Create the handler that responds to the Alexa Request.
 exports.handler = function(event, context) {
+	logObject("EVENT", event);
 	// Create an instance of the ConnectFourSkill skill.
 	var connectFourSkill = new ConnectFourSkill();
+	setSessionDisplayToken(event.session, getEventDisplayToken(event));
 	connectFourSkill.execute(event, context);
 };
 
@@ -160,8 +198,6 @@ function doPlayerMove(intent, session, response) {
 
 function doAIStarts(intent, session, response) {
 	initUserAndConnect(session, response, function successFunc() {
-		logObject("session", session);
-		logObject("getSessionGameMovesCount(session)", getSessionGameMovesCount(session));
 		if (getSessionGameMovesCount(session) === 0) {
 			execDoAIMove(session, response);
 		}
@@ -198,16 +234,30 @@ function doHelpIntent(intent, session, response) {
 	});
 }
 
+function doShowAction(actionName, session, response) {
+	handleYesNoQuery(session);
+	initUserAndConnect(session, response, function successFunc() {
+		showAction(session, response, actionName);
+	});
+}
+
+function doActionHOME(actionName, session, response) {
+	handleYesNoQuery(session);
+	doLaunch(session, response);
+}
+
 function doStartOverIntent(intent, session, response) {
 	doNewGame(session, response);
 }
 
 function doYesIntent(intent, session, response) {
-	var yesNoQuery = getSessionYesNoQuery(session);
-	removeSessionYesNoQuery(session);
+	var yesNoQuery = handleYesNoQuery(session);
 	initUserAndConnect(session, response, function successFunc() {
-		if (!yesNoQuery) {
+		if (yesNoQuery === undefined) {
 			noQuestionAsked(session, response);
+		}
+		else if (yesNoQuery === "ActionHOME") {
+			doLaunch(session, response);
 		}
 		else {
 			var MSG_KEY = NEXT_MSG_KEY_FOR_YES[yesNoQuery]; 
@@ -217,35 +267,21 @@ function doYesIntent(intent, session, response) {
 }
 
 function doNoIntent(intent, session, response) {
-	logObject("doNoIntent", session);
-	var yesNoQuery = getSessionYesNoQuery(session);
-	removeSessionYesNoQuery(session);
-	console.log("yesNoQuery=" + yesNoQuery)
-	logObject("AFTER REMOVE-session", session);
+	var yesNoQuery = handleYesNoQuery(session);
 	initUserAndConnect(session, response, function successFunc() {
-		if (!yesNoQuery) {
-			console.log("noQuestionAsked=" + yesNoQuery)
+		if (yesNoQuery === undefined) {
 			noQuestionAsked(session, response);
 		}
 		else {
-			console.log("execDisplayField=" + yesNoQuery)
 			execDisplayField(session, response)
 		}
 	});
 }
 
-function noQuestionAsked(session, response) {
-	var msg = speech.createMsg("INTERN", "NO_QUESTION_ASKED");
-	execDisplayField(session, response, msg)
-}
-
-
 function doPreviousIntent(intent, session, response) {
-	var yesNoQuery = getSessionYesNoQuery(session);
-	removeSessionYesNoQuery(session);
-	console.log("yesNoQuery=" + yesNoQuery)
+	var yesNoQuery = handleYesNoQuery(session);
 	initUserAndConnect(session, response, function successFunc() {
-		if (!yesNoQuery) {
+		if (yesNoQuery === undefined) {
 			didNotUnterstand(intent, session, response);
 		}
 		else {
@@ -254,6 +290,47 @@ function doPreviousIntent(intent, session, response) {
 	});
 	
 }
+
+
+function handleYesNoQuery(session) {
+	var yesNoQuery = getSessionYesNoQuery(session);
+	var displayToken = getSessionDisplayToken(session);
+	if (displayToken !== undefined) {
+		yesNoQuery = TOKEN_TO_YESNOQUERY_MAPPING[displayToken];
+	}
+	setSessionYesNoQuery(session, "handled");
+	logObject("YESNO", yesNoQuery);
+	return yesNoQuery;
+}
+
+function checkUnhandledYesNoQuery(session) {
+	var yesNoQuery = getSessionYesNoQuery(session);
+	if (yesNoQuery === "handled") {
+		removeSessionYesNoQuery(session);
+		return undefined;
+	}
+	var displayToken = getSessionDisplayToken(session);
+	if (displayToken !== undefined) {
+		yesNoQuery = TOKEN_TO_YESNOQUERY_MAPPING[displayToken];
+	}
+	return yesNoQuery;
+}
+
+
+function noQuestionAsked(session, response) {
+	var msg = speech.createMsg("INTERN", "NO_QUESTION_ASKED");
+	execDisplayField(session, response, msg)
+}
+
+
+function doDisplayElementSelected(intent, session, response) {
+	logObject("SELECTED-INTENT", intent);
+	logObject("session", session);
+	logObject("response", response);
+	changeSettings(intent, session, response);
+	doLaunch(session, response);
+}
+
 
 function doNextIntent(intent, session, response) {
 	didNotUnterstand(intent, session, response);
@@ -291,6 +368,7 @@ function doNavigateSettingsIntent(intent, session, response) {
 	changeSettings(intent, session, response);
 }
 
+
 /* ============= */
 /* SEND METHODEN */
 /* ============= */
@@ -298,12 +376,11 @@ function doNavigateSettingsIntent(intent, session, response) {
 function initUserAndConnect(session, response, successCallback) {
 	initUser(session, response, function successFunc1() {
 		connect(session, response, function successFunc2() {
-			var yesNoQuery = getSessionYesNoQuery(session);
-			if (!yesNoQuery) {
+			var yesNoQuery = checkUnhandledYesNoQuery(session);
+			if (yesNoQuery === undefined) {
 				successCallback();
 			}
 			else {
-				removeSessionYesNoQuery(session)
 				var msg = speech.createMsg("INTERN", "NOT_YES_NO_ANSWER");
 				execDisplayField(session, response, msg)
 			}
@@ -319,10 +396,9 @@ function connect(session, response, successCallback) {
 		var userAILevel = getUserAILevel(session, 2);
 		send(session, response, "", "connect", userId, userAILevel,
 				function callbackFunc(result) {
-					console.log("Connectet with GameId: " + result.gameId);
+					console.log("Connected with GameId: " + result.gameId);
 					setSessionGameId(session, result.gameId);
 					setSessionGameMovesCount(session, result.movesCount);
-					logObject("sess", session); 
 					successCallback();
 				});
 	}
@@ -355,12 +431,6 @@ function execDoAIMove(session, response) {
 			});
 }
 
-var NEXT_MSG_KEY_FOR_YES = {
-	"HELP": "HELP_REGELN",
-	"INTRO": "HELP_REGELN",
-	"HELP_REGELN": "HELP_REGELN"
-}
-
 function execIntro(session, response) {
 	setUserHadIntro(session, true);
 	askYesNoText(session, response, "INTRO");
@@ -368,9 +438,15 @@ function execIntro(session, response) {
 
 function askYesNoText(session, response, MSG_KEY) {
 	var msg = speech.createMsg("TEXT", MSG_KEY);
-	logObject("MSG", msg);
 	setSessionYesNoQuery(session, MSG_KEY);
-	respondText(session, response, msg);
+	respondText(session, response, msg, "TOK_" + MSG_KEY, true);
+}
+
+
+function showAction(session, response, ACTION_KEY) {
+	var msg = speech.createMsg("TEXT", ACTION_KEY);
+	logObject("MSG", msg);
+	respondText(session, response, msg, "ACT_"+ACTION_KEY, false);
 }
 
 
@@ -412,11 +488,12 @@ function closeGame(session, response, successCallback) {
 /* TEXT DISPLAY */
 /* ============ */
 
-function respondText(session, response, msg) {
+function respondText(session, response, msg, token, instantAnswer) {
 	var directives = [ {
 		"type" : "Display.RenderTemplate",
 		"template" : {
 			"type" : "BodyTemplate3",
+			"token" : token,
 			"title" : msg.title,
 			"image": {
 				"sources": [ { "url": "https://calcbox.de/c4imgs/help/viergewinnt_help-340.png" } ]
@@ -424,13 +501,18 @@ function respondText(session, response, msg) {
 			"textContent" : {
 				"primaryText" : {
 					"type" : "RichText",
-					"text" : "<font size = '2'>" + msg.richText + "</font>"
+					"text" : msg.richText
 				}
 			},
-			"backButton" : "HIDDEN",
+			"backButton" : "VISIBLE",
 		}
 	} ];
-	respondMsgWithDirectives(session, response, msg, directives, true);
+	if (instantAnswer) {
+		respondMsgWithDirectives(session, response, msg, directives);
+	}
+	else {
+		outputMsgWithDirectives(session, response, msg, directives);
+	}
 }
 
 /* ============= */
@@ -447,17 +529,16 @@ function respondField(session, response, gameData, msg) {
 	var statusMsg = createStatusMsg(gameData.winner, lastAIMove);
 	var hintMsg = createHintMsg(gameData.winner, lastAIMove);
 	var fieldText = createFieldText(gameData.fieldView.field);
-	// console.log("fieldText="+fieldText);
 	var directives = [ {
 		"type" : "Display.RenderTemplate",
 		"template" : {
 			"type" : "BodyTemplate1",
+			"token" : "TOK_MAIN",
 			"title" : gameStatusInfo + msg.display,
 			"textContent" : {
 				"primaryText" : {
 					"type" : "RichText",
-					"text" : "<font size = '2'>" // statusMsg.display+"<br/>"
-							+ fieldText + "</font>"
+					"text" : fieldText
 				}
 			},
 			"backButton" : "HIDDEN",
@@ -474,7 +555,7 @@ function respondField(session, response, gameData, msg) {
 	} else {
 		var instantAnswer = getUserInstantAnswer(session, true);
 		if (instantAnswer) {
-			respondMsgWithDirectives(session, response, msg, directives, instantAnswer);
+			respondMsgWithDirectives(session, response, msg, directives);
 		} else {
 			outputMsgWithDirectives(session, response, msg, directives);
 		}
@@ -487,9 +568,9 @@ function outputMsgWithDirectives(session, response, msg, directives) {
 	});
 }
 
-function respondMsgWithDirectives(session, response, msg, directives, instantAnswer) {
+function respondMsgWithDirectives(session, response, msg, directives) {
 	saveUserData(session, response, function successCallback() {
-		speech.respondMsgWithDirectives(response, msg, directives, instantAnswer);
+		speech.respondMsgWithDirectives(response, msg, directives);
 	});
 }
 
@@ -536,7 +617,8 @@ function createHintMsg(winner, lastAIMove) {
 
 function createFieldText(field) {
 	var result = "";
-	result = result + addImage("space_3", 3);
+	result = result + "<font size='3'><action token='ActionHELP'>(?)</action></font><font size='2'>";
+	result = result + addImageWH("space_162x64", 162, 64);
 	result = result + addImage("frameset_top", 7);
 	for (var y = 0; y < 6; y++) {
 		
@@ -549,13 +631,16 @@ function createFieldText(field) {
 			result = result + addImage("circle-" + col, 1);
 		}
 	}
+	result = result + "</font>";
 	return result;
 }
 
 function addImage(imgName, size) {
-	var result = "<img src='" + imgBaseUrl + imgName + ".png' width='"
-			+ (size * imgBaseSize) + "' height='" + imgBaseSize + "'/>";
-	return result;
+	return addImageWH(imgName, size * imgBaseSize, imgBaseSize);
+}
+
+function addImageWH(imgName, width, height) {
+	return "<img src='" + imgBaseUrl + imgName + ".png' width='" + width + "' height='" + height + "'/>";
 }
 
 /* ============= */
@@ -610,6 +695,9 @@ function getSessionLastAIMove(session, defaultValue) {
 function getSessionYesNoQuery(session, defaultValue) {
 	return getFromSession(session, "yesNoQuery", defaultValue);
 }
+function getSessionDisplayToken(session, defaultValue) {
+	return getFromSession(session, "displayToken", defaultValue);
+}
 
 function setSessionGameId(session, gameId) {
 	setInSession(session, "gameId", gameId);
@@ -622,6 +710,9 @@ function setSessionLastAIMove(session, lastAIMove) {
 }
 function setSessionYesNoQuery(session, lastAIMove) {
 	setInSession(session, "yesNoQuery", lastAIMove);
+}
+function setSessionDisplayToken(session, gameId) {
+	setInSession(session, "displayToken", gameId);
 }
 
 function removeSessionLastAIMove(session) {
@@ -643,18 +734,31 @@ function getFromSession(session, key, defaultValue) {
 	return result;
 }
 function setInSession(session, key, value) {
+	if (value === undefined) {
+		removeFromSession(session, key);
+	}
+	else if (!session || (!session.attributes)) {
+		return;
+	}
+	else {
+		session.attributes[key] = value;
+	}
+}
+function removeFromSession(session, key) {
 	if (!session || (!session.attributes)) {
 		return;
 	}
-	session.attributes[key] = value;
-	logObject("session-"+key, session);
-}
-function removeFromSession(session, key, defaultValue) {
-	if (!session || (!session.attributes)) {
-		return defaultValue;
-	}
 	delete session.attributes[key];
 }
+
+
+function getEventDisplayToken(event) {
+	if (!event || (!event.context) || (!event.context.Display)) {
+		return undefined;
+	}
+	return event.context.Display.token;
+}
+
 
 
 /* ======= */
@@ -676,6 +780,7 @@ function initUser(session, response, successCallback) {
 							speech.respond("INTERN", "INVALID_USERDATA", response);
 						} else {
 							setDBUserInSession(session, dbUser);
+							console.log("User initialized: " + dbUser.userId);
 							successCallback();
 						}
 					});

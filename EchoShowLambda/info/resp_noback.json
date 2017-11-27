@@ -1,0 +1,42 @@
+{
+	"version": "1.0",
+	"response": {
+		"outputSpeech": {
+			"type": "PlainText",
+			"text": ""
+		},
+		"shouldEndSession": true,
+		"directives": {
+			"type": "Display.RenderTemplate",
+			"template": {
+				"type": "BodyTemplate3",
+				"title": "Vier-Gewinnt Hilfe",
+				"image": {
+					"sources": {
+						"url": "https://calcbox.de/c4imgs/help/viergewinnt_help-340.png"
+					}
+				},
+				"textContent": {
+					"primaryText": {
+						"type": "RichText",
+						"text": "<font size='5'>Wähle ein Thema:<br/><br/><action token='ActionHELP_REGELN'>Regeln</action><br/><action token='ActionHELP_SPRACHSTEUERUNG'>Sprachsteuerung</action><br/><action token='ActionHELP_KOMMANDOS'>Kommandos</action><br/><action token='ActionHELP_WEITERES'>Weiteres</action><br/><br/>Zurück zum <action token='ActionHOME'>Spiel</action></font>"
+					}
+				},
+				"backButton": "VISIBLE"
+			}
+		}
+	},
+	"sessionAttributes": {
+		"gameId": "F6",
+		"dbUser": {
+			"userId": 127,
+			"userName": "amzn1.ask.account.AHPVAI5O7SZCCMQ62R6EDSLKSQS4DQTFGTJNB2FFROBS5CUDLOAIOHL3KLTBNKD2XLTLKGSUS3CSNLKVQQ6MPS3ZMOJLJS6ZQBRBVUBGSAZQRD4SZNAFEEYOTM7YJ4NBLCCHF7L3M5G3ZQMPYUKAZSHIYH3N3J5WWHIUE45SU6XZ2CK3HZOKNZGL2ABLDEPBH7EIXOZADFJOZSA",
+			"app": "C4.USER",
+			"data": {
+				"hadIntro": true,
+				"aiLevel": "1"
+			}
+		},
+		"gameMovesCount": 10
+	}
+}
