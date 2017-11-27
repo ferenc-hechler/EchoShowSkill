@@ -8,7 +8,6 @@
     or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
-'use strict';
  
 var messages;
 
@@ -103,18 +102,18 @@ function init_messages(language) {
 					ActionHELP_SPRACHSTEUERUNG: {
 						title:     "Vier-Gewinnt Sprachsteuerung",
 						richText:  "<font size='2'>" +
-								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
-								   "Sage dazu entweder 'Ich werfe in Reihe ...' oder 'Du darfst anfangen'. " +
-								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
-								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe ...' sagen. " +
-								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
-								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
-								   "Also  zum Beispiel 'Alexa, Reihe ...'. " +
-								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
-								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
-								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet." +
-								   "<br/><br/>" +
-								   "Zurück zur <action token='ActionHELP'>Themenwahl</action> oder zum <action token='ActionHOME'>Spiel</action></font>",
+									"Zurück zur <action token='ActionHELP'>Themenwahl</action> oder zum <action token='ActionHOME'>Spiel</action></font><br/>" +
+									"<br/>" +
+								    "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
+								    "Sage dazu entweder 'Ich werfe in Reihe ...' oder 'Du darfst anfangen'. " +
+								    "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
+								    "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe ...' sagen. " +
+								    "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
+								    "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
+								    "Also  zum Beispiel 'Alexa, Reihe ...'. " +
+								    "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								    "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
+								    "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet.",
 						speechOut: ""
 					},
 					ActionHELP_KOMMANDOS: {

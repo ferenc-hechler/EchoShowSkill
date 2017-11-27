@@ -173,7 +173,6 @@ exports.initTests = function(url, param, callback) {
 
 function doLaunch(session, response) {
 	initUserAndConnect(session, response, function successFunc() {
-		logObject("READY: session ", session);
 		if (!getUserHadIntro(session)) {
 			execIntro(session, response);
 		}
@@ -323,15 +322,6 @@ function noQuestionAsked(session, response) {
 }
 
 
-function doDisplayElementSelected(intent, session, response) {
-	logObject("SELECTED-INTENT", intent);
-	logObject("session", session);
-	logObject("response", response);
-	changeSettings(intent, session, response);
-	doLaunch(session, response);
-}
-
-
 function doNextIntent(intent, session, response) {
 	didNotUnterstand(intent, session, response);
 }
@@ -445,7 +435,6 @@ function askYesNoText(session, response, MSG_KEY) {
 
 function showAction(session, response, ACTION_KEY) {
 	var msg = speech.createMsg("TEXT", ACTION_KEY);
-	logObject("MSG", msg);
 	respondText(session, response, msg, "ACT_"+ACTION_KEY, false);
 }
 
