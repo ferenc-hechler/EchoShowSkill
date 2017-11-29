@@ -15,3 +15,6 @@ AIStartsIntent Du hast den ersten Zug
 
 ChangeAILevelIntent Setze die Spielstärke auf {aiLevel}
 ChangeAILevelIntent Ändere die Spielstärke auf {aiLevel}
+
+AMAZON.StopIntent Stop
+AMAZON.StopIntent abbrechen

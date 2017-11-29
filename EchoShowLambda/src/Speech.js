@@ -59,7 +59,7 @@ function init_messages(language) {
 				
 				TEXT: {
 					HELP: {
-						title:     	"Vier-Gewinnt Schnellhilfe",
+						title:     	"Vier in einer Reihe Schnellhilfe",
 						richText:   "Hier die Kurzhilfe: <br/><br/>" +
 									"Du kannst eines der Kommandos <br/>" +
 									" * 'Hilfe', <br/>" +
@@ -78,7 +78,7 @@ function init_messages(language) {
 					},
 					
 					ActionHELP: {
-						title:     	"Vier-Gewinnt Hilfe",
+						title:     	"Vier in einer Reihe Hilfe",
 						richText:   "<font size='5'>Wähle ein Thema:<br/>" +
 									"<br/>" +
 									"<action token='ActionHELP_REGELN'>Regeln</action><br/>" +
@@ -90,9 +90,9 @@ function init_messages(language) {
 						speechOut: ""
 					},
 					ActionHELP_REGELN: {
-						title:     	"Vier-Gewinnt Regeln",
+						title:     	"Vier in einer Reihe Regeln",
 						richText:   "<font size='3'>" +
-									"Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+									"Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								    "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								    "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden.<br/></font>" +
 									"<font size='2'><br/>" +
@@ -100,7 +100,7 @@ function init_messages(language) {
 						speechOut: ""
 					},
 					ActionHELP_SPRACHSTEUERUNG: {
-						title:     "Vier-Gewinnt Sprachsteuerung",
+						title:     "Vier in einer Reihe Sprachsteuerung",
 						richText:  "<font size='2'>" +
 									"Zurück zur <action token='ActionHELP'>Themenwahl</action> oder zum <action token='ActionHOME'>Spiel</action></font><br/>" +
 									"<br/>" +
@@ -111,13 +111,13 @@ function init_messages(language) {
 								    "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
 								    "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
 								    "Also  zum Beispiel 'Alexa, Reihe ...'. " +
-								    "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								    "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier in einer Reihe' zuerst wieder gestartet werden. " +
 								    "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
 								    "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet.",
 						speechOut: ""
 					},
 					ActionHELP_KOMMANDOS: {
-						title:     "Vier-Gewinnt Sprachkommandos",
+						title:     "Vier in einer Reihe Sprachkommandos",
 						richText:  "<font size='3'>" +
 								   "'Hilfe': Starte die Hilfe.<br/>" +
 								   "'Starte ein neues Spiel': bricht das aktuelle Spiel ab und startet ein neues.<br/>" +
@@ -128,7 +128,7 @@ function init_messages(language) {
 						speechOut: ""
 					},
 					ActionHELP_WEITERES: {
-						title:     "Vier-Gewinnt Regeln",
+						title:     "Vier in einer Reihe Regeln",
 						richText:  "<font size='3'>" +
 								   "Links oben in der Anzeige wird die aktulle Zugzahl und die Spielstärke (AI) angezeigt.<br/>" +
 								   "<br/>" +
@@ -140,16 +140,43 @@ function init_messages(language) {
 					},
 					
 					INTRO: {
-						title:     	"Vier-Gewinnt Willkommen!",
-						richText:   "Willkommen zum Vier-Gewinnt Skill. <br/><br/>" +
-									"Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?",
-						speechOut: 	"Willkommen zum Vier-Gewinnt Skill. Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?",
-						display: 	"Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?"
+						title:     	"Willkommen zum Spiel 'Vier in einer Reihe'",
+						richText:   "Das Spiel kann mit den folgenden Kommandos gesteuert werden: <br/><br/>" +
+									" * 'Hilfe', <br/>" +
+									" * 'Starte ein neues Spiel', <br/>" +
+									" * 'Ich werfe in Reihe ...', <br/>" +
+									" * 'Du darfst anfangen', <br/>" +
+									" * 'Setze die Spielstärke auf ...' oder <br/>" +
+									" * 'Stop'. <br/><br/>" + 
+									"Möchtest Du eine ausführliche Anleitung?",
+						speechOut: "Willkommen zum Spiel Vier in einer Reihe: " +
+									"Das Spiel kann mit folgenden Kommandos gesteuert werden: 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst anfangen', 'Setze die Spielstärke auf' oder 'Stop'. " + 
+									"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Willkommen zum Spiel 'Vier in einer Reihe': " +
+									"Das Spiel kann mit folgenden Kommandos gesteuert werden: 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe ...', 'Du darfst anfangen', 'Setze die Spielstärke auf ...' oder 'Stop'. " + 
+									"Möchtest Du eine ausführliche Anleitung?"
 					},
+					
+					WELCOME: {
+						title:     	"Willkommen zum Spiel 'Vier in einer Reihe'",
+						richText:   "Das Spiel kann mit den folgenden Kommandos gesteuert werden: <br/><br/>" +
+									" * 'Hilfe', <br/>" +
+									" * 'Starte ein neues Spiel', <br/>" +
+									" * 'Ich werfe in Reihe ...', <br/>" +
+									" * 'Du darfst anfangen', <br/>" +
+									" * 'Setze die Spielstärke auf ...' oder <br/>" +
+									" * 'Stop'. <br/><br/>" + 
+									"Möchtest Du eine ausführliche Anleitung?",
+						speechOut: "Willkommen zum Spiel Vier in einer Reihe: " +
+									"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Willkommen zum Spiel 'Vier in einer Reihe': " +
+									"Möchtest Du eine ausführliche Anleitung?"
+					},
+					
 					HELP_REGELN: {
-						title:     "Vier-Gewinnt Hilfe",
+						title:     "Vier in einer Reihe Hilfe",
 						richText:  "Zuerst die Regeln: <br/>" +
-								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. <br/><br/>" +
 								   
@@ -161,7 +188,7 @@ function init_messages(language) {
 								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
 								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
 								   "Also  zum Beispiel 'Alexa, Reihe ...'. " +
-								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier in einer Reihe' zuerst wieder gestartet werden. " +
 								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
 								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. <br/><br/>" +
 								   
@@ -175,7 +202,7 @@ function init_messages(language) {
 								   
 								   "Soll ich den Text nochmal wiederholen?",
 						speechOut: "Zuerst die Regeln: " +
-								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
 								   
@@ -187,7 +214,7 @@ function init_messages(language) {
 								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
 								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
 								   "Also zum Beispiel: 'Alexa, Reihe punkt punkt punkt'. " +
-								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit: 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit: 'Alexa starte Vier in einer Reihe' zuerst wieder gestartet werden. " +
 								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
 								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
 								   
@@ -202,7 +229,7 @@ function init_messages(language) {
 								   "Soll ich den Text nochmal wiederholen?",
 								   
 						display:   "Zuerst die Regeln: " +
-								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
 								   
@@ -214,7 +241,7 @@ function init_messages(language) {
 								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
 								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
 								   "Also  zum Beispiel 'Alexa, Reihe ...'. " +
-								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier in einer Reihe' zuerst wieder gestartet werden. " +
 								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
 								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
 								   
@@ -243,9 +270,9 @@ function init_messages(language) {
 						speechOut: "In welche Reihe wirfst Du?",
 						display: "In welche Reihe wirfst Du?"
 					},
-					WELCOME: {
-						speechOut: "Willkommen zum Vier-Gewinnt Skill mit Anzeige Du beginnst. In welche Reihe wirfst Du?",
-						display: "In welche Reihe wirfst Du?"
+					GAME_CONTINUED: {
+						speechOut: "Dein letztes Spiel wird fortgesetzt, in welche Reihe wirfst Du?",
+						display: "Dein letztes Spiel wird fortgesetzt, in welche Reihe wirfst Du?"
 					},
 					HELP: {
 						speechOut: "Hier die Kurzhilfe: " +
@@ -256,12 +283,12 @@ function init_messages(language) {
 									"Möchtest Du eine ausführliche Anleitung?",
 					},
 					INTRO: {
-						speechOut: 	"Willkommen zum Vier-Gewinnt Skill. Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?",
+						speechOut: 	"Willkommen zum Vier in einer Reihe Skill. Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?",
 						display: 	"Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?"
 					},
 					HELP_REGELN: {
 						speechOut: "Zuerst die Regeln: " +
-								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
 								   
@@ -273,7 +300,7 @@ function init_messages(language) {
 								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
 								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
 								   "Also zum Beispiel: 'Alexa, Reihe punkt punkt punkt'. " +
-								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit: 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit: 'Alexa starte Vier in einer Reihe' zuerst wieder gestartet werden. " +
 								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
 								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
 								   
@@ -288,7 +315,7 @@ function init_messages(language) {
 								   "Soll ich den Text nochmal wiederholen?",
 								   
 						display:   "Zuerst die Regeln: " +
-								   "Beim Spiel Vier-Gewinnt spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
 								   
@@ -300,7 +327,7 @@ function init_messages(language) {
 								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
 								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
 								   "Also  zum Beispiel 'Alexa, Reihe ...'. " +
-								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier-Gewinnt' zuerst wieder gestartet werden. " +
+								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vier in einer Reihe' zuerst wieder gestartet werden. " +
 								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
 								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
 								   
@@ -531,7 +558,7 @@ function respond(intentName, resultCode, response, param1) {
 		}
 	}
 	msg = setParams(msg, param1);
-	response.askWithCard(msg.speechOut, "Vier-Gewinnt Skill", msg.display);
+	response.askWithCard(msg.speechOut, "Vier in einer Reihe Skill", msg.display);
 }
 
 function createMsg(intentName, resultCode, param1) {
@@ -553,7 +580,7 @@ function createMsg(intentName, resultCode, param1) {
 }
 
 function respondMsg(response, msg) {
-	response.askWithCard(msg.speechOut, undefined, "Vier-Gewinnt Skill", msg.display);
+	response.askWithCard(msg.speechOut, undefined, "Vier in einer Reihe Skill", msg.display);
 }
 
 function respondMsgWithDirectives(response, msg, directives) {
@@ -580,7 +607,7 @@ function goodbye(intentName, resultCode, response, param1) {
 		}
 	}
 	msg = setParams(msg, param1);
-	response.tellWithCard(msg.speechOut, "Vier-Gewinnt Skill", msg.display);
+	response.tellWithCard(msg.speechOut, "Vier in einer Reihe Skill", msg.display);
 }
 
 function setParams(msg, param1) {

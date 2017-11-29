@@ -1,3 +1,10 @@
+Featurewünsche: https://forums.developer.amazon.com/spaces/185/index.html
+
+https://developer.amazon.com/de/docs/custom-skills/best-practices-for-echo-show-skills.html:
+
+event.context.System.device.supportedInterfaces.Display
+
+
 Verbesserungsvorschläge: 
 
 Mehr Touchscreen

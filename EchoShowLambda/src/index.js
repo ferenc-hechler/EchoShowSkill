@@ -1,13 +1,13 @@
 /**
- * Diese Datei ist Teil des Alexa Skills Vier-Gewinnt. Copyright (C) 2016-2017
+ * Diese Datei ist Teil des Alexa Skills 'Vier in einer Reihe'. Copyright (C) 2016-2017
  * Ferenc Hechler (github@fh.anderemails.de)
  * 
- * Der Alexa Skill Vier-Gewinnt ist Freie Software: Sie koennen es unter den
+ * Der Alexa Skill 'Vier in einer Reihe' ist Freie Software: Sie koennen es unter den
  * Bedingungen der GNU General Public License, wie von der Free Software
  * Foundation, Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spaeteren
  * veroeffentlichten Version, weiterverbreiten und/oder modifizieren.
  * 
- * Der Alexa Skills Vier-Gewinnt wird in der Hoffnung, dass es nuetzlich sein
+ * Der Alexa Skills 'Vier in einer Reihe' wird in der Hoffnung, dass es nuetzlich sein
  * wird, aber OHNE JEDE GEWAEHRLEISTUNG, bereitgestellt; sogar ohne die
  * implizite Gewaehrleistung der MARKTFAEHIGKEIT oder EIGNUNG FUER EINEN
  * BESTIMMTEN ZWECK. Siehe die GNU General Public License fuer weitere Details.
@@ -43,6 +43,7 @@ var leftTopSpacerWidth = 162;
 var TOKEN_TO_YESNOQUERY_MAPPING = {
 		"TOK_HELP" : "HELP_REGELN",
 		"TOK_INTRO": "HELP_REGELN",
+		"TOK_WELCOME": "HELP_REGELN",
 		"TOK_HELP_REGELN": "HELP_REGELN",
 
 		"ACT_ActionHELP": "ActionHOME",
@@ -57,6 +58,7 @@ var TOKEN_TO_YESNOQUERY_MAPPING = {
 var NEXT_MSG_KEY_FOR_YES = {
 		"HELP": "HELP_REGELN",
 		"INTRO": "HELP_REGELN",
+		"WELCOME": "HELP_REGELN",
 		"HELP_REGELN": "HELP_REGELN"
 	}
 
@@ -177,7 +179,13 @@ function doLaunch(session, response) {
 			execIntro(session, response);
 		}
 		else {
-			execDisplayField(session, response);
+			if (getSessionGameMovesCount(session) === 0) {
+				execWelcome(session, response);
+			}
+			else {
+				msg = speech.createMsg("INTERN", "GAME_CONTINUED");
+				execDisplayField(session, response, msg)
+			}
 		}
 	});
 }
@@ -214,16 +222,16 @@ function doChangeAILevel(intent, session, response) {
 }
 
 function doActivateInstantAnswer(intent, session, response) {
-	initUser(session, response, function successFunc() {
+	initUserAndConnect(session, response, function successFunc() {
 		setUserInstantAnswer(session, true);
-		doLaunch(session, response);
+		execDisplayField(session, response);
 	});
 }
 
 function doDeactivateInstantAnswer(intent, session, response) {
-	initUser(session, response, function successFunc() {
+	initUserAndConnect(session, response, function successFunc() {
 		setUserInstantAnswer(session, false);
-		doLaunch(session, response);
+		execDisplayField(session, response);
 	});
 }
 
@@ -242,7 +250,7 @@ function doShowAction(actionName, session, response) {
 
 function doActionHOME(actionName, session, response) {
 	handleYesNoQuery(session);
-	doLaunch(session, response);
+	execDisplayField(session, response);
 }
 
 function doStartOverIntent(intent, session, response) {
@@ -256,7 +264,7 @@ function doYesIntent(intent, session, response) {
 			noQuestionAsked(session, response);
 		}
 		else if (yesNoQuery === "ActionHOME") {
-			doLaunch(session, response);
+			execDisplayField(session, response);
 		}
 		else {
 			var MSG_KEY = NEXT_MSG_KEY_FOR_YES[yesNoQuery]; 
@@ -398,7 +406,9 @@ function execDoNewGame(intent, session, response) {
 	var gameId = getSessionGameId(session);
 	sendCommand(session, gameId, "restartGame", "", "", function callbackFunc(result) {
 		clearSessionData(session);
-		doLaunch(session, response);
+		initUserAndConnect(session, response, function successCallback() {
+			execDisplayField(session, response);
+		});
 	});
 }
 
@@ -424,6 +434,10 @@ function execDoAIMove(session, response) {
 function execIntro(session, response) {
 	setUserHadIntro(session, true);
 	askYesNoText(session, response, "INTRO");
+}
+
+function execWelcome(session, response) {
+	askYesNoText(session, response, "WELCOME");
 }
 
 function askYesNoText(session, response, MSG_KEY) {
