@@ -105,12 +105,13 @@ AlexaSkill.prototype.intentHandlers = {};
 
 AlexaSkill.prototype.execute = function (event, context) {
     try {
-        console.log("session applicationId: " + event.session.application.applicationId);
-
+    	var rqAppId = getSessionAppId(event);
+    	if (rqAppId === undefined) {
+    		rqAppId = getContextAppId(event);
+    	}
         // Validate that this request originated from authorized source.
-        if (this._appId && event.session.application.applicationId !== this._appId) {
-            console.log("The applicationIds don't match : " + event.session.application.applicationId + " and "
-                + this._appId);
+        if (this._appId && rqAppId !== this._appId) {
+            console.log("invalid application-Id: " + rqAppId);
             throw "Invalid applicationId";
         }
 
@@ -130,6 +131,20 @@ AlexaSkill.prototype.execute = function (event, context) {
         context.fail(e);
     }
 };
+
+function getSessionAppId(event) {
+	if ((!event) || (!event.session) || (!event.session.application)) {
+		return undefined;
+	}
+	return event.session.application.applicationId;
+}
+function getContextAppId(event) {
+	if ((!event) || (!event.context) || (!event.context.System) || (!event.context.System.application)) {
+		return undefined;
+	}
+	return event.context.System.application.applicationId;
+}
+
 
 var Response = function (context, session) {
     this._context = context;
