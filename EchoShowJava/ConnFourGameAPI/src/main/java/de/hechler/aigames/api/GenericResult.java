@@ -27,6 +27,7 @@ public class GenericResult {
 	public final static GenericResult genericUnknownGameId = new GenericResult(ResultCodeEnum.E_UNKNOWN_GAMEID);
 	public final static GenericResult genericInvalidParameterResult = new GenericResult(ResultCodeEnum.E_INVALID_PARAMETER);
 	public final static GenericResult genericInvalidRangeResult = new GenericResult(ResultCodeEnum.E_INVALID_RANGE);
+	public final static GenericResult genericTimeoutResult = new GenericResult(ResultCodeEnum.E_TIMEOUT);
 	public final static GenericResult genericUnknownCommandResult = new GenericResult(ResultCodeEnum.E_UNKNOWN_COMMAND);
 	public final static GenericResult genericUnknownErrorResult = new GenericResult(ResultCodeEnum.E_UNKNOWN_ERROR);
 	public final static GenericResult genericGameAlreadyFinished = new GenericResult(ResultCodeEnum.E_GAME_FINISHED);

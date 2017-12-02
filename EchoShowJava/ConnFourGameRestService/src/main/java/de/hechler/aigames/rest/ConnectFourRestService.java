@@ -1,14 +1,14 @@
 /**
- * Diese Datei ist Teil des Alexa Skills Rollenspiel Soloabenteuer.
+ * Diese Datei ist Teil des Alexa Skills 'Vier in einer Reihe'.
  * Copyright (C) 2016-2017 Ferenc Hechler (github@fh.anderemails.de)
  *
- * Der Alexa Skills Rollenspiel Soloabenteuer ist Freie Software: 
+ * Der Alexa Skills 'Vier in einer Reihe' ist Freie Software: 
  * Sie koennen es unter den Bedingungen
  * der GNU General Public License, wie von der Free Software Foundation,
  * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spaeteren
  * veroeffentlichten Version, weiterverbreiten und/oder modifizieren.
  *
- * Der Alexa Skills Rollenspiel Soloabenteuer wird in der Hoffnung, 
+ * Der Alexa Skills 'Vier in einer Reihe' wird in der Hoffnung, 
  * dass es nuetzlich sein wird, aber
  * OHNE JEDE GEWAEHRLEISTUNG, bereitgestellt; sogar ohne die implizite
  * Gewaehrleistung der MARKTFAEHIGKEIT oder EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
@@ -46,6 +46,8 @@ import de.hechler.aigames.api.NewGameResult;
 import de.hechler.aigames.api.ResultCodeEnum;
 import de.hechler.aigames.api.fieldview.ConnectFourFieldView;
 import de.hechler.aigames.api.move.ConnectFourMove;
+import de.hechler.aigames.rest.ImageRegistry.ImageEnum;
+import de.hechler.aigames.rest.ImageRegistry.SessionEntry;
 import de.hechler.utils.RandUtils;
 
 //@WebServlet(urlPatterns = "/main", loadOnStartup = 1) 
@@ -125,10 +127,6 @@ public class ConnectFourRestService extends HttpServlet {
 				responseString = initTests(param1);
 				break;
 			}
-			case "clearSession": {
-				responseString = clearSession(request.getSession());
-				break;
-			}
 			case "hasChanges": {
 				responseString = hasChanges(gameId, param1);
 				break;
@@ -141,6 +139,21 @@ public class ConnectFourRestService extends HttpServlet {
 				responseString = setAILevel(gameId, param1);
 				break;
 			}
+			case "connectImage": {
+				responseString = connectImage(gameId, param1);
+				break;
+			}
+
+			// CLIENT
+			case "clearSession": {
+				responseString = clearSession(request.getSession());
+				break;
+			}
+			case "getImage": {
+				responseString = getImage(request.getSession(true), param1);
+				break;
+			}
+			
 			default: {
 				responseString = gson.toJson(GenericResult.genericUnknownCommandResult);
 				response.setStatus(500);
@@ -219,7 +232,46 @@ public class ConnectFourRestService extends HttpServlet {
 		}
 		return gson.toJson(GenericResult.genericOkResult);
 	}
+
+	private String connectImage(String gameId, String imageName) {
+		ImageEnum image;
+		try {
+			image = ImageEnum.valueOf(imageName.toUpperCase());
+		} catch (Exception e) {
+			return gson.toJson(GenericResult.genericInvalidParameterResult);
+		}
+		SessionEntry entry = ImageRegistry.getInstance().getSessionEntry(image);
+		if (entry == null) {
+			return gson.toJson(new GenericResult(ResultCodeEnum.E_IMAGE_NOT_FOUND));
+		}
+		entry.gameId = gameId;
+		return gson.toJson(GenericResult.genericOkResult);
+	}
 	
+	private String getImage(HttpSession session, String cntStr) {
+		int cnt;
+		try {
+			cnt = Integer.parseInt(cntStr);
+		} catch (NumberFormatException | NullPointerException e) {
+			return gson.toJson(GenericResult.genericInvalidParameterResult);
+		}
+		String sessionId = session.getId();
+		if (cnt >= 30) {
+			ImageRegistry.getInstance().freeSession(sessionId);
+			return gson.toJson(GenericResult.genericTimeoutResult);
+		}
+		Object sessionImageName = session.getAttribute("IMAGE");
+		SessionEntry entry = ImageRegistry.getInstance().getSessionEntry(sessionId);
+		if (entry.gameId != null) {
+			ImageRegistry.getInstance().freeSession(sessionId);
+			return gson.toJson(new NewGameResult(ResultCodeEnum.S_ACTIVATED, entry.gameId));
+		}
+		if (entry.image.name().equals(sessionImageName)) {
+			return gson.toJson(GenericResult.genericNoChangeResult);
+		}
+		return gson.toJson(new GetImageResult(ResultCodeEnum.S_OK, entry.image));
+	}
+
 	private String hasChanges(String gameId, String versionName) {
 		try { 
 			int version = Integer.parseInt(versionName);
@@ -292,6 +344,12 @@ public class ConnectFourRestService extends HttpServlet {
 	private final static String DEFAULT_AUTH = System.getProperty("c4.rest.auth", "rest:geheim");
 
 	private boolean checkAuth(HttpServletRequest request) throws IOException {
+		String cmd = request.getParameter("cmd");
+		if ("clearSession".equals(cmd) || "getImage".equals(cmd)) {
+			// allow client queries without auth
+			return true;
+		}
+
 		String auth = request.getHeader("Authorization");
 		if ((auth == null) || !auth.startsWith("Basic ")) {
 			return false;
