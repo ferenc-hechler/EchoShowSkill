@@ -45,6 +45,7 @@ var TOKEN_TO_YESNOQUERY_MAPPING = {
 		"TOK_INTRO": "HELP_REGELN",
 		"TOK_WELCOME": "HELP_REGELN",
 		"TOK_HELP_REGELN": "HELP_REGELN",
+		"TOK_HELP_REGELN_NOGUI": "HELP_REGELN",
 
 		"ACT_ActionHELP": "ActionHOME",
 		"ACT_ActionHELP_REGELN": "ActionHOME",
@@ -59,7 +60,8 @@ var NEXT_MSG_KEY_FOR_YES = {
 		"HELP": "HELP_REGELN",
 		"INTRO": "HELP_REGELN",
 		"WELCOME": "HELP_REGELN",
-		"HELP_REGELN": "HELP_REGELN"
+		"HELP_REGELN": "HELP_REGELN",
+		"HELP_REGELN_NOGUI": "HELP_REGELN"
 	}
 
 
@@ -156,9 +158,21 @@ exports.handler = function(event, context) {
 	logObject("EVENT", event);
 	// Create an instance of the ConnectFourSkill skill.
 	var connectFourSkill = new ConnectFourSkill();
-	setSessionDisplayToken(event.session, getEventDisplayToken(event));
+	ensureSessionAttribs(event);
+	setSessionTempHasDisplay(event.session, hasEventDisplay(event));
+	setSessionTempDisplayToken(event.session, getEventDisplayToken(event));
+	logObject("SESSION", event.session);
 	connectFourSkill.execute(event, context);
 };
+
+function ensureSessionAttribs(event) {
+	if (!event.session) {
+		event.session = {};
+	}
+	if (!event.session.attributes) {
+		event.session.attributes = {};
+	}
+}
 
 // initialize tests
 exports.initTests = function(url, param, callback) {
@@ -268,10 +282,22 @@ function doYesIntent(intent, session, response) {
 		}
 		else {
 			var MSG_KEY = NEXT_MSG_KEY_FOR_YES[yesNoQuery]; 
+			MSG_KEY = mapNoGUIMsg(session, MSG_KEY);
 			askYesNoText(session, response, MSG_KEY);
 		}
 	});
 }
+
+function mapNoGUIMsg(session, msgKey) {
+	if (getSessionTempHasDisplay(session)) {
+		return msgKey;
+	}
+	if (msgKey === "HELP_REGELN") {
+		return "HELP_REGELN_NOGUI";
+	}
+	return msgKey;
+}
+
 
 function doNoIntent(intent, session, response) {
 	var yesNoQuery = handleYesNoQuery(session);
@@ -301,7 +327,7 @@ function doPreviousIntent(intent, session, response) {
 
 function handleYesNoQuery(session) {
 	var yesNoQuery = getSessionYesNoQuery(session);
-	var displayToken = getSessionDisplayToken(session);
+	var displayToken = getSessionTempDisplayToken(session);
 	if (displayToken !== undefined) {
 		yesNoQuery = TOKEN_TO_YESNOQUERY_MAPPING[displayToken];
 	}
@@ -316,7 +342,7 @@ function checkUnhandledYesNoQuery(session) {
 		removeSessionYesNoQuery(session);
 		return undefined;
 	}
-	var displayToken = getSessionDisplayToken(session);
+	var displayToken = getSessionTempDisplayToken(session);
 	if (displayToken !== undefined) {
 		yesNoQuery = TOKEN_TO_YESNOQUERY_MAPPING[displayToken];
 	}
@@ -407,7 +433,8 @@ function execDoNewGame(intent, session, response) {
 	sendCommand(session, gameId, "restartGame", "", "", function callbackFunc(result) {
 		clearSessionData(session);
 		initUserAndConnect(session, response, function successCallback() {
-			execDisplayField(session, response);
+			msg = speech.createMsg("INTERN", "NEW_GAME_STARTED");
+			execDisplayField(session, response, msg);
 		});
 	});
 }
@@ -466,7 +493,8 @@ function execChangeAILevel(intent, session, response) {
 	var aiLevel = getAILevel(intent);
 	send(session, response, getSessionGameId(session), "setAILevel", aiLevel, "", function successFunc(result) {
 		setUserAILevel(session, aiLevel);
-		execDisplayField(session, response);
+		msg = speech.createMsg("INTERN", "AI_LEVEL_CHANGED", aiLevel);
+		execDisplayField(session, response, msg);
 	});
 }
 
@@ -492,6 +520,19 @@ function closeGame(session, response, successCallback) {
 /* ============ */
 
 function respondText(session, response, msg, token, instantAnswer) {
+	var directives = createTextDirective(session, msg, token);
+	if (instantAnswer) {
+		respondMsgWithDirectives(session, response, msg, directives);
+	}
+	else {
+		outputMsgWithDirectives(session, response, msg, directives);
+	}
+}
+
+function createTextDirective(session, msg, token) {
+	if (!getSessionTempHasDisplay(session)) {
+		return undefined;
+	}
 	var directives = [ {
 		"type" : "Display.RenderTemplate",
 		"template" : {
@@ -510,12 +551,7 @@ function respondText(session, response, msg, token, instantAnswer) {
 			"backButton" : "VISIBLE",
 		}
 	} ];
-	if (instantAnswer) {
-		respondMsgWithDirectives(session, response, msg, directives);
-	}
-	else {
-		outputMsgWithDirectives(session, response, msg, directives);
-	}
+	return directives;
 }
 
 /* ============= */
@@ -529,7 +565,26 @@ function respondField(session, response, gameData, msg) {
 		msg = createStatusMsg(gameData.winner, lastAIMove);
 	}
 	var gameStatusInfo = createGameStatusInfo(gameData);
-	var statusMsg = createStatusMsg(gameData.winner, lastAIMove);
+	var directives = createFieldDirectives(session, gameData, msg, lastAIMove, gameStatusInfo);
+	if (gameData.winner != 0) {
+		closeGame(session, response, function closedCallback() {
+			outputMsgWithDirectives(session, response, msg, directives);
+		});
+	} else {
+		var instantAnswer = getUserInstantAnswer(session, true);
+		if (instantAnswer) {
+			respondMsgWithDirectives(session, response, msg, directives);
+		} else {
+			outputMsgWithDirectives(session, response, msg, directives);
+		}
+	}
+}
+
+function createFieldDirectives(session, gameData, msg, lastAIMove, gameStatusInfo) {
+	if (!getSessionTempHasDisplay(session)) {
+		logObject("createFieldDirectives-session", session)
+		return undefined;
+	}
 	var hintMsg = createHintMsg(gameData.winner, lastAIMove);
 	var fieldText = createFieldText(gameData.fieldView.field);
 	var directives = [ {
@@ -551,18 +606,7 @@ function respondField(session, response, gameData, msg) {
 			}
 		}
 	} ];
-	if (gameData.winner != 0) {
-		closeGame(session, response, function closedCallback() {
-			outputMsgWithDirectives(session, response, msg, directives);
-		});
-	} else {
-		var instantAnswer = getUserInstantAnswer(session, true);
-		if (instantAnswer) {
-			respondMsgWithDirectives(session, response, msg, directives);
-		} else {
-			outputMsgWithDirectives(session, response, msg, directives);
-		}
-	}
+	return directives;
 }
 
 function outputMsgWithDirectives(session, response, msg, directives) {
@@ -698,8 +742,11 @@ function getSessionLastAIMove(session, defaultValue) {
 function getSessionYesNoQuery(session, defaultValue) {
 	return getFromSession(session, "yesNoQuery", defaultValue);
 }
-function getSessionDisplayToken(session, defaultValue) {
-	return getFromSession(session, "displayToken", defaultValue);
+function getSessionTempDisplayToken(session, defaultValue) {
+	return getFromSessionTemp(session, "displayToken", defaultValue);
+}
+function getSessionTempHasDisplay(session, defaultValue) {
+	return getFromSessionTemp(session, "hasDisplay", defaultValue);
 }
 
 function setSessionGameId(session, gameId) {
@@ -714,8 +761,11 @@ function setSessionLastAIMove(session, lastAIMove) {
 function setSessionYesNoQuery(session, lastAIMove) {
 	setInSession(session, "yesNoQuery", lastAIMove);
 }
-function setSessionDisplayToken(session, gameId) {
-	setInSession(session, "displayToken", gameId);
+function setSessionTempDisplayToken(session, displayToken) {
+	setInSessionTemp(session, "displayToken", displayToken);
+}
+function setSessionTempHasDisplay(session, hasDisplay) {
+	setInSessionTemp(session, "hasDisplay", hasDisplay);
 }
 
 function removeSessionLastAIMove(session) {
@@ -739,21 +789,66 @@ function getFromSession(session, key, defaultValue) {
 function setInSession(session, key, value) {
 	if (value === undefined) {
 		removeFromSession(session, key);
-	}
-	else if (!session || (!session.attributes)) {
 		return;
 	}
-	else {
-		session.attributes[key] = value;
+	if (!session) {
+		return;
 	}
+	if (!session.attributes) {
+		session.attributes = {};
+	}
+	session.attributes[key] = value;
 }
 function removeFromSession(session, key) {
-	if (!session || (!session.attributes)) {
+	if (!session || (!session.attributes) || (!session.attributes[key])) {
 		return;
 	}
 	delete session.attributes[key];
 }
 
+function getFromSessionTemp(session, key, defaultValue) {
+	if (!session || (!session.temp)) {
+		return defaultValue;
+	}
+	var result = session.temp[key];
+	if (result === undefined) {
+		result = defaultValue;
+	}
+	return result;
+}
+function setInSessionTemp(session, key, value) {
+	if (value === undefined) {
+		removeFromSession(session, key);
+		return;
+	}
+	if (!session) {
+		return;
+	}
+	if (!session.temp) {
+		session.temp = {};
+	}
+	session.temp[key] = value;
+}
+function removeFromSessionTemp(session, key) {
+	if (!session || (!session.temp) || (!session.temp[key])) {
+		return;
+	}
+	delete session.temp[key];
+}
+function removeSessionTemp(session) {
+	if (!session || (!session.temp)) {
+		return;
+	}
+	delete session.temp;
+}
+
+
+function hasEventDisplay(event) {
+	if (!event || (!event.context) || (!event.context.Display)) {
+		return false;
+	}
+	return true;
+}
 
 function getEventDisplayToken(event) {
 	if (!event || (!event.context) || (!event.context.Display)) {

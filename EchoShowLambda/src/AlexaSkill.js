@@ -218,7 +218,9 @@ Response.prototype = (function () {
                 cardContent: cardContent,
                 shouldEndSession: true
             });
-        	resp.response.directives = directives;
+        	if (directives !== undefined) {
+        		resp.response.directives = directives;
+        	}
         	logObject("RESP", resp);
             this._context.succeed(resp);
         },
@@ -249,7 +251,9 @@ Response.prototype = (function () {
                 cardContent: cardContent,
                 shouldEndSession: false
             });
-        	resp.response.directives = directives;
+        	if (directives !== undefined) {
+        		resp.response.directives = directives;
+        	}
         	logObject("RESP", resp);
             this._context.succeed(resp);
         }

@@ -255,6 +255,57 @@ function init_messages(language) {
 								   
 								   "Soll ich den Text nochmal wiederholen?"
 					},
+					HELP_REGELN_NOGUI: {
+						speechOut: "Zuerst die Regeln: " +
+								   "Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
+								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
+								   
+								   "Jetzt zur Sprachsteuerung: " +
+								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
+								   "Sage dazu entweder: 'Ich werfe in Reihe punkt punkt punkt' oder: 'Du darfst anfangen'. " +
+								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
+								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe punkt punkt punkt' sagen. " +
+								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort. " +
+								   "Das macht aber nichts, Du kannst das Spiel fortsetzen indem Du den Skill neu startest mit 'Alexa starte Vier in einer Reihe'. " +
+								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
+								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
+								   
+								   "Und nun zu den weiteren Kommandos: " +
+								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfe Text vorlesen lassen. " +
+								   "Mit dem Kommando 'Starte ein neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. " +
+								   "Mit dem Kommando 'Setze die Spielstärke auf punkt punkt punkt' kannst Du die Spielstärke von Alexa ändern. 1 ist dabei am leichtesten und 7 am schwersten. " +
+								   
+								   "Ein Hinweis noch zum Schluss: " +
+								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. " +
+								   
+								   "Soll ich den Text nochmal wiederholen?",
+								   
+						display:   "Zuerst die Regeln: " +
+								   "Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
+								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
+								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
+								   
+								   "Jetzt zur Sprachsteuerung: " +
+								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
+								   "Sage dazu entweder 'Ich werfe in Reihe ...' oder 'Du darfst anfangen'. " +
+								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
+								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe ...' sagen. " +
+								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort. " +
+								   "Das macht aber nichts, Du kannst das Spiel fortsetzen indem Du den Skill neu startest mit 'Alexa starte Vier in einer Reihe'. " +
+								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
+								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
+								   
+								   "Und nun zu den weiteren Kommandos: " +
+								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfetext vorlesen lassen. " +
+								   "Mit dem Kommando 'Starte ein neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. " +
+								   "Mit dem Kommando 'Setze die Spielstärke auf ...' kannst Du die Spielstärke von Alexa ändern. 1 ist am leichtesten und 7 am schwersten. " +
+								   
+								   "Ein Hinweis noch zum Schluss: " +
+								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. " +
+								   
+								   "Soll ich den Text nochmal wiederholen?"
+					},
 				},
 				
 				INTERN: {
@@ -269,6 +320,14 @@ function init_messages(language) {
 					YOUR_MOVE: {
 						speechOut: "In welche Reihe wirfst Du?",
 						display: "In welche Reihe wirfst Du?"
+					},
+					AI_LEVEL_CHANGED: {
+						speechOut: "Die Spielstärke wurde auf %1 gesetzt. In welche Reihe wirfst Du?",
+						display: "Die Spielstärke wurde auf %1 gesetzt. In welche Reihe wirfst Du?"
+					},
+					NEW_GAME_STARTED: {
+						speechOut: "Es wurde ein neues Spiel gestartet. In welche Reihe wirfst Du?",
+						display: "Es wurde ein neues Spiel gestartet. In welche Reihe wirfst Du?"
 					},
 					GAME_CONTINUED: {
 						speechOut: "Dein letztes Spiel wird fortgesetzt, in welche Reihe wirfst Du?",
