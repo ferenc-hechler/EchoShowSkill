@@ -513,7 +513,7 @@ function execChangeAILevel(intent, session, response) {
 
 function execAnimalConnect(intent, session, response) {
 	var animal = getMappedAnimal(intent);
-	send(session, response, getSessionGameId(session), "connectAnimal", animal, "", function successFunc(result) {
+	send(session, response, getSessionGameId(session), "connectImage", animal, "", function successFunc(result) {
 		msg = speech.createMsg("INTERN", "ANIMAL_CONNECTED", animal);
 		execDisplayField(session, response, msg);
 	});
