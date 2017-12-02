@@ -16,5 +16,9 @@ AIStartsIntent Du hast den ersten Zug
 ChangeAILevelIntent Setze die Spielstärke auf {aiLevel}
 ChangeAILevelIntent Ändere die Spielstärke auf {aiLevel}
 
+AnimalConnectIntent Ich sehe ein {animal}
+AnimalConnectIntent Ich sehe eine {animal}
+AnimalConnectIntent Ich sehe einen {animal}
+
 AMAZON.StopIntent Stop
 AMAZON.StopIntent abbrechen

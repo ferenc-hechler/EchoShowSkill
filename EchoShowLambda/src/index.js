@@ -64,6 +64,20 @@ var NEXT_MSG_KEY_FOR_YES = {
 		"HELP_REGELN_NOGUI": "HELP_REGELN"
 	}
 
+var ANIMAL_MAPPING = {
+		  "Affen":			"AFFE",
+		  "Bär":			"BAER",
+		  "Bären":			"BAER",
+		  "Eichhörnchen":	"EICHHOERNCHEN",
+		  "Elefanten":		"ELEFANT",
+		  "Fish": 			"FISCH",
+		  "Hasen": 			"HASE",
+		  "Löwe": 			"LOEWE",
+		  "Löwen": 			"LOEWE",
+		  "Marienkäfer": 	"MARIENKAEFER",
+		  "Möwe": 			"MOEWE",
+		  "Schildkröte": 	"SCHILDKROETE",
+}
 
 
 /**
@@ -115,6 +129,8 @@ ConnectFourSkill.prototype.intentHandlers = {
 
 	"ChangeAILevelIntent" : doChangeAILevel,
 	
+	"AnimalConnectIntent" : doAnimalConnect, 
+		
 	"ActivateInstantAnswerIntent" : doActivateInstantAnswer,
 	"DeactivateInstantAnswerIntent" : doDeactivateInstantAnswer,
 
@@ -222,6 +238,12 @@ function doAIStarts(intent, session, response) {
 function doChangeAILevel(intent, session, response) {
 	initUserAndConnect(session, response, function successFunc() {
 		execChangeAILevel(intent, session, response);
+	});
+}
+
+function doAnimalConnect(intent, session, response) {
+	initUserAndConnect(session, response, function successFunc() {
+		execAnimalConnect(intent, session, response);
 	});
 }
 
@@ -489,6 +511,14 @@ function execChangeAILevel(intent, session, response) {
 	});
 }
 
+function execAnimalConnect(intent, session, response) {
+	var animal = getMappedAnimal(intent);
+	send(session, response, getSessionGameId(session), "connectAnimal", animal, "", function successFunc(result) {
+		msg = speech.createMsg("INTERN", "ANIMAL_CONNECTED", animal);
+		execDisplayField(session, response, msg);
+	});
+}
+
 function didNotUnterstand(intent, session, response) {
 	msg = speech.createMsg("INTERN", "DID_NOT_UNDERSTAND");
 	execDisplayField(session, response, msg)
@@ -693,6 +723,15 @@ function getSlot(intent) {
 
 function getAILevel(intent) {
 	return getFromIntent(intent, "aiLevel", "?");
+}
+
+function getMappedAnimal(intent) {
+	var animal = getFromIntent(intent, "animal", "?");
+	var mappedAnimal = ANIMAL_MAPPING[animal];
+	if (mappedAnimal !== undefined) {
+		return mappedAnimal;
+	}
+	return animal.toUpperCase();
 }
 
 function getFromIntent(intent, attribute_name, defaultValue) {

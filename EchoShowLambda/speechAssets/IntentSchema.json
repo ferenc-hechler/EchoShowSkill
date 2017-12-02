@@ -29,6 +29,16 @@
       ]
     },
 
+    {
+      "intent": "AnimalConnectIntent",
+      "slots": [
+        {
+          "name": "animal",
+          "type": "LIST_OF_ANIMALS"
+        }
+      ]
+    },
+    
 	{
 	  "intent": "AMAZON.StartOverIntent"
 	},

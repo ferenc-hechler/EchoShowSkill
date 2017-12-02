@@ -325,6 +325,10 @@ function init_messages(language) {
 						speechOut: "Die Spielstärke wurde auf %1 gesetzt. In welche Reihe wirfst Du?",
 						display: "Die Spielstärke wurde auf %1 gesetzt. In welche Reihe wirfst Du?"
 					},
+					ANIMAL_CONNECTED: {
+						speechOut: "Du hast Dich erfolgreich mit der Webseite verbunden. In welche Reihe wirfst Du?",
+						display: "Du hast Dich erfolgreich mit der Webseite verbunden. In welche Reihe wirfst Du?"
+					},
 					NEW_GAME_STARTED: {
 						speechOut: "Es wurde ein neues Spiel gestartet. In welche Reihe wirfst Du?",
 						display: "Es wurde ein neues Spiel gestartet. In welche Reihe wirfst Du?"
