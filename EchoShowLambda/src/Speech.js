@@ -37,23 +37,23 @@ function init_messages(language) {
 				
 				SEND_doMove: {
 					"E_INVALID_PARAMETER": { 
-						speechOut: "Ich habe die Reihe nicht richtig verstanden.",
-						display :  "Ich habe die Reihe nicht richtig verstanden."
+						speechOut: "Bitte wiederhole die Reihe, ich habe das nicht richtig verstanden.",
+						display :  "Bitte wiederhole die Reihe, ich habe das nicht richtig verstanden."
 					},
 					"E_INVALID_RANGE": { 
-						speechOut: "Die Reihe muss einen Wert von 1 bis 7 haben.",
-						display :  "Die Reihe muss einen Wert von 1 bis 7 haben."
+						speechOut: "Bitte wiederhole die Reihe, sie muss einen Wert von 1 bis 7 haben.",
+						display :  "Bitte wiederhole die Reihe, sie muss einen Wert von 1 bis 7 haben."
 					}
 				},
 				
 				SEND_setAILevel: {
 					"E_INVALID_PARAMETER": { 
-						speechOut: "Ich habe die Spielstärke nicht richtig verstanden.",
-						display :  "Ich habe die Spielstärke nicht richtig verstanden."
+						speechOut: "Ich habe die Spielstärke nicht richtig verstanden. Du bist am Zug.",
+						display :  "Ich habe die Spielstärke nicht richtig verstanden. Du bist am Zug."
 					},
 					"E_INVALID_RANGE": { 
-						speechOut: "Die Spielstärke muss eine Zahl von 1 bis 7 sein.",
-						display :  "Die Spielstärke muss eine Zahl von 1 bis 7 sein."
+						speechOut: "Die Spielstärke muss eine Zahl von 1 bis 7 sein. Du bist am Zug.",
+						display :  "Die Spielstärke muss eine Zahl von 1 bis 7 sein. Du bist am Zug."
 					}
 				},
 				
@@ -409,16 +409,16 @@ function init_messages(language) {
 						display: "Sage 'Setze die Spielstärke auf ... (1..7)'. "
 					},
 					AI_STARTS_NOT_ALLOWED: {
-						speechOut: "Die Seiten können nur vor dem ersten Zug gewechselt werden.",
-						display: "Die Seiten können nur vor dem ersten Zug gewechselt werden."
+						speechOut: "Die Seiten können nur vor dem ersten Zug gewechselt werden. In welche Reihe wirfst Du?",
+						display: "Die Seiten können nur vor dem ersten Zug gewechselt werden. In welche Reihe wirfst Du?"
 					},
 					NOT_YES_NO_ANSWER: {
-						speechOut: "Das war keine Antwort auf meine Frage, ich werte das jetzt mal als 'Nein'.",
-						display: "Das war keine Antwort auf meine Frage, ich werte das jetzt mal als 'Nein'."
+						speechOut: "Das war keine Antwort auf meine Frage, ich werte das jetzt mal als 'Nein'. In welche Reihe wirfst Du?",
+						display: "Das war keine Antwort auf meine Frage, ich werte das jetzt mal als 'Nein'. In welche Reihe wirfst Du?"
 					},
 					NO_QUESTION_ASKED: {
-						speechOut: "Ich hatte keine Ja/Nein Frage gestellt.",
-						display: "Ich hatte keine Ja/Nein Frage gestellt."
+						speechOut: "Ich hatte keine Ja/Nein Frage gestellt. In welche Reihe wirfst Du?",
+						display: "Ich hatte keine Ja/Nein Frage gestellt. In welche Reihe wirfst Du?"
 					}
 				},
 				
@@ -455,8 +455,8 @@ function init_messages(language) {
 						display :  "Ich werfe in Reihe %1 und habe gewonnen."
 					},
 					MAKE_YOUR_MOVE: { 
-						speechOut: "Ich werfe in Reihe %1.",
-						display :  "Ich werfe in Reihe %1."
+						speechOut: "Ich werfe in Reihe %1, in welche Reihe wirfst Du?",
+						display :  "Ich werfe in Reihe %1, in welche Reihe wirfst Du?"
 					}
 				},
 				
@@ -538,12 +538,12 @@ function init_messages(language) {
 				
 				SetAILevelIntent: {
 					S_OK: { 
-						speechOut: "Die Spielstärke wurde auf %1 gesetzt.",
-						display :  "Die Spielstärke wurde auf %1 gesetzt."
+						speechOut: "Die Spielstärke wurde auf %1 gesetzt. Du bist am Zug.",
+						display :  "Die Spielstärke wurde auf %1 gesetzt. Du bist am Zug."
 					},
 					E_INVALID_PARAMETER: { 
-						speechOut: "Ich habe die Spielstärke nicht verstanden. Sage eine Zahl von eins bis sieben.",
-						display :  "Ich habe die Spielstärke nicht verstanden. Sage eine Zahl von 1-7."
+						speechOut: "Die Spielstärke muss eine Zahl von 1 bis 7 sein. In welche Reihe wirfst Du?",
+						display :  "Die Spielstärke muss eine Zahl von 1 bis 7 sein. In welche Reihe wirfst Du?"
 					},
 				}, 
 				
