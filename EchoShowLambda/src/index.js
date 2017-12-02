@@ -158,21 +158,11 @@ exports.handler = function(event, context) {
 	logObject("EVENT", event);
 	// Create an instance of the ConnectFourSkill skill.
 	var connectFourSkill = new ConnectFourSkill();
-	ensureSessionAttribs(event);
-	setSessionTempHasDisplay(event.session, hasEventDisplay(event));
-	setSessionTempDisplayToken(event.session, getEventDisplayToken(event));
-	logObject("SESSION", event.session);
+	removeSessionRequest(event.session);
+	setRequestHasDisplay(event.session, hasEventDisplay(event));
+	setRequestDisplayToken(event.session, getEventDisplayToken(event));
 	connectFourSkill.execute(event, context);
 };
-
-function ensureSessionAttribs(event) {
-	if (!event.session) {
-		event.session = {};
-	}
-	if (!event.session.attributes) {
-		event.session.attributes = {};
-	}
-}
 
 // initialize tests
 exports.initTests = function(url, param, callback) {
@@ -289,7 +279,7 @@ function doYesIntent(intent, session, response) {
 }
 
 function mapNoGUIMsg(session, msgKey) {
-	if (getSessionTempHasDisplay(session)) {
+	if (getRequestHasDisplay(session)) {
 		return msgKey;
 	}
 	if (msgKey === "HELP_REGELN") {
@@ -327,7 +317,7 @@ function doPreviousIntent(intent, session, response) {
 
 function handleYesNoQuery(session) {
 	var yesNoQuery = getSessionYesNoQuery(session);
-	var displayToken = getSessionTempDisplayToken(session);
+	var displayToken = getRequestDisplayToken(session);
 	if (displayToken !== undefined) {
 		yesNoQuery = TOKEN_TO_YESNOQUERY_MAPPING[displayToken];
 	}
@@ -342,7 +332,7 @@ function checkUnhandledYesNoQuery(session) {
 		removeSessionYesNoQuery(session);
 		return undefined;
 	}
-	var displayToken = getSessionTempDisplayToken(session);
+	var displayToken = getRequestDisplayToken(session);
 	if (displayToken !== undefined) {
 		yesNoQuery = TOKEN_TO_YESNOQUERY_MAPPING[displayToken];
 	}
@@ -530,7 +520,7 @@ function respondText(session, response, msg, token, instantAnswer) {
 }
 
 function createTextDirective(session, msg, token) {
-	if (!getSessionTempHasDisplay(session)) {
+	if (!getRequestHasDisplay(session)) {
 		return undefined;
 	}
 	var directives = [ {
@@ -581,7 +571,7 @@ function respondField(session, response, gameData, msg) {
 }
 
 function createFieldDirectives(session, gameData, msg, lastAIMove, gameStatusInfo) {
-	if (!getSessionTempHasDisplay(session)) {
+	if (!getRequestHasDisplay(session)) {
 		logObject("createFieldDirectives-session", session)
 		return undefined;
 	}
@@ -611,12 +601,14 @@ function createFieldDirectives(session, gameData, msg, lastAIMove, gameStatusInf
 
 function outputMsgWithDirectives(session, response, msg, directives) {
 	saveUserData(session, response, function successCallback() {
+		removeSessionRequest(session);
 		speech.outputMsgWithDirectives(response, msg, directives)
 	});
 }
 
 function respondMsgWithDirectives(session, response, msg, directives) {
 	saveUserData(session, response, function successCallback() {
+		removeSessionRequest(session);
 		speech.respondMsgWithDirectives(response, msg, directives);
 	});
 }
@@ -742,11 +734,11 @@ function getSessionLastAIMove(session, defaultValue) {
 function getSessionYesNoQuery(session, defaultValue) {
 	return getFromSession(session, "yesNoQuery", defaultValue);
 }
-function getSessionTempDisplayToken(session, defaultValue) {
-	return getFromSessionTemp(session, "displayToken", defaultValue);
+function getRequestDisplayToken(session, defaultValue) {
+	return getFromSessionRequest(session, "displayToken", defaultValue);
 }
-function getSessionTempHasDisplay(session, defaultValue) {
-	return getFromSessionTemp(session, "hasDisplay", defaultValue);
+function getRequestHasDisplay(session, defaultValue) {
+	return getFromSessionRequest(session, "hasDisplay", defaultValue);
 }
 
 function setSessionGameId(session, gameId) {
@@ -761,11 +753,11 @@ function setSessionLastAIMove(session, lastAIMove) {
 function setSessionYesNoQuery(session, lastAIMove) {
 	setInSession(session, "yesNoQuery", lastAIMove);
 }
-function setSessionTempDisplayToken(session, displayToken) {
-	setInSessionTemp(session, "displayToken", displayToken);
+function setRequestDisplayToken(session, displayToken) {
+	setInSessionRequest(session, "displayToken", displayToken);
 }
-function setSessionTempHasDisplay(session, hasDisplay) {
-	setInSessionTemp(session, "hasDisplay", hasDisplay);
+function setRequestHasDisplay(session, hasDisplay) {
+	setInSessionRequest(session, "hasDisplay", hasDisplay);
 }
 
 function removeSessionLastAIMove(session) {
@@ -806,40 +798,40 @@ function removeFromSession(session, key) {
 	delete session.attributes[key];
 }
 
-function getFromSessionTemp(session, key, defaultValue) {
-	if (!session || (!session.temp)) {
+function getFromSessionRequest(session, key, defaultValue) {
+	if (!session || (!session.request)) {
 		return defaultValue;
 	}
-	var result = session.temp[key];
+	var result = session.request[key];
 	if (result === undefined) {
 		result = defaultValue;
 	}
 	return result;
 }
-function setInSessionTemp(session, key, value) {
+function setInSessionRequest(session, key, value) {
 	if (value === undefined) {
-		removeFromSession(session, key);
+		removeFromSessionRequest(session, key);
 		return;
 	}
 	if (!session) {
 		return;
 	}
-	if (!session.temp) {
-		session.temp = {};
+	if (!session.request) {
+		session.request = {};
 	}
-	session.temp[key] = value;
+	session.request[key] = value;
 }
-function removeFromSessionTemp(session, key) {
-	if (!session || (!session.temp) || (!session.temp[key])) {
+function removeFromSessionRequest(session, key) {
+	if (!session || (!session.request) || (!session.request[key])) {
 		return;
 	}
-	delete session.temp[key];
+	delete session.request[key];
 }
-function removeSessionTemp(session) {
-	if (!session || (!session.temp)) {
+function removeSessionRequest(session) {
+	if (!session || (!session.request)) {
 		return;
 	}
-	delete session.temp;
+	delete session.request;
 }
 
 

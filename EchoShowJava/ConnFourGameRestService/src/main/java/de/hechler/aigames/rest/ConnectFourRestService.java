@@ -264,7 +264,7 @@ public class ConnectFourRestService extends HttpServlet {
 
 	private String connect(String userId, String aiLevelStr) {
 		int aiLevel = DEFAULT_AI_LEVEL;
-		if (aiLevelStr.matches("[1-7]")) {
+		if ((aiLevelStr!=null) && aiLevelStr.matches("[1-7]")) {
 			aiLevel = Integer.parseInt(aiLevelStr);
 		}
 		GetGameDataResult<ConnectFourFieldView> getGameDataResult = connectFourImpl.getGameDataByUserId(userId);

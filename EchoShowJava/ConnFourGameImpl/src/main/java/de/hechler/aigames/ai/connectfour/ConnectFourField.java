@@ -168,6 +168,18 @@ public class ConnectFourField implements Cloneable, IField {
         return false;
 	}	
 	
+	public int getCountMoves() {
+		int result = 0;
+		for (int x=0; x<xsize; x++) {
+			for (int y=0; y<ysize; y++) {
+	        	if (fieldArray[x][y] != 0) {
+	        		result += 1;
+	        	}
+            }
+        }
+        return result;
+	}	
+	
 	
 	
 	public String toString() {

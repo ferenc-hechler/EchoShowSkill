@@ -26,6 +26,7 @@ import de.hechler.aigames.api.DoMoveResult;
 import de.hechler.aigames.api.ResultCodeEnum;
 import de.hechler.aigames.api.fieldview.ConnectFourFieldView;
 import de.hechler.aigames.api.move.ConnectFourMove;
+import de.hechler.utils.RandUtils;
 
 
 public class ConnectFourGame extends AIGame<ConnectFourFieldView, ConnectFourMove> {
@@ -73,11 +74,18 @@ public class ConnectFourGame extends AIGame<ConnectFourFieldView, ConnectFourMov
 	
 	@Override
 	public ConnectFourMove calcAIMove() {
-		int xPlayer = ((currentPlayer==1) ? IField.PLAYER_1 : IField.PLAYER_2 );
-//		int calc = MiniMax.calcPosition(field, 0, xPlayer);
-//		System.out.println("Calc(0) = " + calc);
-		int best = MiniMax.selectBestMove(field, getEffectiveAILevel(), xPlayer);
-//		System.out.println("bestMove("+aiLevel+") = " + best);
+		int best; 
+		if (field.getCountMoves() == 0) {
+			// first move by random
+			best = RandUtils.randomInt(7) + 1; 
+		}
+		else {
+			int xPlayer = ((currentPlayer==1) ? IField.PLAYER_1 : IField.PLAYER_2 );
+//			int calc = MiniMax.calcPosition(field, 0, xPlayer);
+//			System.out.println("Calc(0) = " + calc);
+			best = MiniMax.selectBestMove(field, getEffectiveAILevel(), xPlayer);
+//			System.out.println("bestMove("+aiLevel+") = " + best);
+		}
 		return new ConnectFourMove(best);
 	} 
 	
