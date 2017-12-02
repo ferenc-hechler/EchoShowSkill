@@ -83,6 +83,9 @@ public abstract class AIGame<FV extends FieldView, M extends Move> implements AI
 	public void setWeak(boolean weak) {
 		this.weak = weak;
 	}
+	protected boolean getWeak() {
+		return this.weak;
+	}
 	
 	/* (non-Javadoc)
 	 * @see de.hechler.aigames.ai.IGame#restartGame()

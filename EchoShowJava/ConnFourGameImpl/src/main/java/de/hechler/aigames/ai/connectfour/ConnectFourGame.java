@@ -75,7 +75,7 @@ public class ConnectFourGame extends AIGame<ConnectFourFieldView, ConnectFourMov
 	@Override
 	public ConnectFourMove calcAIMove() {
 		int best; 
-		if (field.getCountMoves() == 0) {
+		if (getWeak() && (field.getCountMoves() == 0)) {
 			// first move by random
 			best = RandUtils.randomInt(7) + 1; 
 		}
