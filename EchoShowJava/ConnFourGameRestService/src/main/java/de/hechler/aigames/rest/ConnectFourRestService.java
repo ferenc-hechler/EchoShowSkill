@@ -89,6 +89,9 @@ public class ConnectFourRestService extends HttpServlet {
 				return;
 			}
 			
+		    HttpSession session = request.getSession(true);
+		    String sessionId = session.getId();
+		    
 			String gameId = normalizeGameId(request.getParameter("gameId"));
 			String cmd = request.getParameter("cmd");
 			String param1 = request.getParameter("param1");
@@ -146,7 +149,7 @@ public class ConnectFourRestService extends HttpServlet {
 				break;
 			}
 			case "getImage": {
-				responseString = getImage(request.getSession(true), param1);
+				responseString = getImage(session, param1);
 				break;
 			}
 			case "hasChanges": {
@@ -177,7 +180,7 @@ public class ConnectFourRestService extends HttpServlet {
 	    	writer.println(responseString);
 	    	if (debugloggingEnabled) {
 	    		if (!(responseString.contains("S_NO_CHANGES"))) {
-	    			logger.info("RQ[cmd="+cmd+",gid="+gameId+",p1="+param1+",p2="+param2+"] -> "+responseString);
+	    			logger.info("RQ[cmd="+cmd+",gid="+gameId+",p1="+param1+",p2="+param2+",S#"+sessionId+"] -> "+responseString);
 	    		}
 	    	}
 	    }
@@ -233,6 +236,7 @@ public class ConnectFourRestService extends HttpServlet {
 	private String clearSession(HttpSession session) {
 		if (session != null) {
 			session.invalidate();
+			logger.info("session cleared");
 		}
 		return gson.toJson(GenericResult.genericOkResult);
 	}
