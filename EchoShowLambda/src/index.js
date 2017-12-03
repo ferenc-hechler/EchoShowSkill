@@ -65,18 +65,18 @@ var NEXT_MSG_KEY_FOR_YES = {
 	}
 
 var ANIMAL_MAPPING = {
-		  "Affen":			"AFFE",
-		  "Bär":			"BAER",
-		  "Bären":			"BAER",
-		  "Eichhörnchen":	"EICHHOERNCHEN",
-		  "Elefanten":		"ELEFANT",
-		  "Fish": 			"FISCH",
-		  "Hasen": 			"HASE",
-		  "Löwe": 			"LOEWE",
-		  "Löwen": 			"LOEWE",
-		  "Marienkäfer": 	"MARIENKAEFER",
-		  "Möwe": 			"MOEWE",
-		  "Schildkröte": 	"SCHILDKROETE",
+		  "affen":			"AFFE",
+		  "bär":			"BAER",
+		  "bären":			"BAER",
+		  "eichhörnchen":	"EICHHOERNCHEN",
+		  "elefanten":		"ELEFANT",
+		  "fish": 			"FISCH",
+		  "hasen": 			"HASE",
+		  "löwe": 			"LOEWE",
+		  "löwen": 			"LOEWE",
+		  "marienkäfer": 	"MARIENKAEFER",
+		  "möwe": 			"MOEWE",
+		  "schildkröte": 	"SCHILDKROETE",
 }
 
 

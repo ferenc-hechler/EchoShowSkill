@@ -262,6 +262,7 @@ public class ConnectFourRestService extends HttpServlet {
 			return gson.toJson(GenericResult.genericInvalidParameterResult);
 		}
 		String sessionId = session.getId();
+		logger.info("SESSIONID: " + sessionId);
 		if (cnt >= 30) {
 			ImageRegistry.getInstance().freeSession(sessionId);
 			return gson.toJson(GenericResult.genericTimeoutResult);
