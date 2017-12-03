@@ -100,6 +100,10 @@ public class ImageRegistry {
 			this.image = image;
 			this.creationTime = System.currentTimeMillis();
 		}
+		@Override
+		public String toString() {
+			return "SESS["+image+ ": "+ sessionId+"->"+gameId+"]";
+		}
 	}
 	
 	private static ImageRegistry instance;

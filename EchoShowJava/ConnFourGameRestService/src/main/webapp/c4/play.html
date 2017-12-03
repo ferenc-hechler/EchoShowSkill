@@ -32,7 +32,7 @@ function getGameData()
 		type: 'post',
 		url: '../rest/c4',
 		data: {
-			cmd: 'getGameData'
+			cmd: 'clientGetGameData'
 		},
 		success: function (response) {
 		    cnt = cnt + 1
@@ -50,7 +50,7 @@ function getGameData()
 		    if (response.fieldView && response.fieldView.field) {
 				setFieldColors(response.fieldView.field);
 		    }
-		    if (!response.active) {
+		    if (response.code !== S_OK) {
 		    	stopreload = true;
 		    	setTimeout(reset, 15000);
 			}

@@ -4,15 +4,16 @@
 http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=enableDebugLogging&param1=true
 
 http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=connect&param1=feri
+
 http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=doMove&param1=3&gameId=C4
 http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=getGameData&gameId=C4
-http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=doAIMove&gameId=C4
+http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=doAIMove&gameId=O8
 
 ###
 # Verbinden
 #
 http://localhost:8080/ConnFourGameRestService/c4/index.html
-http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=connectImage&gameId=C4&param1=STORCH
+http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=connectImage&gameId=J7&param1=PFERD
 
 
 ### 

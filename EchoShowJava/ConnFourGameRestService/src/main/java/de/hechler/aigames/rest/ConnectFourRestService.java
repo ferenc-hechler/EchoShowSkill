@@ -127,10 +127,6 @@ public class ConnectFourRestService extends HttpServlet {
 				responseString = initTests(param1);
 				break;
 			}
-			case "hasChanges": {
-				responseString = hasChanges(gameId, param1);
-				break;
-			}
 			case "setPlayerNames": {
 				responseString = setPlayerNames(gameId, param1, param2);
 				break;
@@ -151,6 +147,14 @@ public class ConnectFourRestService extends HttpServlet {
 			}
 			case "getImage": {
 				responseString = getImage(request.getSession(true), param1);
+				break;
+			}
+			case "hasChanges": {
+				responseString = hasChanges(request.getSession(), param1);
+				break;
+			}
+			case "clientGetGameData": {
+				responseString = clientGetGameData(request.getSession());
 				break;
 			}
 			
@@ -241,10 +245,12 @@ public class ConnectFourRestService extends HttpServlet {
 			return gson.toJson(GenericResult.genericInvalidParameterResult);
 		}
 		SessionEntry entry = ImageRegistry.getInstance().getSessionEntry(image);
+//		logger.info("connectImage(" + gameId + ", " + imageName + " - " + entry + ")");
 		if (entry == null) {
 			return gson.toJson(new GenericResult(ResultCodeEnum.E_IMAGE_NOT_FOUND));
 		}
 		entry.gameId = gameId;
+//		logger.info("connectImage(" + entry.image.name() + ": " + entry.sessionId + " -> " + entry.gameId + ")");
 		return gson.toJson(GenericResult.genericOkResult);
 	}
 	
@@ -260,26 +266,16 @@ public class ConnectFourRestService extends HttpServlet {
 			ImageRegistry.getInstance().freeSession(sessionId);
 			return gson.toJson(GenericResult.genericTimeoutResult);
 		}
-		Object sessionImageName = session.getAttribute("IMAGE");
 		SessionEntry entry = ImageRegistry.getInstance().getSessionEntry(sessionId);
 		if (entry.gameId != null) {
-			ImageRegistry.getInstance().freeSession(sessionId);
 			return gson.toJson(new NewGameResult(ResultCodeEnum.S_ACTIVATED, entry.gameId));
 		}
+		Object sessionImageName = session.getAttribute("IMAGE");
 		if (entry.image.name().equals(sessionImageName)) {
 			return gson.toJson(GenericResult.genericNoChangeResult);
 		}
+		session.setAttribute("IMAGE", entry.image.name());
 		return gson.toJson(new GetImageResult(ResultCodeEnum.S_OK, entry.image));
-	}
-
-	private String hasChanges(String gameId, String versionName) {
-		try { 
-			int version = Integer.parseInt(versionName);
-			return gson.toJson(connectFourImpl.hasChanges(gameId, version));
-		}
-		catch (NumberFormatException e) {
-			return gson.toJson(GenericResult.genericInvalidParameterResult);
-		}
 	}
 
 	private String setPlayerNames(String gameId, String player1Name, String player2Name) {
@@ -308,6 +304,44 @@ public class ConnectFourRestService extends HttpServlet {
 
 	private String doAIMove(String gameId) {
 		return gson.toJson(connectFourImpl.doAIMove(gameId));
+	}
+
+	private String hasChanges(HttpSession session, String versionStr) {
+		if (session == null) {
+			return gson.toJson(GenericResult.genericTimeoutResult);
+		}
+		int version;
+		try {
+			version = Integer.parseInt(versionStr);
+		} catch (NumberFormatException | NullPointerException e) {
+			return gson.toJson(GenericResult.genericInvalidParameterResult);
+		}
+		String sessionId = session.getId();
+		SessionEntry entry = ImageRegistry.getInstance().getSessionEntry(sessionId);
+//		logger.info("hasChanges(" + sessionId + ", " + versionStr + " - " + entry + ")");
+		if (entry == null) {
+			return gson.toJson(GenericResult.genericTimeoutResult);
+		}
+		if (entry.gameId == null) {
+			return gson.toJson(GenericResult.genericUnknownGameId);
+		}
+		return gson.toJson(connectFourImpl.hasChanges(entry.gameId, version));
+
+	}
+	
+	private String clientGetGameData(HttpSession session) {
+		if (session == null) {
+			return gson.toJson(GenericResult.genericTimeoutResult);
+		}
+		String sessionId = session.getId();
+		SessionEntry entry = ImageRegistry.getInstance().getSessionEntry(sessionId);
+		if (entry == null) {
+			return gson.toJson(GenericResult.genericTimeoutResult);
+		}
+		if (entry.gameId == null) {
+			return gson.toJson(GenericResult.genericUnknownGameId);
+		}
+		return gson.toJson(connectFourImpl.getGameData(entry.gameId));
 	}
 
 	private String getGameData(String gameId) {
@@ -345,7 +379,7 @@ public class ConnectFourRestService extends HttpServlet {
 
 	private boolean checkAuth(HttpServletRequest request) throws IOException {
 		String cmd = request.getParameter("cmd");
-		if ("clearSession".equals(cmd) || "getImage".equals(cmd)) {
+		if ("clearSession".equals(cmd) || "getImage".equals(cmd) || "hasChanges".equals(cmd) || "clientGetGameData".equals(cmd)) {
 			// allow client queries without auth
 			return true;
 		}
