@@ -176,7 +176,7 @@ public class ConnectFourRestService extends HttpServlet {
 		    responseString = encode(responseString); 
 	    	writer.println(responseString);
 	    	if (debugloggingEnabled) {
-	    		if (!(responseString.contains("S_NO_CHANGES") || cmd.equals("getGameId"))) {
+	    		if (!(responseString.contains("S_NO_CHANGES"))) {
 	    			logger.info("RQ[cmd="+cmd+",gid="+gameId+",p1="+param1+",p2="+param2+"] -> "+responseString);
 	    		}
 	    	}
@@ -262,7 +262,7 @@ public class ConnectFourRestService extends HttpServlet {
 			return gson.toJson(GenericResult.genericInvalidParameterResult);
 		}
 		String sessionId = session.getId();
-		logger.info("SESSIONID: " + sessionId);
+//		logger.info("SESSIONID: " + sessionId);
 		if (cnt >= 30) {
 			ImageRegistry.getInstance().freeSession(sessionId);
 			return gson.toJson(GenericResult.genericTimeoutResult);

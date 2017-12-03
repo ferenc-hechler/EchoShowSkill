@@ -16,6 +16,14 @@ http://localhost:8080/ConnFourGameRestService/c4/index.html
 http://localhost:8080/ConnFourGameRestService/rest/c4?cmd=connectImage&gameId=J7&param1=PFERD
 
 
+http://localhost:8080/ConnFourGameRestService/rest/c4/?cmd=getImage&param1=1
+
+
+###
+# SERVER
+#
+http://calcbox.de/devconnfour/rest/c4/?cmd=getImage&param1=1
+
 ### 
 # VIERGEWINNT LOKAL 
 #
