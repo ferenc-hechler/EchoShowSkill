@@ -261,6 +261,10 @@ function init_messages(language) {
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
 								   
+								   "Jetzt zur Anzeige: " +
+								   "Dein Gerät unterstützt keine Bildschirmanzeige. Du kannst Dir das Spielfeld aber auf der Webseite calcbox.de anzeigen lassen. " +
+								   "Rufe dazu die Webseite auf und befolge die Anweisungen dort. " +
+								   
 								   "Jetzt zur Sprachsteuerung: " +
 								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
 								   "Sage dazu entweder: 'Ich werfe in Reihe punkt punkt punkt' oder: 'Du darfst anfangen'. " +
@@ -285,6 +289,11 @@ function init_messages(language) {
 								   "Beim Spiel Vier in einer Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
+								   
+								   "Jetzt zur Anzeige: " +
+								   "Dein Gerät unterstützt keine Bildschirmanzeige. Du kannst Dir das Spielfeld aber auf der Webseite http://calcbox.de anzeigen lassen. " +
+								   "Rufe dazu die Webseite auf und befolge die Anweisungen dort. " +
+								   
 								   
 								   "Jetzt zur Sprachsteuerung: " +
 								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
