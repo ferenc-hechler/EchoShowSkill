@@ -35,6 +35,17 @@ function init_messages(language) {
 					}
 				},
 				
+				SEND_connectImage: {
+					E_IMAGE_NOT_FOUND: { 
+						speechOut: "Das Tier ist nicht zu sehen, versuche es noch einmal oder werfe in eine Reihe.",
+						display :  "Das Tier ist nicht zu sehen, versuche es noch einmal oder werfe in eine Reihe."
+					},
+					"E_INVALID_PARAMETER": { 
+						speechOut: "Du musst den Namen des Tiers sagen, das auf der Webseite calcbox.de zu sehen ist, versuche es noch einmal oder werfe in eine Reihe.",
+						display :  "Du musst den Namen des Tiers sagen, das auf der Webseite https://calcbox.de zu sehen ist, versuche es noch einmal oder werfe in eine Reihe."
+					},
+				},
+				
 				SEND_doMove: {
 					"E_INVALID_PARAMETER": { 
 						speechOut: "Bitte wiederhole die Reihe, ich habe das nicht richtig verstanden.",
@@ -291,7 +302,7 @@ function init_messages(language) {
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
 								   
 								   "Jetzt zur Anzeige: " +
-								   "Dein Gerät unterstützt keine Bildschirmanzeige. Du kannst Dir das Spielfeld aber auf der Webseite http://calcbox.de anzeigen lassen. " +
+								   "Dein Gerät unterstützt keine Bildschirmanzeige. Du kannst Dir das Spielfeld aber auf der Webseite https://calcbox.de anzeigen lassen. " +
 								   "Rufe dazu die Webseite auf und befolge die Anweisungen dort. " +
 								   
 								   
