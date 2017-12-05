@@ -38,15 +38,15 @@ function getGameData()
 		success: function (response) {
 		    cnt = cnt + 1
 		    document.getElementById( "cnt" ).value=cnt;
-		    if (response.version) {
+		    if (response.version !== undefined) {
 			    version = response.version;
+		    }
+		    if (response.movesCount) {
+			    document.getElementById( "txt_movesCount" ).innerHTML='Z&uuml;ge: '+response.movesCount;
 		    }
 		    if (response.aiLevel) {
 		    	aiLevel = response.aiLevel; 
-			    document.getElementById( "txt_aiLevel" ).innerHTML='Spielst&auml;rke(AI): '+aiLevel;
-		    }
-		    if (response.movesCount) {
-			    document.getElementById( "txt_movesCount" ).innerHTML='Zug: '+response.movesCount;
+			    document.getElementById( "txt_aiLevel" ).innerHTML='AI: '+aiLevel;
 		    }
 		    if (response.fieldView && response.fieldView.field) {
 				setFieldColors(response.fieldView.field);
@@ -163,24 +163,18 @@ setTimeout(loaddata, 1000);
 		
 <h1>Vierer-Reihe gegen Alexa</h1>
 
-<p>
-<table>
-<tr><td id="txt_aiLevel">&nbsp;</td></tr>
-<tr><td id="txt_movesCount">&nbsp;</td></tr>
-</table>
-</p>
-
 <table><tr><td>
 
 <table>
 
 <p>
-<img width="64px" height="64px" id="img_35" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_36" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_37" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_38" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_39" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_40" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_41" src="64px/circle-0.png"/> <br>
-<img width="64px" height="64px" id="img_28" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_29" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_30" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_31" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_32" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_33" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_34" src="64px/circle-0.png"/> <br>
-<img width="64px" height="64px" id="img_21" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_22" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_23" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_24" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_25" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_26" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_27" src="64px/circle-0.png"/> <br>
-<img width="64px" height="64px" id="img_14" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_15" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_16" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_17" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_18" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_19" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_20" src="64px/circle-0.png"/> <br>
-<img width="64px" height="64px" id="img_7"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_8"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_9"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_10" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_11" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_12" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_13" src="64px/circle-0.png"/> <br>
-<img width="64px" height="64px" id="img_0"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_1"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_2"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_3"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_4"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_5"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_6"  src="64px/circle-0.png"/> <br>
+<img width="448px" height="64px" src="64px/frameset_top.png"/><br>
+<img width="64px" height="64px" id="img_35" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_36" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_37" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_38" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_39" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_40" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_41" src="64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_28" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_29" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_30" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_31" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_32" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_33" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_34" src="64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_21" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_22" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_23" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_24" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_25" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_26" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_27" src="64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_14" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_15" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_16" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_17" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_18" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_19" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_20" src="64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_7"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_8"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_9"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_10" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_11" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_12" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_13" src="64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_0"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_1"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_2"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_3"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_4"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_5"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_6"  src="64px/circle-0.png"/><br>
 </p>
 
 <p>
@@ -208,6 +202,14 @@ setTimeout(loaddata, 1000);
 
 </td><td>&nbsp;</td><td>
 
+<p>
+<table>
+<tr><td id="txt_movesCount">&nbsp;</td></tr>
+<tr><td id="txt_aiLevel">&nbsp;</td></tr>
+</table>
+</p>
+
+<br>
 
 <p>
 Um einen Zug zu machen sage welche Reihe (1..7) du wählst:
@@ -224,7 +226,7 @@ Soll Alexa anfangen, dann sage:
 </p>
 
 <p>
-Um die Spielstärke (1..7) zu ändern sage:
+Um die Spielstärke (AI) zu ändern sage (erlaubt ist 1..7):
 <code><pre>
 "Setze die Spielstärke auf ..." 
 </pre></code>
