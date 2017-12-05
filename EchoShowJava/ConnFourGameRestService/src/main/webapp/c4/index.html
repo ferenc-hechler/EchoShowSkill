@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Vier in einer Reihe gegen Alexa</title>
+<title>Vierer-Reihe gegen Alexa</title>
 <meta charset="UTF-8">
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="pragma" content="no-cache" />
@@ -45,7 +45,7 @@ function loaddata()
 			if (response.code === "S_OK") {
 			    document.getElementById( "imageFile" ).src="tiere/" + response.imageName + ".jpg";
 			    document.getElementById( "imageText" ).innerHTML="Ich sehe "+ response.einText +" \"" + response.imageText + "\"";
-			    document.getElementById( "imageText2" ).innerHTML="\"Alexa sage 'Vier in einer Reihe' ich sehe "+ response.einText +" \"" + response.imageText + "\"";
+			    document.getElementById( "imageText2" ).innerHTML="\"Alexa sage 'Vierer-Reihe' ich sehe "+ response.einText +" \"" + response.imageText + "\"";
 			}
 			else if (response.code === "S_ACTIVATED") {
 				stopload();
@@ -105,7 +105,7 @@ setTimeout(loaddata, 1000);
 </head>
 <body>
 		
-<h1>Vier in einer Reihe gegen Alexa Startseite</h1>
+<h1>Vierer-Reihe gegen Alexa Startseite</h1>
 
 <p>
 Du bist noch nicht verbunden mit Deiner Alexa. <br>
@@ -118,7 +118,7 @@ Bitte befolge die folgenden Anweisungen um eine Verbindung herzustellen:
 
 <p>Sage 
 <code><pre>
-"Alexa starte 'Vier in einer Reihe'"
+"Alexa starte 'Vierer-Reihe'"
 </pre></code>
 und befolge die Anweisungen, bis Du gefragt wirst, in welche Reihe Du wirfst.
 </p>
@@ -131,9 +131,9 @@ Sage dann
 </p>
 
 <p>
-Oder starte 'Vier in einer Reihe' unter Angabe des Tierbildes:
+Oder starte 'Vierer-Reihe' unter Angabe des Tierbildes:
 <code><pre id="imageText2">
-"Alexa, sage 'Vier in einer Reihe' ich sehe ein ?"
+"Alexa, sage 'Vierer-Reihe' ich sehe ein ?"
 </pre></code>
 </p>
 
