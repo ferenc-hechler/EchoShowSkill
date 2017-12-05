@@ -7,9 +7,10 @@
 <script type="text/javascript">
 
 var col_name=['gray', 'red', 'yellow', '#C00000', '#c0c000'];
+var src_name=['http://calcbox.de/c4imgs/64px/circle-0.png', 'http://calcbox.de/c4imgs/64px/circle-1.png', 'http://calcbox.de/c4imgs/64px/circle-2.png', 'http://calcbox.de/c4imgs/64px/circle-3.png', 'http://calcbox.de/c4imgs/64px/circle-4.png'];
 var stopreload=false;
 var cnt=0;
-var playerName;
+var aiLevel;
 var version = -1;
 
 function reset()
@@ -40,17 +41,17 @@ function getGameData()
 		    if (response.version) {
 			    version = response.version;
 		    }
-		    if (response.player1Name) {
-		    	playerName = response.player1Name; 
-			    document.getElementById( "player_name" ).innerHTML='Hallo '+playerName;
+		    if (response.aiLevel) {
+		    	aiLevel = response.aiLevel; 
+			    document.getElementById( "txt_aiLevel" ).innerHTML='Spielst&auml;rke(AI): '+aiLevel;
 		    }
-		    if (response.gameId) {
-			    document.getElementById( "game_id" ).innerHTML='Du bist verbunden mit Spiel-ID '+response.gameId;
+		    if (response.movesCount) {
+			    document.getElementById( "txt_movesCount" ).innerHTML='Zug: '+response.movesCount;
 		    }
 		    if (response.fieldView && response.fieldView.field) {
 				setFieldColors(response.fieldView.field);
 		    }
-		    if (response.code !== S_OK) {
+		    if (response.code !== "S_OK") {
 		    	stopreload = true;
 		    	setTimeout(reset, 15000);
 			}
@@ -129,8 +130,13 @@ function setFieldColors(field) {
 	for (var y = 0; y < 6; y++) {
 		for (var x = 0; x < 7; x++) {
 			var i = x+7*(5-y);
-			var box=document.getElementById( 'box_'+i );
-			box.bgColor = col_name[field[y][x]];
+//			var box=document.getElementById( 'box_'+i );
+//			box.bgColor = col_name[field[y][x]];
+			var elemId =  'img_'+i;
+			console.log(elemId);
+			var img=document.getElementById( 'img_'+i );
+			console.log(img);
+			img.src = src_name[field[y][x]];
 		}
 	}
 }
@@ -157,18 +163,27 @@ setTimeout(loaddata, 1000);
 </head>
 <body>
 		
-<h1>Verier-Reihe gegen Alexa</h1>
+<h1>Vierer-Reihe gegen Alexa</h1>
 
 <p>
 <table>
-<tr><td id="player_name">&nbsp;</td></tr>
-<tr><td id="game_id">&nbsp;</td></tr>
+<tr><td id="txt_aiLevel">&nbsp;</td></tr>
+<tr><td id="txt_movesCount">&nbsp;</td></tr>
 </table>
 </p>
 
 <table><tr><td>
 
 <table>
+
+<p>
+<img width="64px" height="64px" id="img_35" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_36" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_37" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_38" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_39" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_40" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_41" src="64px/circle-0.png"/> <br>
+<img width="64px" height="64px" id="img_28" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_29" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_30" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_31" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_32" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_33" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_34" src="64px/circle-0.png"/> <br>
+<img width="64px" height="64px" id="img_21" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_22" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_23" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_24" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_25" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_26" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_27" src="64px/circle-0.png"/> <br>
+<img width="64px" height="64px" id="img_14" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_15" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_16" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_17" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_18" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_19" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_20" src="64px/circle-0.png"/> <br>
+<img width="64px" height="64px" id="img_7"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_8"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_9"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_10" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_11" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_12" src="64px/circle-0.png"/><img width="64px" height="64px" id="img_13" src="64px/circle-0.png"/> <br>
+<img width="64px" height="64px" id="img_0"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_1"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_2"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_3"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_4"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_5"  src="64px/circle-0.png"/><img width="64px" height="64px" id="img_6"  src="64px/circle-0.png"/> <br>
+</p>
 
 <p>
 <table><tr>
@@ -179,6 +194,7 @@ setTimeout(loaddata, 1000);
 </tr></table>
 </p>
 
+<!--
 <p>
 <table>
 <tr> <td align="center">1</td> <td align="center">2</td> <td align="center">3</td> <td align="center">4</td> <td align="center">5</td> <td align="center">6</td> <td align="center">7</td> </tr>
@@ -190,6 +206,7 @@ setTimeout(loaddata, 1000);
 <tr> <td width="50px" height="50px" id="box_0"   bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_1"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_2"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_3"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_4"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_5"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_6"  bgcolor="gray">&nbsp;</td> </tr>
 </table>
 </p>
+-->
 
 </td><td>
 
