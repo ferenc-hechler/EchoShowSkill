@@ -1,0 +1,90 @@
+{ 
+  "intents": [
+  
+    {
+      "intent": "NewGameIntent"
+    },
+
+    {
+      "intent": "PlayerMoveIntent",
+      "slots": [
+        {
+          "name": "slot",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+
+    {
+      "intent": "AIStartsIntent"
+    },
+
+    {
+      "intent": "ChangeAILevelIntent",
+      "slots": [
+        {
+          "name": "aiLevel",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+
+    {
+      "intent": "AnimalConnectIntent",
+      "slots": [
+        {
+          "name": "animal",
+          "type": "LIST_OF_ANIMALS"
+        }
+      ]
+    },
+    
+	{
+	  "intent": "AMAZON.StartOverIntent"
+	},
+	{
+	  "intent": "AMAZON.YesIntent"
+	},
+	{
+	  "intent": "AMAZON.NoIntent"
+	},
+    
+    
+    {
+      "intent": "AMAZON.PreviousIntent"
+    },
+    {
+      "intent": "AMAZON.NextIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.ScrollUpIntent"
+    },
+    {
+      "intent": "AMAZON.ScrollLeftIntent"
+    },
+    {
+      "intent": "AMAZON.ScrollDownIntent"
+    },
+    {
+      "intent": "AMAZON.ScrollRightIntent"
+    },
+    {
+      "intent": "AMAZON.PageUpIntent"
+    },
+    {
+      "intent": "AMAZON.PageDownIntent"
+    },
+    {
+      "intent": "AMAZON.MoreIntent"
+    },
+    {
+      "intent": "AMAZON.NavigateSettingsIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    }    
+  ]
+}

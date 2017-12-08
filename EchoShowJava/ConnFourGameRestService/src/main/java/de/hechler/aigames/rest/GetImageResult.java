@@ -30,11 +30,17 @@ public class GetImageResult extends GenericResult {
 	public String einText;
 	public String imageText;
 	
-	public GetImageResult(ResultCodeEnum resultCode, ImageEnum image) {
+	public GetImageResult(ResultCodeEnum resultCode, ImageEnum image, boolean english) {
 		super(resultCode);
 		this.imageName = image.name();
-		this.einText = image.einText;
-		this.imageText = image.imageText;
+		if (english) {
+			this.einText = image.aText_EN;
+			this.imageText = image.imageText_EN;
+		}
+		else {
+			this.einText = image.einText_DE;
+			this.imageText = image.imageText_DE;
+		}
 	}
 
 }

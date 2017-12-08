@@ -149,7 +149,11 @@ public class ConnectFourRestService extends HttpServlet {
 				break;
 			}
 			case "getImage": {
-				responseString = getImage(session, param1);
+				responseString = getImage(session, param1, false);
+				break;
+			}
+			case "getImageEN": {
+				responseString = getImage(session, param1, true);
 				break;
 			}
 			case "hasChanges": {
@@ -258,7 +262,7 @@ public class ConnectFourRestService extends HttpServlet {
 		return gson.toJson(GenericResult.genericOkResult);
 	}
 	
-	private String getImage(HttpSession session, String cntStr) {
+	private String getImage(HttpSession session, String cntStr, boolean english) {
 		int cnt;
 		try {
 			cnt = Integer.parseInt(cntStr);
@@ -280,7 +284,7 @@ public class ConnectFourRestService extends HttpServlet {
 			return gson.toJson(GenericResult.genericNoChangeResult);
 		}
 		session.setAttribute("IMAGE", entry.image.name());
-		return gson.toJson(new GetImageResult(ResultCodeEnum.S_OK, entry.image));
+		return gson.toJson(new GetImageResult(ResultCodeEnum.S_OK, entry.image, english));
 	}
 
 	private String setPlayerNames(String gameId, String player1Name, String player2Name) {
@@ -384,7 +388,7 @@ public class ConnectFourRestService extends HttpServlet {
 
 	private boolean checkAuth(HttpServletRequest request) throws IOException {
 		String cmd = request.getParameter("cmd");
-		if ("clearSession".equals(cmd) || "getImage".equals(cmd) || "hasChanges".equals(cmd) || "clientGetGameData".equals(cmd)) {
+		if ("clearSession".equals(cmd) || "getImage".equals(cmd)  || "getImageEN".equals(cmd) || "hasChanges".equals(cmd) || "clientGetGameData".equals(cmd)) {
 			// allow client queries without auth
 			return true;
 		}

@@ -29,64 +29,69 @@ import java.util.Map;
 
 public class ImageRegistry {
 
+	
 	public enum ImageEnum {
-		  AFFE("einen", "Affen"),
-		  AMEISE("eine", "Ameise"),
-		  BAER("einen", "Bären"),
-		  BIENE("eine", "Biene"),
-		  DACHS("einen", "Dachs"),
-		  DELFIN("einen", "Delfin"),
-		  EICHHOERNCHEN("ein", "Eichhörnchen"),
-		  ELEFANT("einen", "Elefanten"),
-		  ENTE("eine", "Ente"),
-		  ESEL("einen", "Esel"),
-		  FISCH("einen", "Fisch"),
-		  FLIEGE("eine", "Fliege"),
-		  FROSCH("einen", "Frosch"),
-		  GANS("eine", "Gans"),
-		  GIRAFFE("eine", "Giraffe"),
-		  HAHN("einen", "Hahn"),
-		  HAI("einen", "Hai"),
-		  HASE("einen", "Hasen"),
-		  HIRSCH("einen", "Hirsch"),
-		  HUND("einen", "Hund"),
-		  IGEL("einen", "Igel"),
-		  KAMEL("ein", "Kamel"),
-		  KATZE("eine", "Katze"),
-		  KROKODIL("ein", "Krokodil"),
-		  KUH("eine", "Kuh"),
-		  LOEWE("einen", "Löwen"),
-		  MARIENKAEFER("einen", "Marienkäfer"),
-		  MAUS("eine", "Maus"),
-		  MOEWE("eine", "Möwe"),
-		  NASHORN("ein", "Nashorn"),
-		  PANDA("einen", "Panda"),
-		  PAPAGEI("einen", "Papagei"),
-		  PFAU("einen", "Pfau"),
-		  PFERD("ein", "Pferd"),
-		  PINGUIN("einen", "Pinguin"),
-		  RAUPE("eine", "Raupe"),
-		  SCHAF("ein", "Schaf"),
-		  SCHILDKROETE("eine", "Schildkröte"),
-		  SCHLANGE("eine", "Schlange"),
-		  SCHMETTERLING("einen", "Schmetterling"),
-		  SCHNECKE("eine", "Schnecke"),
-		  SCHWAN("einen", "Schwan"),
-		  SCHWEIN("ein", "Schwein"),
-		  SPINNE("eine", "Spinne"),
-		  STORCH("einen", "Storch"),
-		  TIGER("einen", "Tiger"),
-		  WAL("einen", "Wal"),
-		  WOLF("einen", "Wolf"),
-		  WURM("einen", "Wurm"),
-		  ZEBRA("ein", "Zebra"),
+		  AFFE(			"einen", "Affen", 		"a",	"monkey"),
+		  AMEISE(		"eine",	 "Ameise", 		"an",	"ant"),
+		  BAER(			"einen", "Bären",		"a",	"bear"),
+		  BIENE(		"eine",  "Biene",		"a",	"bee"),
+		  DACHS(		"einen", "Dachs",		"a", 	"badger"),
+		  DELFIN(		"einen", "Delfin",		"a", 	"dolphin"),
+		  EICHHOERNCHEN("ein", "Eichhörnchen",	"a", 	"squirrel"),
+		  ELEFANT(		"einen", "Elefanten",	"an", 	"elephant"),
+		  ENTE(			"eine", "Ente",			"a", 	"duck"),
+		  ESEL(			"einen", "Esel",		"a", 	"donkey"),
+		  FISCH(		"einen", "Fisch",		"a", 	"fish"),
+		  FLIEGE(		"eine", "Fliege",		"a", 	"fly"),
+		  FROSCH(		"einen", "Frosch",		"a", 	"frog"),
+		  GANS(			"eine", "Gans",			"a", 	"goose"),
+		  GIRAFFE(		"eine", "Giraffe",		"a", 	"giraffe"),
+		  HAHN(			"einen", "Hahn",		"a", 	"cock"),
+		  HAI(			"einen", "Hai",			"a", 	"shark"),
+		  HASE(			"einen", "Hasen",		"a", 	"rabbit"),
+		  HIRSCH(		"einen", "Hirsch",		"a", 	"deer"),
+		  HUND(			"einen", "Hund",		"a", 	"dog"),
+		  IGEL(			"einen", "Igel",		"a", 	"Hedgehog"),
+		  KAMEL(		"ein", "Kamel",			"a", 	"camel"),
+		  KATZE(		"eine", "Katze",		"a", 	"cat"),
+		  KROKODIL(		"ein", "Krokodil",		"a", 	"crocodile"),
+		  KUH(			"eine", "Kuh",			"a", 	"cow"),
+		  LOEWE(		"einen", "Löwen",		"a", 	"lion"),
+		  MARIENKAEFER(	"einen", "Marienkäfer",	"a", 	"ladybug"),
+		  MAUS(			"eine", "Maus",			"a", 	"mouse"),
+		  MOEWE(		"eine", "Möwe",			"a", 	"gull"),
+		  NASHORN(		"ein", "Nashorn",		"a", 	"rhino"),
+		  PANDA(		"einen", "Panda",		"a", 	"panda"),
+		  PAPAGEI(		"einen", "Papagei",		"a", 	"parrot"),
+		  PFAU(			"einen", "Pfau",		"a", 	"peacock"),
+		  PFERD(		"ein", "Pferd",			"a", 	"horse"),
+		  PINGUIN(		"einen", "Pinguin",		"a", 	"penguin"),
+		  RAUPE(		"eine", "Raupe",		"a", 	"caterpillar"),
+		  SCHAF(		"ein", "Schaf",			"a", 	"sheep"),
+		  SCHILDKROETE(	"eine", "Schildkröte",	"a", 	"turtle"),
+		  SCHLANGE(		"eine", "Schlange",		"a", 	"snake"),
+		  SCHMETTERLING("einen", "Schmetterling","a", 	"butterfly"),
+		  SCHNECKE(		"eine", "Schnecke",		"a", 	"snail"),
+		  SCHWAN(		"einen", "Schwan",		"a", 	"swan"),
+		  SCHWEIN(		"ein", "Schwein",		"a", 	"pig"),
+		  SPINNE(		"eine", "Spinne",		"a", 	"spider"),
+		  STORCH(		"einen", "Storch",		"a", 	"stork"),
+		  TIGER(		"einen", "Tiger",		"a", 	"tiger"),
+		  WAL(			"einen", "Wal",			"a", 	"whale"),
+		  WOLF(			"einen", "Wolf",		"a", 	"wolf"),
+		  WURM(			"einen", "Wurm",		"a", 	"worm"),
+		  ZEBRA(		"ein", "Zebra",			"a", 	"zebra"),
 		  
-		  FRAGEZEICHEN("ein", "?");
-		String einText;
-		String imageText;
-		ImageEnum(String einText, String imageText) {
-			this.einText = einText;
-			this.imageText = imageText;
+		  FRAGEZEICHEN(	"ein", "?",				"a", 	"?");
+		String einText_DE;
+		String imageText_DE;
+		String aText_EN;
+		String imageText_EN;
+		ImageEnum(String einText_DE, String imageText_DE, String aText_EN, String imageText_EN) {
+			this.einText_DE = einText_DE;
+			this.imageText_DE = imageText_DE;
+			this.aText_EN = aText_EN;
+			this.imageText_EN = imageText_EN;
 		}
 	}	
 	

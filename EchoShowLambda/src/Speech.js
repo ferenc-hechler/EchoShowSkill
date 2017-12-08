@@ -10,15 +10,21 @@
 
  
 var messages;
+var cardTitle;
 
-function init_messages(language) {
 
-	if (!messages) {
-		if (!language) {
-			language = "DE";
+var currentLocale = "?";
+
+//https://developer.amazon.com/de/docs/custom-skills/develop-skills-in-multiple-languages.html
+function set_locale(locale) {
+
+	if (currentLocale != locale) {
+		if (locale === undefined) {
+			locale = "en-US";
 		}
-		if (language === "DE") {
+		if (locale.startsWith("de")) {
 
+			cardTitle = "Vierer-Reihe Skill";
 			messages = {
 					
 				SEND_getOrCreateUserByAppAndName: {
@@ -139,7 +145,7 @@ function init_messages(language) {
 						speechOut: ""
 					},
 					ActionHELP_WEITERES: {
-						title:     "Vierer-Reihe Regeln",
+						title:     "Vierer-Reihe Weiteres",
 						richText:  "<font size='3'>" +
 								   "Links oben in der Anzeige wird die aktulle Zugzahl und die Spielstärke (AI) angezeigt.<br/>" +
 								   "<br/>" +
@@ -161,7 +167,7 @@ function init_messages(language) {
 									" * 'Stop'. <br/><br/>" + 
 									"Möchtest Du eine ausführliche Anleitung?",
 						speechOut: "Willkommen zum Spiel Vierer-Reihe: " +
-									"Das Spiel kann mit folgenden Kommandos gesteuert werden: 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst anfangen', 'Setze die Spielstärke auf' oder 'Stop'. " + 
+									"Das Spiel kann mit folgenden Kommandos gesteuert werden: 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst anfangen', 'Setze die Spielstärke auf' oder Stop. " + 
 									"Möchtest Du eine ausführliche Anleitung?",
 						display:   	"Willkommen zum Spiel 'Vierer-Reihe': " +
 									"Das Spiel kann mit folgenden Kommandos gesteuert werden: 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe ...', 'Du darfst anfangen', 'Setze die Spielstärke auf ...' oder 'Stop'. " + 
@@ -503,27 +509,6 @@ function init_messages(language) {
 					}
 				},
 				
-				ConnectGameIntent: {
-					S_OK: { 
-						speechOut: "Erfolgreich mit Spiel Verbunden, sage mir jetzt Deinen Namen und verwende dabei die Floskel: Mein Name ist",
-						display:   "Erfolgreich mit Spiel Verbunden, sage mir jetzt Deinen Namen und verwende dabei die Floskel: 'Mein Name ist ...''."
-					}
-				},
-				
-				BlindGameIntent: {
-					S_OK: { 
-						speechOut: "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst",
-						display :  "Blindspiel wird gestartet, sage mir jetzt in wleche Reihe du wirfst."
-					}
-				},
-	
-				SetPlayerNameIntent: {
-					S_OK: { 
-						speechOut: "Hallo %1, mache Deinen Zug.",
-						display :  "Hallo %1, mache Deinen Zug."
-					}
-				},
-				
 				PlayerMoveIntent: {
 					S_PLAYER_WINS: { 
 						speechOut: "Herzlichen Glückwunsch, du hast gewonnen.",
@@ -578,22 +563,7 @@ function init_messages(language) {
 					}
 				},
 				
-			    "AMAZON.StartOverIntent": {
-			    	"CONFIRM": {
-				    	speechOut: "Bitte bestätige mit ja, dass du ein neues Spiel starten möchtest.", 
-				    	display :  "Bitte bestätige mit 'JA', dass du ein neues Spiel starten möchtest."
-			    	},
-			    	"S_OK": {
-				    	speechOut: "Neues Spiel, neues Glück.", 
-				    	display :  "Neues Spiel, neues Glück."
-			    	}
-			    },
-			    
 			    "AMAZON.StopIntent": {
-			    	"CONFIRM": {
-				    	speechOut: "Bitte bestätige mit ja, dass du das Spiel beenden möchtest.", 
-				    	display :  "Bitte bestätige mit ja, dass du das Spiel beenden möchtest."
-			    	},
 			    	"*": {
 			    		speechOut: "Auf wiederhören, bis zum nächsten Mal.", 
 			    		display :  "Auf wiederhören, bis zum nächsten Mal."
@@ -616,15 +586,609 @@ function init_messages(language) {
 					E_CONNECT: { 
 						speechOut: "Es gibt Verbindungsprobleme zum Server.",
 						display:   "Es gibt Verbindungsprobleme zum Server." 
+					},
+					E_MISSING: { 
+						speechOut: "Sorry, Es fehlt die Sprachausgabe für Intent-code %1 .",
+						display:   "Sorry, Es fehlt die Sprachausgabe für Intent-code %1 ." 
 					}
 
 				}
 			}
 			
 		}
+		else {  // local "en"
+		
+			cardTitle = "Connect-Four skill";
+			messages = {
+					
+				SEND_getOrCreateUserByAppAndName: {
+					E_DB_ERROR: {
+						speechOut: "An error occurred while querying the user database.",
+						display: "An error occurred while querying the user database."
+					}
+				},
+				
+				SEND_connect: {
+					S_OK: { 
+						speechOut: "It's your turn. Into which row do you throw a coin?",
+						display :  "It's your turn. Into which row do you throw a coin?"
+					}
+				},
+				
+				SEND_connectImage: {
+					E_IMAGE_NOT_FOUND: { 
+						speechOut: "This is the wrong animal, try again or throw a coin into a row.",
+						display :  "This is the wrong animal, try again or throw a coin into a row."
+					},
+					"E_INVALID_PARAMETER": { 
+						speechOut: "You have to say the name of the animal, which you can see on the website calcbox.de. Try again or throw a coin into a row.",
+						display :  "You have to say the name of the animal, which you can see on the website https://calcbox.de . Try again or throw a coin into a row."
+					},
+				},
+				
+				SEND_doMove: {
+					"E_INVALID_PARAMETER": { 
+						speechOut: "I did not understand the number of the row to throw your coin in, please try again.",
+						display :  "I did not understand the number of the row to throw your coin in, please try again."
+					},
+					"E_INVALID_RANGE": { 
+						speechOut: "Please repeat the number of the row. It must be between 1 and 7.",
+						display :  "Please repeat the number of the row. It must be between 1 and 7."
+					}
+				},
+				
+				SEND_setAILevel: {
+					"E_INVALID_PARAMETER": { 
+						speechOut: "I did not understand the playing skill level. It's your turn.",
+						display :  "I did not understand the playing skill level. It's your turn."
+					},
+					"E_INVALID_RANGE": { 
+						speechOut: "The playing skill level has to be a number between 1 and 7. It's your turn.",
+						display :  "The playing skill level has to be a number between 1 and 7. It's your turn."
+					}
+				},
+				
+				TEXT: {
+					HELP: {
+						title:     	"Connect-Four Short Help",
+						richText:   "Here the Short-Help: <br/><br/>" +
+									"You can use the following commands: <br/>" +
+									" * 'Help', <br/>" +
+									" * 'Start a new game', <br/>" +
+									" * 'I throw into row ...', <br/>" +
+									" * 'You may start', <br/>" +
+									" * 'Set playing skill level to ...' <br/>" +
+									" * 'Stop' <br/><br/>" + 
+									"Do you want a detailed help?",
+						speechOut: "Here the short help: " +
+						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into row X', 'You may start', 'Set playing skill level to X' or Stop. " + 
+						   			"Do you want a detailed help?",
+						display:   	"Here the Short-Help: " +
+									"You can use the following commands: 'Help', 'Start a new game', 'I throw into row ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+									"Do you want a detailed help?"
+					},
+					
+					ActionHELP: {
+						title:     	"Connect-Four Help",
+						richText:   "<font size='5'>Choose a topic:<br/>" +
+									"<br/>" +
+									"<action token='ActionHELP_REGELN'>Rules</action><br/>" +
+									"<action token='ActionHELP_SPRACHSTEUERUNG'>Voice Control</action><br/>" +
+									"<action token='ActionHELP_KOMMANDOS'>Commands</action><br/>" +
+									"<action token='ActionHELP_WEITERES'>Others</action><br/>" +
+									"<br/>" +
+									"back to <action token='ActionHOME'>GAME</action></font>",
+						speechOut: ""
+					},
+					ActionHELP_REGELN: {
+						title:     	"Connect-Four Rules",
+						richText:   "<font size='3'>" +
+									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+								    "If there is no row left to throw into, the game is a draw.<br/></font>" +
+									"<font size='2'><br/>" +
+									"Back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font>",
+						speechOut: ""
+					},
+					ActionHELP_SPRACHSTEUERUNG: {
+						title:     "Connect-Four Voice Control",
+						richText:  "<font size='2'>" +
+									"back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font><br/>" +
+									"<br/>" +
+								    "On game start you can decide, whether you want to start or not. " +
+								    "To start the game just say 'I throw into row ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
+								    "If you answer immediately, you can say 'Row ...'. " +
+								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
+								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
+								    "E.g. 'Alexa, Row ...'. " +
+								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
+								    "The game is continued at the last position. " +
+								    "If a game is not continued after 4 hours, then it will be quitted automatically.",
+						speechOut: ""
+					},
+					ActionHELP_KOMMANDOS: {
+						title:     "Connect-Four Commands",
+						richText:  "<font size='3'>" +
+								   "'Help': Starts the help.<br/>" +
+								   "'Start a new game': quits the current game and starts a new one.<br/>" +
+								   "'Set playing skill level to ...': changes the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult.<br/>" +
+								   "'You may start': Lets Alexa make the first move.<br/></font>" +
+									"<font size='2'><br/>" +
+									"Back to <action token='ActionHELP'>Topics</action> or ot <action token='ActionHOME'>GAME</action></font>",
+						speechOut: ""
+					},
+					ActionHELP_WEITERES: {
+						title:     "Connect-Four Others",
+						richText:  "<font size='3'>" +
+								   "In the upper left corenr the current move and the playing skill level (AI) is shown.<br/>" +
+								   "<br/>" +
+								   "One hint at the end: <br/>" +
+								   "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com.<br/></font>" +
+									"<font size='2'><br/>" +
+									"Back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font>",
+						speechOut: ""
+					},
+					
+					INTRO: {
+						title:     	"Welcom to the Game 'Connect-Four'",
+						richText:   "The game can be played using the following commands: <br/><br/>" +
+									" * 'Help', <br/>" +
+									" * 'Start a new game', <br/>" +
+									" * 'I throw into row ...', <br/>" +
+									" * 'You may start', <br/>" +
+									" * 'Set playing skill level to ...' <br/>" +
+									" * 'Stop' <br/><br/>" + 
+									"Do you want a detailed help?",
+						speechOut: "Welcome to the game Connect-Four: " +
+									"The game can be played using the following commands: 'Help', 'Start a new game', 'I throw into row', 'You may start', 'Set playing skill level to' or Stop. " + 
+									"Do you want a detailed help?",
+						display:   	"Welcome to the game 'Connect-Four': " +
+									"The game can be played using the following commands: 'Help', 'Start a new game', 'I throw into row ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+									"Do you want a detailed help?"
+					},
+					
+					WELCOME: {
+						title:     	"Welcome to the game 'Connect-Four'",
+						richText:   "The game can be played using the following commands: <br/><br/>" +
+									" * 'Help', <br/>" +
+									" * 'Start a new game', <br/>" +
+									" * 'I throw into row ...', <br/>" +
+									" * 'You may start', <br/>" +
+									" * 'Set playing skill level to ...' <br/>" +
+									" * 'Stop' <br/><br/>" + 
+									"Do you want a detailed help?",
+						speechOut: "Welcome to the game Connect-Four: " +
+									"Do you want a detailed help?",
+						display:   	"Welcome to the game 'Connect-Four': " +
+									"Do you want a detailed help?"
+					},
+					
+					HELP_REGELN: {
+						title:      "Connect-Four Help",
+						richText:   "Lets start with the rules: <br/>" +
+									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+								    "If there is no row left to throw into, the game is a draw. <br/><br/>" +
+								   
+									"Now to the voice control: <br/>" +
+								    "On game start you can decide, whether you want to start or not. " +
+								    "To start the game just say 'I throw into row ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
+								    "If you answer immediately, you can say 'Row ...'. " +
+								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
+								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
+								    "E.g. 'Alexa, Row ...'. " +
+								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
+								    "The game is continued at the last position. " +
+								    "If a game is not continued after 4 hours, then it will be quitted automatically. <br/><br/>" +
+								    
+					   
+								    "And now to other commands: <br/>" +
+								    "With the command 'Help' you get a help text at any time. <br/>" +
+								    "With the command 'Start a new game' you can quit the current game and start a new one. <br/>" +
+								    "With the command 'Set playing skill level to ...' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. <br/><br/>" +
+
+								    "One hint at the end: <br/>" +
+								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. <br/><br/>" +
+								   
+								    "Shall I repeat the Text?",
+								    
+						speechOut:  "Lets start with the rules: " +
+									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+								    "If there is no row left to throw into, the game is a draw. " +
+								   
+									"Now to the voice control: " +
+								    "On game start you can decide, whether you want to start or not. " +
+								    "To start the game just say 'I throw into row  X'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
+								    "If you answer immediately, you can say 'Row  X'. " +
+								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
+								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
+								    "E.g. 'Alexa, Row  X'. " +
+								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
+								    "The game is continued at the last position. " +
+								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
+								    
+					   
+								    "And now to other commands: " +
+								    "With the command 'Help' you get a help text at any time. " +
+								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
+								    "With the command 'Set playing skill level to  X' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
+			
+								    "One hint at the end: " +
+								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
+								   
+								    "Shall I repeat the Text?",
+								   
+						display:	"Lets start with the rules: " +
+									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+								    "If there is no row left to throw into, the game is a draw. " +
+								   
+									"Now to the voice control: " +
+								    "On game start you can decide, whether you want to start or not. " +
+								    "To start the game just say 'I throw into row ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
+								    "If you answer immediately, you can say 'Row ...'. " +
+								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
+								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
+								    "E.g. 'Alexa, Row ...'. " +
+								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
+								    "The game is continued at the last position. " +
+								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
+								    
+					   
+								    "And now to other commands: " +
+								    "With the command 'Help' you get a help text at any time. " +
+								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
+								    "With the command 'Set playing skill level to ...' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
+		
+								    "One hint at the end: " +
+								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
+								   
+								    "Shall I repeat the Text?"
+							
+					},
+					HELP_REGELN_NOGUI: {
+						speechOut:  "Lets start with the rules: " +
+									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+								    "If there is no row left to throw into, the game is a draw. " +
+								   
+									"Now to the display: " +
+									"Your device does not support a display. But you can see the game board on the website calcbox.de. " +
+									"Open this website and follow the instructions. " +
+								    
+								    "Now to the voice control: " +
+								    "On game start you can decide, whether you want to start or not. " +
+								    "To start the game just say 'I throw into row  X'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
+								    "If you answer immediately, you can say 'Row  X'. " +
+								    "But the voice recognition waits only a short time for your answer. " +
+								    "No Worry, you can continue the game by starting the Alexa skill again with 'Alexa, start Connect-Four'." +
+								    "The game is continued at the last position. " +
+								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
+					   
+								    "And now to other commands: " +
+								    "With the command 'Help' you get a help text at any time. " +
+								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
+								    "With the command 'Set playing skill level to  X' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
+			
+								    "One hint at the end: " +
+								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
+								   
+								    "Shall I repeat the Text?",
+
+						display:    "Lets start with the rules: " +
+									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+								    "If there is no row left to throw into, the game is a draw. " +
+								   
+									"Now to the display: " +
+									"Your device does not support a display. But you can see the game board on the website calcbox.de. " +
+									"Open this website and follow the instructions. " +
+								    
+								    "Now to the voice control: " +
+								    "On game start you can decide, whether you want to start or not. " +
+								    "To start the game just say 'I throw into row  ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
+								    "If you answer immediately, you can say 'Row  ...'. " +
+								    "But the voice recognition waits only a short time for your answer. " +
+								    "No Worry, you can continue the game by starting the Alexa skill again with 'Alexa, start Connect-Four'." +
+								    "The game is continued at the last position. " +
+								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
+					   
+								    "And now to other commands: " +
+								    "With the command 'Help' you get a help text at any time. " +
+								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
+								    "With the command 'Set playing skill level to  ...' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
+			
+								    "One hint at the end: " +
+								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
+								   
+								    "Shall I repeat the Text?",
+								    
+					},
+				},
+				
+				INTERN: {
+					NO_AMZ_USERID: {
+						speechOut:  "The request does not contain a User-ID.",
+						display:    "The request does not contain a User-ID."
+					},
+					INVALID_USERDATA: {
+						speechOut:  "The userdata are not readable.",
+						display:    "The userdata are not readable."
+					},
+					YOUR_MOVE: {
+						speechOut:  "Into which row do you throw a coin?",
+						display:    "Into which row do you throw a coin?"
+					},
+					AI_LEVEL_CHANGED: {
+						speechOut:  "The playing skill level has been set to %1. Into which row do you throw a coin?",
+						display:    "The playing skill level has been set to %1. Into which row do you throw a coin?"
+					},
+					ANIMAL_CONNECTED: {
+						speechOut:  "You are connected to the website display. Into which row do you throw a coin?",
+						display:    "You are connected to the website display. Into which row do you throw a coin?"
+					},
+					NEW_GAME_STARTED: {
+						speechOut:  "A new game was started. Into which row do you throw a coin?",
+						display:    "A new game was started. Into which row do you throw a coin?"
+					},
+					GAME_CONTINUED: {
+						speechOut:  "Your last game is continued, into which row do you throw a coin?",
+						display:    "Your last game is continued, into which row do you throw a coin?"
+					},
+					HELP: {
+						speechOut: "Here the short help: " +
+						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into row X', 'You may start', 'Set playing skill level to X' or Stop. " + 
+						   			"Do you want a detailed help?",
+						   			
+						   			
+						display:   	"Here the Short-Help: " +
+									"You can use the following commands: 'Help', 'Start a new game', 'I throw into row ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+									"Do you want a detailed help?"
+						   			
+					},
+					INTRO: {
+						speechOut: 	"Elcom to the Connect-Four Skill. Do you want instructions how to use this skill?",
+						display: 	"Do you want instructions how to use this skill?"
+					},
+					HELP_REGELN: {
+						
+						speechOut:  "Lets start with the rules: " +
+									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+								    "If there is no row left to throw into, the game is a draw. " +
+								   
+									"Now to the voice control: " +
+								    "On game start you can decide, whether you want to start or not. " +
+								    "To start the game just say 'I throw into row  X'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
+								    "If you answer immediately, you can say 'Row  X'. " +
+								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
+								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
+								    "E.g. 'Alexa, Row  X'. " +
+								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
+								    "The game is continued at the last position. " +
+								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
+								    
+					   
+								    "And now to other commands: " +
+								    "With the command 'Help' you get a help text at any time. " +
+								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
+								    "With the command 'Set playing skill level to  X' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
+			
+								    "One hint at the end: " +
+								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
+								   
+								    "Shall I repeat the Text?",
+								   
+						display:	"Lets start with the rules: " +
+									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+								    "If there is no row left to throw into, the game is a draw. " +
+								   
+									"Now to the voice control: " +
+								    "On game start you can decide, whether you want to start or not. " +
+								    "To start the game just say 'I throw into row ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
+								    "If you answer immediately, you can say 'Row ...'. " +
+								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
+								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
+								    "E.g. 'Alexa, Row ...'. " +
+								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
+								    "The game is continued at the last position. " +
+								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
+								    
+					   
+								    "And now to other commands: " +
+								    "With the command 'Help' you get a help text at any time. " +
+								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
+								    "With the command 'Set playing skill level to ...' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
+			
+								    "One hint at the end: " +
+								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
+								   
+								    "Shall I repeat the Text?"
+						
+						
+					},
+					DID_NOT_UNDERSTAND: {
+						speechOut: "Sorry, I do not understand your answer, say Help to learn the commands used in this skill.",
+						display: "Say 'Help' to learn the commands used in this skill. "
+					},
+					CHANGE_SETTINGS: {
+						speechOut: "You can change the playing skill level using the command 'Set playing skill level to' and a value from 1 to 7.",
+						display: "Say 'Set playing level skill to ... (1..7)'. "
+					},
+					AI_STARTS_NOT_ALLOWED: {
+						speechOut: "The players can only switch at the first move. Into which row do you throw a coin?",
+						display: "The players can only switch at the first move. Into which row do you throw a coin?"
+					},
+					NOT_YES_NO_ANSWER: {
+						speechOut: "That was not an answer to my question, I take this as a 'No'. Into which row do you throw a coin?",
+						display: "That was not an answer to my question, I take this as a 'No'. Into which row do you throw a coin?"
+					},
+					NO_QUESTION_ASKED: {
+						speechOut: "I did not ask a Yes/No Question. Into which row do you throw a coin?",
+						display: "I did not ask a Yes/No Question. Into which row do you throw a coin?"
+					}
+				},
+				
+				STATUS: {
+					PLAYER_WINS: { 
+						speechOut: "Congratulations! You have won.",
+						display :  "Congratulations! You have won."
+					},
+					DRAW: { 
+						speechOut: "The game ends with a draw.",
+						display :  "The game ends with a draw."
+					},
+					AI_PLAYER_WINS: { 
+						speechOut: "I have won.",
+						display :  "I have won."
+					},
+					MAKE_YOUR_MOVE: { 
+						speechOut: "Into which row do you throw a coin?",
+						display :  "Into which row do you throw a coin?"
+					}
+				},
+				
+				STATUS_AIMOVE: {
+					PLAYER_WINS: { 
+						speechOut: "Congratulations! You have won.",
+						display :  "Congratulations! You have won."
+					},
+					DRAW: { 
+						speechOut: "I throw into row %1, the game ends with a draw.",
+						display :  "I throw into row %1, the game ends with a draw."
+					},
+					AI_PLAYER_WINS: { 
+						speechOut: "I throw into row %1 and have won.",
+						display :  "I throw into row %1 and have won."
+					},
+					MAKE_YOUR_MOVE: { 
+						speechOut: "I throw into row %1. Into which row do you throw a coin?",
+						display :  "I throw into row %1. Into which row do you throw a coin?"
+					}
+				},
+				
+				HINT: {
+					PLAYER_WINS: { 
+						speechOut: "start a new game.",
+						display :  "start a new game."
+					},
+					DRAW: { 
+						speechOut: "start a new game.",
+						display :  "start a new game."
+					},
+					AI_PLAYER_WINS: { 
+						speechOut: "start a new game.",
+						display :  "start a new game."
+					},
+					MAKE_YOUR_MOVE: { 
+						speechOut: "I throw into row ...",
+						display :  "I throw into row ..."
+					}
+				},
+				
+				PlayerMoveIntent: {
+					S_PLAYER_WINS: { 
+						speechOut: "Congratulations! You have won.",
+						display :  "Congratulations! You have won."
+					},
+					S_DRAW: { 
+						speechOut: "The game ends with a draw.",
+						display :  "The game ends with a draw."
+					},
+					S_OK: { 
+						speechOut: "I throw into row %1.",
+						display :  "I throw into row %1."
+					},
+					S_AI_PLAYER_WINS: { 
+						speechOut: "I throw into row %1 and have won.",
+						display :  "I throw into row %1 and have won."
+					},
+					S_AI_DRAW: { 
+						speechOut: "I throw into row %1 and the game ends with a draw.",
+						display :  "I throw into row %1 and the game ends with a draw."
+					},
+					E_INVALID_PARAMETER: { 
+						speechOut: "Ich habe die Reihe nicht verstanden. Sage eine Zahl von eins bis sieben.",
+						display :  "Ich habe die Reihe nicht verstanden. Sage eine Zahl von 1-7."
+					},
+					E_INVALID_MOVE: {
+						speechOut: "This row has no space left for throwing a coin into it.",
+						display :  "This row has no space left for throwing a coin into it."
+					},
+					E_GAME_FINISHED: { 
+						speechOut: "The game is over. To start a new game, say 'Start a new game'.",
+						display :  "The game is over. To start a new game, say 'Start a new game'."
+					}
+
+				},
+				
+				SetAILevelIntent: {
+					S_OK: { 
+						speechOut: "The playing skill level has been set to %1. It's your turn.",
+						display :  "The playing skill level has been set to %1. It's your turn."
+					},
+					E_INVALID_PARAMETER: { 
+						speechOut: "The playing skill level has to be a number between 1 and 7. Into which row do you throw a coin?",
+						display :  "The playing skill level has to be a number between 1 and 7. Into which row do you throw a coin?"
+					},
+				}, 
+				
+				GetAILevelIntent: {
+					S_OK: { 
+						speechOut: "The playing skill level is set to %1.",
+						display :  "The playing skill level is set to %1."
+					}
+				},
+				
+			    "AMAZON.StopIntent": {
+			    	"*": {
+			    		speechOut: "goodby, have a nice day!", 
+			    		display :  "goodby, have a nice day!"
+			    	}
+			    },
+			    
+				Generic: {
+					E_UNKNOWN_ERROR: {
+						speechOut: "An unexpected error has occurred.",
+						display: "An unexpected error has occurred",
+					},
+					E_UNKNOWN_GAMEID: { 
+						speechOut: "The game was closed on the server. Please start a new game.",
+						display:   "The game was closed on the server. Please start a new game." 
+					},
+					E_GAME_FINISHED: { 
+						speechOut: "The game is over. Please start a new game.",
+						display:   "The game is over. Please start a new game." 
+					},
+					E_CONNECT: { 
+						speechOut: "There are connections problems with the Server.",
+						display:   "There are connections problems with the Server." 
+					},
+					E_MISSING: { 
+						speechOut: "Sorry, missing speech output for Intent-code %1 .",
+						display:   "Sorry, missing speech output for Intent-code '%1'." 
+					}
+
+				}
+			    
+			} // end messages
+
+		}  // end local "en"
 		
 	}
 }
+
+
 
 function respond(intentName, resultCode, response, param1) {
 	var msg;
@@ -635,13 +1199,11 @@ function respond(intentName, resultCode, response, param1) {
 		msg = messages["Generic"][resultCode];
 	}
 	if (!msg) {
-		msg = {
-				speechOut: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode,
-				display: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode
-		}
+		msg = messages["Generic"]["E_MISSING"];
+		msg = setParams(msg, intentName + "-" + resultCode);
 	}
 	msg = setParams(msg, param1);
-	response.askWithCard(msg.speechOut, "Vierer-Reihe Skill", msg.display);
+	response.askWithCard(msg.speechOut, cardTitle, msg.display);
 }
 
 function createMsg(intentName, resultCode, param1) {
@@ -653,17 +1215,15 @@ function createMsg(intentName, resultCode, param1) {
 		msg = messages["Generic"][resultCode];
 	}
 	if (!msg) {
-		msg = {
-				speechOut: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode,
-				display: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode
-		}
+		msg = messages["Generic"]["E_MISSING"];
+		msg = setParams(msg, intentName + "-" + resultCode);
 	}
 	msg = setParams(msg, param1);
 	return msg;
 }
 
 function respondMsg(response, msg) {
-	response.askWithCard(msg.speechOut, undefined, "Vierer-Reihe Skill", msg.display);
+	response.askWithCard(msg.speechOut, undefined, cardTitle, msg.display);
 }
 
 function respondMsgWithDirectives(response, msg, directives) {
@@ -684,13 +1244,11 @@ function goodbye(intentName, resultCode, response, param1) {
 		msg = messages["Generic"][resultCode];
 	}
 	if (!msg) {
-		msg = {
-				speechOut: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode,
-				display: "Sorry, Es fehlt die Sprachausgabe für Intent "+intentName+" mit dem Code "+resultCode
-		}
+		msg = messages["Generic"]["E_MISSING"];
+		msg = setParams(msg, intentName + "-" + resultCode);
 	}
 	msg = setParams(msg, param1);
-	response.tellWithCard(msg.speechOut, "Vierer-Reihe Skill", msg.display);
+	response.tellWithCard(msg.speechOut, cardTitle, msg.display);
 }
 
 function setParams(msg, param1) {
@@ -705,4 +1263,4 @@ function setParams(msg, param1) {
 }
 
 
-module.exports = {init_messages, respond, createMsg, respondMsg, respondMsgWithDirectives, outputMsgWithDirectives, goodbye};
+module.exports = {set_locale, respond, createMsg, respondMsg, respondMsgWithDirectives, outputMsgWithDirectives, goodbye};

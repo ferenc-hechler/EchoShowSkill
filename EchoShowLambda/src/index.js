@@ -29,7 +29,6 @@ var authPassword = process.env.AUTH_PASSWORD; // 'geheim';
 var AlexaSkill = require('./AlexaSkill');
 
 var speech = require('./Speech');
-speech.init_messages("DE");
 
 var http = require('http');
 var querystring = require("querystring");
@@ -77,6 +76,59 @@ var ANIMAL_MAPPING = {
 		  "marienkäfer": 	"MARIENKAEFER",
 		  "möwe": 			"MOEWE",
 		  "schildkröte": 	"SCHILDKROETE",
+		  
+		  // LOCALE EN
+		  "monkey": 		"AFFE",
+		  "ant": 			"AMEISE",
+		  "bear": 			"BAER",
+		  "bee": 			"BIENE",
+		  "badger": 		"DACHS",
+		  "dolphin": 		"DELFIN",
+		  "squirrel": 		"EICHHOERNCHEN",
+		  "elephant": 		"ELEFANT",
+		  "duck": 			"ENTE",
+		  "donkey": 		"ESEL",
+		  "fish": 			"FISCH",
+		  "fly": 			"FLIEGE",
+		  "frog": 			"FROSCH",
+		  "goose": 			"GANS",
+		  "giraffe": 		"GIRAFFE",
+		  "cock": 			"HAHN",
+		  "shark": 			"HAI",
+		  "rabbit": 		"HASE",
+		  "deer": 			"HIRSCH",
+		  "dog": 			"HUND",
+		  "hedgehog": 		"IGEL",
+		  "camel": 			"KAMEL",
+		  "cat": 			"KATZE",
+		  "crocodile": 		"KROKODIL",
+		  "cow": 			"KUH",
+		  "lion": 			"LOEWE",
+		  "ladybug": 		"MARIENKAEFER",
+		  "mouse": 			"MAUS",
+		  "gull": 			"MOEWE",
+		  "rhino": 			"NASHORN",
+		  "panda": 			"PANDA",
+		  "parrot": 		"PAPAGEI",
+		  "peacock": 		"PFAU",
+		  "horse":			"PFERD",
+		  "penguin": 		"PINGUIN",
+		  "caterpillar": 	"RAUPE",
+		  "sheep": 			"SCHAF",
+		  "turtle": 		"SCHILDKROETE",
+		  "snake": 			"SCHLANGE",
+		  "butterfly": 		"SCHMETTERLING",
+		  "snail": 			"SCHNECKE",
+		  "swan": 			"SCHWAN",
+		  "pig": 			"SCHWEIN",
+		  "spider": 		"SPINNE",
+		  "stork": 			"STORCH",
+		  "tiger": 			"TIGER",
+		  "whale": 			"WAL",
+		  "wolf": 			"WOLF",
+		  "worm": 			"WURM",
+		  "zebra": 			"ZEBRA"
+		  
 }
 
 
@@ -172,6 +224,9 @@ ConnectFourSkill.prototype.actionHandlers = {
 // Create the handler that responds to the Alexa Request.
 exports.handler = function(event, context) {
 	logObject("EVENT", event);
+	
+	speech.set_locale(getEventLocale(event)); 
+	
 	// Create an instance of the ConnectFourSkill skill.
 	var connectFourSkill = new ConnectFourSkill();
 	removeSessionRequest(event.session);
@@ -880,6 +935,13 @@ function hasEventDisplay(event) {
 		return false;
 	}
 	return true;
+}
+
+function getEventLocale(event) {
+	if (!event || (!event.request)) {
+		return undefined;
+	}
+	return event.request.locale;
 }
 
 function getEventDisplayToken(event) {

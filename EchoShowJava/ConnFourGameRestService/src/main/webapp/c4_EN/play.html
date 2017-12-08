@@ -1,0 +1,245 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="pragma" content="no-cache" />
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript">
+
+var col_name=['gray', 'red', 'yellow', '#C00000', '#c0c000'];
+var src_name=['http://calcbox.de/c4imgs/64px/circle-0.png', 'http://calcbox.de/c4imgs/64px/circle-1.png', 'http://calcbox.de/c4imgs/64px/circle-2.png', 'http://calcbox.de/c4imgs/64px/circle-3.png', 'http://calcbox.de/c4imgs/64px/circle-4.png'];
+var stopreload=false;
+var cnt=0;
+var aiLevel;
+var version = -1;
+
+function reset()
+{
+	$.ajax({
+		type: 'post',
+		url: '../rest/c4',
+		data: {
+			cmd: 'clearSession'
+		},
+		success: function (response) {
+			window.location="index.html";
+		}
+	});
+}
+
+function getGameData()
+{
+	$.ajax({
+		type: 'post',
+		url: '../rest/c4',
+		data: {
+			cmd: 'clientGetGameData'
+		},
+		success: function (response) {
+		    cnt = cnt + 1
+		    document.getElementById( "cnt" ).value=cnt;
+		    if (response.version !== undefined) {
+			    version = response.version;
+		    }
+		    if (response.movesCount) {
+			    document.getElementById( "txt_movesCount" ).innerHTML='Moves: '+response.movesCount;
+		    }
+		    if (response.aiLevel) {
+		    	aiLevel = response.aiLevel; 
+			    document.getElementById( "txt_aiLevel" ).innerHTML='AI: '+aiLevel;
+		    }
+		    if (response.fieldView && response.fieldView.field) {
+				setFieldColors(response.fieldView.field);
+		    }
+		    if (response.code !== "S_OK") {
+		    	stopreload = true;
+		    	setTimeout(reset, 15000);
+			}
+		    
+		},
+		error: function (jqXHR, exception) {
+	        var msg = '';
+	        if (jqXHR.status === 0) {
+	            msg = 'Not connect.\n Verify Network.';
+	        } else if (jqXHR.status == 404) {
+	            msg = 'Requested page not found. [404]';
+	        } else if (jqXHR.status == 500) {
+	            msg = 'Internal Server Error [500].';
+	        } else if (exception === 'parsererror') {
+	            msg = 'Requested JSON parse failed.';
+	        } else if (exception === 'timeout') {
+	            msg = 'Time out error.';
+	        } else if (exception === 'abort') {
+	            msg = 'Ajax request aborted.';
+	        } else {
+	            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+	        }
+	        alert(msg);
+	    }		
+	});
+}
+
+function loaddata()
+{
+	$.ajax({
+		type: 'post',
+		url: '../rest/c4',
+		data: {
+			cmd: 'hasChanges',
+			param1: version
+		},
+		success: function (response) {
+		    cnt = cnt + 1
+		    document.getElementById( "cnt" ).value=cnt;
+		    if (response.code === "S_CHANGES_EXIST") {
+		    	setTimeout(getGameData, 1);
+			}
+		    else if (response.code === "E_UNKNOWN_GAMEID") {
+		    	stopreload = true;
+		    	setTimeout(reset, 15000);
+			}
+		},
+		error: function (jqXHR, exception) {
+	        var msg = '';
+	        if (jqXHR.status === 0) {
+	            msg = 'Not connect.\n Verify Network.';
+	        } else if (jqXHR.status == 404) {
+	            msg = 'Requested page not found. [404]';
+	        } else if (jqXHR.status == 500) {
+	            msg = 'Internal Server Error [500].';
+	        } else if (exception === 'parsererror') {
+	            msg = 'Requested JSON parse failed.';
+	        } else if (exception === 'timeout') {
+	            msg = 'Time out error.';
+	        } else if (exception === 'abort') {
+	            msg = 'Ajax request aborted.';
+	        } else {
+	            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+	        }
+	        alert(msg);
+	    }		
+	});
+	if (!stopreload) {
+		setTimeout(loaddata, 1000);
+	}
+}
+
+
+
+function setFieldColors(field) {
+	for (var y = 0; y < 6; y++) {
+		for (var x = 0; x < 7; x++) {
+			var i = x+7*(5-y);
+//			var box=document.getElementById( 'box_'+i );
+//			box.bgColor = col_name[field[y][x]];
+			var elemId =  'img_'+i;
+			var img=document.getElementById( 'img_'+i );
+			img.src = src_name[field[y][x]];
+		}
+	}
+}
+
+
+function startload()
+{
+	if (stopreload) {
+		 stopreload=false;
+		 setTimeout(loaddata, 1000);
+	}
+}
+
+function stopload()
+{
+	 stopreload=true;
+}
+
+setTimeout(loaddata, 1000);
+
+
+</script>
+
+</head>
+<body>
+		
+<h1>Connect-Four against Alexa</h1>
+
+<table><tr><td>
+
+<table>
+
+<p>
+<img width="448px" height="64px" src="http://calcbox.de/c4imgs/64px/frameset_top.png"/><br>
+<img width="64px" height="64px" id="img_35" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_36" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_37" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_38" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_39" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_40" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_41" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_28" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_29" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_30" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_31" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_32" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_33" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_34" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_21" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_22" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_23" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_24" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_25" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_26" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_27" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_14" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_15" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_16" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_17" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_18" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_19" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_20" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_7"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_8"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_9"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_10" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_11" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_12" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_13" src="http://calcbox.de/c4imgs/64px/circle-0.png"/><br>
+<img width="64px" height="64px" id="img_0"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_1"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_2"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_3"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_4"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_5"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><img width="64px" height="64px" id="img_6"  src="http://calcbox.de/c4imgs/64px/circle-0.png"/><br>
+</p>
+
+<p>
+<table><tr>
+<td><input type="button" onclick="startload();" name="start" value="start"></td>
+<td><input type="button" onclick="stopload();" name="stop" value="stop"></td>
+<td><input type="button" onclick="reset();" name="reset" value="reset"></td>
+<td><input type="text" name="cnt" id="cnt"></td>
+</tr></table>
+</p>
+
+<!--
+<p>
+<table>
+<tr> <td align="center">1</td> <td align="center">2</td> <td align="center">3</td> <td align="center">4</td> <td align="center">5</td> <td align="center">6</td> <td align="center">7</td> </tr>
+<tr> <td width="50px" height="50px" id="box_35"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_36" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_37" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_38" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_39" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_40" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_41" bgcolor="gray">&nbsp;</td> </tr>
+<tr> <td width="50px" height="50px" id="box_28"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_29" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_30" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_31" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_32" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_33" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_34" bgcolor="gray">&nbsp;</td> </tr>
+<tr> <td width="50px" height="50px" id="box_21"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_22" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_23" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_24" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_25" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_26" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_27" bgcolor="gray">&nbsp;</td> </tr>
+<tr> <td width="50px" height="50px" id="box_14"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_15" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_16" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_17" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_18" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_19" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_20" bgcolor="gray">&nbsp;</td> </tr>
+<tr> <td width="50px" height="50px" id="box_7"   bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_8"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_9"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_10" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_11" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_12" bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_13" bgcolor="gray">&nbsp;</td> </tr>
+<tr> <td width="50px" height="50px" id="box_0"   bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_1"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_2"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_3"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_4"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_5"  bgcolor="gray">&nbsp;</td> <td width="50px" height="50px" id="box_6"  bgcolor="gray">&nbsp;</td> </tr>
+</table>
+</p>
+-->
+
+</td><td>&nbsp;</td><td>
+
+<p>
+<table>
+<tr><td id="txt_movesCount">&nbsp;</td></tr>
+<tr><td id="txt_aiLevel">&nbsp;</td></tr>
+</table>
+</p>
+
+<br>
+
+<p>
+To mage your move say into which row (1..7) you throw your coin:
+<code><pre>
+I throw into row ..." 
+</pre></code>
+</p>
+
+<p>
+If Alexa should start the game, then say:
+<code><pre>
+"You may start" 
+</pre></code>
+</p>
+
+<p>
+To change the playing skill level (AI) say (allowed are 1..7):
+<code><pre>
+Set playing skill level to ..." 
+</pre></code>
+</p>
+
+<p>
+To start a new game say:
+<code><pre>
+"Start a new game" 
+</pre></code>
+</p>
+
+</td></tr></table>
+
+</body>
+</html>

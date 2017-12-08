@@ -1,0 +1,157 @@
+<html>
+<head>
+<title>Vierer-Reihe gegen Alexa</title>
+<meta charset="UTF-8">
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="pragma" content="no-cache" />
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript">
+
+
+if ((location.protocol === 'http:') && (location.hostname !== 'localhost')) {
+	location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+}
+
+var stopreload=false;
+var cnt=0;
+
+
+function reset()
+{
+	$.ajax({
+		type: 'post',
+		url: '../rest/c4',
+		data: {
+			cmd: 'clearSession'
+		},
+		success: function (response) {
+			cnt = 0;
+		}
+	});
+}
+
+
+function loaddata()
+{
+	$.ajax({
+		type: 'post',
+		url: '../rest/c4',
+		data: {
+			cmd: 'getImageEN',
+			param1: cnt
+		},
+		success: function (response) {
+			if (response.code === "S_OK") {
+			    document.getElementById( "imageFile" ).src="../c4/tiere/" + response.imageName + ".jpg";
+			    document.getElementById( "imageText" ).innerHTML="I can see "+ response.einText +" \"" + response.imageText + "\"";
+			    document.getElementById( "imageText2" ).innerHTML="\"Alexa, say Connect-Four' I can see "+ response.einText +" \"" + response.imageText + "\"";
+			}
+			else if (response.code === "S_ACTIVATED") {
+				stopload();
+		    	window.location='play.html';
+		    }
+			else if (response.code === "E_TIMEOUT") {
+				stopload();
+				window.location='timeoutpage.html';
+		    }
+		    cnt = cnt + 1
+		    document.getElementById( "cnt" ).value=cnt;
+		},
+		error: function (jqXHR, exception) {
+	        var msg = '';
+	        if (jqXHR.status === 0) {
+	            msg = 'Not connect.\n Verify Network.';
+	        } else if (jqXHR.status == 404) {
+	            msg = 'Requested page not found. [404]';
+	        } else if (jqXHR.status == 500) {
+	            msg = 'Internal Server Error [500].';
+	        } else if (exception === 'parsererror') {
+	            msg = 'Requested JSON parse failed.';
+	        } else if (exception === 'timeout') {
+	            msg = 'Time out error.';
+	        } else if (exception === 'abort') {
+	            msg = 'Ajax request aborted.';
+	        } else {
+	            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+	        }
+	        alert(msg);
+	    }		
+	});
+	if (!stopreload) {
+		setTimeout(loaddata, 1000);
+	}
+}
+
+function startload()
+{
+	if (stopreload) {
+		 stopreload=false;
+		 setTimeout(loaddata, 1000);
+	}
+}
+
+function stopload()
+{
+	 stopreload=true;
+}
+
+setTimeout(loaddata, 1000);
+
+
+
+</script>
+
+</head>
+<body>
+		
+<h1>Connect-Four against Alexa</h1>
+
+<p>
+You are not connected with your Alexa. <br>
+Please follow the instructions below to establish a connection:
+</p>
+
+<table>
+<tr>
+<td width="500px" valign="top">
+
+<p>Say 
+<code><pre>
+"Alexa, start 'Connect-Four'"
+</pre></code>
+and follow the instructions given until you are asked into which row you want to throw your coin.
+</p>
+  
+<p>
+Then say 
+<code><pre id="imageText">
+"I can see a ?"
+</pre></code>
+</p>
+
+<p>
+Or start 'Connect-Four' indicating the animal:
+<code><pre id="imageText2">
+"Alexa, say 'Connect-Four' I can see a ?"
+</pre></code>
+</p>
+
+</td>
+<td><img id="imageFile" src="../c4/tiere/FRAGEZEICHEN.jpg" /></td>
+<tr>
+</table>
+
+
+<p>
+<table><tr>
+<td><input type="button" onclick="startload();" name="start" value="start"></td>
+<td><input type="button" onclick="stopload();" name="stop" value="stop"></td>
+<td><input type="button" onclick="reset();" name="reset" value="reset"></td>
+<td><input type="text" name="cnt" id="cnt"></td>
+</tr></table>
+</p>
+
+<p>Contact: ferenc.hechler(AT)gmail.com</p>
+
+</body>
+</html>
