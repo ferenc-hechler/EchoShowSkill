@@ -3,19 +3,19 @@ NewGameIntent I want to start a new game
 NewGameIntent please start a new game
 
 PlayerMoveIntent {slot}
-PlayerMoveIntent row {slot}
-PlayerMoveIntent I throw in row {slot}
-PlayerMoveIntent I throw into row {slot}
-PlayerMoveIntent I throw a coin in row {slot}
-PlayerMoveIntent I throw a coin into row {slot}
-PlayerMoveIntent I throw my coin in row {slot}
-PlayerMoveIntent I throw my coin into row {slot}
-PlayerMoveIntent I put in row {slot}
-PlayerMoveIntent I put into row {slot}
-PlayerMoveIntent I put a coin in row {slot}
-PlayerMoveIntent I put a coin into row {slot}
-PlayerMoveIntent I put my coin in row {slot}
-PlayerMoveIntent I put my coin into row {slot}
+PlayerMoveIntent slot {slot}
+PlayerMoveIntent I throw in slot {slot}
+PlayerMoveIntent I throw into slot {slot}
+PlayerMoveIntent I throw a disc in slot {slot}
+PlayerMoveIntent I throw a disc into slot {slot}
+PlayerMoveIntent I throw my disc in slot {slot}
+PlayerMoveIntent I throw my disc into slot {slot}
+PlayerMoveIntent I put in slot {slot}
+PlayerMoveIntent I put into slot {slot}
+PlayerMoveIntent I put a disc in slot {slot}
+PlayerMoveIntent I put a disc into slot {slot}
+PlayerMoveIntent I put my disc in slot {slot}
+PlayerMoveIntent I put my disc into slot {slot}
 
 AIStartsIntent Your turn
 AIStartsIntent You may start
@@ -34,5 +34,5 @@ AnimalConnectIntent I see an {animal}
 AnimalConnectIntent I can see a {animal}
 AnimalConnectIntent I can see an {animal}
 
-AMAZON.StopIntent Stop
+AMAZON.StopIntent stop
 AMAZON.StopIntent cancel

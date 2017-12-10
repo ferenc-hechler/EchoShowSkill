@@ -610,30 +610,30 @@ function set_locale(locale) {
 				
 				SEND_connect: {
 					S_OK: { 
-						speechOut: "It's your turn. Into which row do you throw a coin?",
-						display :  "It's your turn. Into which row do you throw a coin?"
+						speechOut: "It's your turn. Into which slot do you throw a disc?",
+						display :  "It's your turn. Into which slot do you throw a disc?"
 					}
 				},
 				
 				SEND_connectImage: {
 					E_IMAGE_NOT_FOUND: { 
-						speechOut: "This is the wrong animal, try again or throw a coin into a row.",
-						display :  "This is the wrong animal, try again or throw a coin into a row."
+						speechOut: "This is the wrong animal, try again or throw a disc into a slot.",
+						display :  "This is the wrong animal, try again or throw a disc into a slot."
 					},
 					"E_INVALID_PARAMETER": { 
-						speechOut: "You have to say the name of the animal, which you can see on the website calcbox.de. Try again or throw a coin into a row.",
-						display :  "You have to say the name of the animal, which you can see on the website https://calcbox.de . Try again or throw a coin into a row."
+						speechOut: "You have to say the name of the animal, which you can see on the website calcbox.de. Try again or throw a disc into a slot.",
+						display :  "You have to say the name of the animal, which you can see on the website https://calcbox.de . Try again or throw a disc into a slot."
 					},
 				},
 				
 				SEND_doMove: {
 					"E_INVALID_PARAMETER": { 
-						speechOut: "I did not understand the number of the row to throw your coin in, please try again.",
-						display :  "I did not understand the number of the row to throw your coin in, please try again."
+						speechOut: "I did not understand the number of the slot to throw your disc into, please try again.",
+						display :  "I did not understand the number of the slot to throw your disc into, please try again."
 					},
 					"E_INVALID_RANGE": { 
-						speechOut: "Please repeat the number of the row. It must be between 1 and 7.",
-						display :  "Please repeat the number of the row. It must be between 1 and 7."
+						speechOut: "Please repeat the number of the slot. It must be between 1 and 7.",
+						display :  "Please repeat the number of the slot. It must be between 1 and 7."
 					}
 				},
 				
@@ -655,16 +655,16 @@ function set_locale(locale) {
 									"You can use the following commands: <br/>" +
 									" * 'Help', <br/>" +
 									" * 'Start a new game', <br/>" +
-									" * 'I throw into row ...', <br/>" +
+									" * 'I throw into slot ...', <br/>" +
 									" * 'You may start', <br/>" +
 									" * 'Set playing skill level to ...' <br/>" +
 									" * 'Stop' <br/><br/>" + 
 									"Do you want a detailed help?",
 						speechOut: "Here the short help: " +
-						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into row X', 'You may start', 'Set playing skill level to X' or Stop. " + 
+						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot X', 'You may start', 'Set playing skill level to X' or Stop. " + 
 						   			"Do you want a detailed help?",
 						display:   	"Here the Short-Help: " +
-									"You can use the following commands: 'Help', 'Start a new game', 'I throw into row ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+									"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
 									"Do you want a detailed help?"
 					},
 					
@@ -685,7 +685,7 @@ function set_locale(locale) {
 						richText:   "<font size='3'>" +
 									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
-								    "If there is no row left to throw into, the game is a draw.<br/></font>" +
+								    "If there is no slot left to throw into, the game is a draw.<br/></font>" +
 									"<font size='2'><br/>" +
 									"Back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font>",
 						speechOut: ""
@@ -696,12 +696,12 @@ function set_locale(locale) {
 									"back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font><br/>" +
 									"<br/>" +
 								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into row ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "To start the game just say 'I throw into slot ...'. Do you want Alexa the make the first move just say 'You may start'. " +
 								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Row ...'. " +
+								    "If you answer immediately, you can say 'Slot ...'. " +
 								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
 								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, Row ...'. " +
+								    "E.g. 'Alexa, Slot ...'. " +
 								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
 								    "The game is continued at the last position. " +
 								    "If a game is not continued after 4 hours, then it will be quitted automatically.",
@@ -735,16 +735,16 @@ function set_locale(locale) {
 						richText:   "The game can be played using the following commands: <br/><br/>" +
 									" * 'Help', <br/>" +
 									" * 'Start a new game', <br/>" +
-									" * 'I throw into row ...', <br/>" +
+									" * 'I throw into slot ...', <br/>" +
 									" * 'You may start', <br/>" +
 									" * 'Set playing skill level to ...' <br/>" +
 									" * 'Stop' <br/><br/>" + 
 									"Do you want a detailed help?",
 						speechOut: "Welcome to the game Connect-Four: " +
-									"The game can be played using the following commands: 'Help', 'Start a new game', 'I throw into row', 'You may start', 'Set playing skill level to' or Stop. " + 
+									"The game can be played using the following commands: 'Help', 'Start a new game', 'I throw into slot', 'You may start', 'Set playing skill level to' or Stop. " + 
 									"Do you want a detailed help?",
 						display:   	"Welcome to the game 'Connect-Four': " +
-									"The game can be played using the following commands: 'Help', 'Start a new game', 'I throw into row ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+									"The game can be played using the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
 									"Do you want a detailed help?"
 					},
 					
@@ -753,7 +753,7 @@ function set_locale(locale) {
 						richText:   "The game can be played using the following commands: <br/><br/>" +
 									" * 'Help', <br/>" +
 									" * 'Start a new game', <br/>" +
-									" * 'I throw into row ...', <br/>" +
+									" * 'I throw into slot ...', <br/>" +
 									" * 'You may start', <br/>" +
 									" * 'Set playing skill level to ...' <br/>" +
 									" * 'Stop' <br/><br/>" + 
@@ -769,16 +769,16 @@ function set_locale(locale) {
 						richText:   "Lets start with the rules: <br/>" +
 									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
-								    "If there is no row left to throw into, the game is a draw. <br/><br/>" +
+								    "If there is no slot left to throw into, the game is a draw. <br/><br/>" +
 								   
 									"Now to the voice control: <br/>" +
 								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into row ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "To start the game just say 'I throw into slot ...'. Do you want Alexa the make the first move just say 'You may start'. " +
 								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Row ...'. " +
+								    "If you answer immediately, you can say 'Slot ...'. " +
 								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
 								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, Row ...'. " +
+								    "E.g. 'Alexa, Slot ...'. " +
 								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
 								    "The game is continued at the last position. " +
 								    "If a game is not continued after 4 hours, then it will be quitted automatically. <br/><br/>" +
@@ -797,16 +797,16 @@ function set_locale(locale) {
 						speechOut:  "Lets start with the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
-								    "If there is no row left to throw into, the game is a draw. " +
+								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the voice control: " +
 								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into row  X'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "To start the game just say 'I throw into slot  X'. Do you want Alexa the make the first move just say 'You may start'. " +
 								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Row  X'. " +
+								    "If you answer immediately, you can say 'Slot  X'. " +
 								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
 								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, Row  X'. " +
+								    "E.g. 'Alexa, Slot  X'. " +
 								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
 								    "The game is continued at the last position. " +
 								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
@@ -825,16 +825,16 @@ function set_locale(locale) {
 						display:	"Lets start with the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
-								    "If there is no row left to throw into, the game is a draw. " +
+								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the voice control: " +
 								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into row ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "To start the game just say 'I throw into slot ...'. Do you want Alexa the make the first move just say 'You may start'. " +
 								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Row ...'. " +
+								    "If you answer immediately, you can say 'Slot ...'. " +
 								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
 								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, Row ...'. " +
+								    "E.g. 'Alexa, Slot ...'. " +
 								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
 								    "The game is continued at the last position. " +
 								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
@@ -855,7 +855,7 @@ function set_locale(locale) {
 						speechOut:  "Lets start with the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
-								    "If there is no row left to throw into, the game is a draw. " +
+								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the display: " +
 									"Your device does not support a display. But you can see the game board on the website calcbox.de. " +
@@ -863,9 +863,9 @@ function set_locale(locale) {
 								    
 								    "Now to the voice control: " +
 								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into row  X'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "To start the game just say 'I throw into slot X'. Do you want Alexa the make the first move just say 'You may start'. " +
 								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Row  X'. " +
+								    "If you answer immediately, you can say 'Slot  X'. " +
 								    "But the voice recognition waits only a short time for your answer. " +
 								    "No Worry, you can continue the game by starting the Alexa skill again with 'Alexa, start Connect-Four'." +
 								    "The game is continued at the last position. " +
@@ -884,7 +884,7 @@ function set_locale(locale) {
 						display:    "Lets start with the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
-								    "If there is no row left to throw into, the game is a draw. " +
+								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the display: " +
 									"Your device does not support a display. But you can see the game board on the website calcbox.de. " +
@@ -892,9 +892,9 @@ function set_locale(locale) {
 								    
 								    "Now to the voice control: " +
 								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into row  ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "To start the game just say 'I throw into slot  ...'. Do you want Alexa the make the first move just say 'You may start'. " +
 								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Row  ...'. " +
+								    "If you answer immediately, you can say 'Slot  ...'. " +
 								    "But the voice recognition waits only a short time for your answer. " +
 								    "No Worry, you can continue the game by starting the Alexa skill again with 'Alexa, start Connect-Four'." +
 								    "The game is continued at the last position. " +
@@ -923,33 +923,33 @@ function set_locale(locale) {
 						display:    "The userdata are not readable."
 					},
 					YOUR_MOVE: {
-						speechOut:  "Into which row do you throw a coin?",
-						display:    "Into which row do you throw a coin?"
+						speechOut:  "Into which slot do you throw a disc?",
+						display:    "Into which slot do you throw a disc?"
 					},
 					AI_LEVEL_CHANGED: {
-						speechOut:  "The playing skill level has been set to %1. Into which row do you throw a coin?",
-						display:    "The playing skill level has been set to %1. Into which row do you throw a coin?"
+						speechOut:  "The playing skill level has been set to %1. Into which slot do you throw a disc?",
+						display:    "The playing skill level has been set to %1. Into which slot do you throw a disc?"
 					},
 					ANIMAL_CONNECTED: {
-						speechOut:  "You are connected to the website display. Into which row do you throw a coin?",
-						display:    "You are connected to the website display. Into which row do you throw a coin?"
+						speechOut:  "You are connected to the website display. Into which slot do you throw a disc?",
+						display:    "You are connected to the website display. Into which slot do you throw a disc?"
 					},
 					NEW_GAME_STARTED: {
-						speechOut:  "A new game was started. Into which row do you throw a coin?",
-						display:    "A new game was started. Into which row do you throw a coin?"
+						speechOut:  "A new game was started. Into which slot do you throw a disc?",
+						display:    "A new game was started. Into which slot do you throw a disc?"
 					},
 					GAME_CONTINUED: {
-						speechOut:  "Your last game is continued, into which row do you throw a coin?",
-						display:    "Your last game is continued, into which row do you throw a coin?"
+						speechOut:  "Your last game is continued, into which slot do you throw a disc?",
+						display:    "Your last game is continued, into which slot do you throw a disc?"
 					},
 					HELP: {
 						speechOut: "Here the short help: " +
-						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into row X', 'You may start', 'Set playing skill level to X' or Stop. " + 
+						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot X', 'You may start', 'Set playing skill level to X' or Stop. " + 
 						   			"Do you want a detailed help?",
 						   			
 						   			
 						display:   	"Here the Short-Help: " +
-									"You can use the following commands: 'Help', 'Start a new game', 'I throw into row ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+									"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
 									"Do you want a detailed help?"
 						   			
 					},
@@ -962,16 +962,16 @@ function set_locale(locale) {
 						speechOut:  "Lets start with the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
-								    "If there is no row left to throw into, the game is a draw. " +
+								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the voice control: " +
 								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into row  X'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "To start the game just say 'I throw into slot  X'. Do you want Alexa the make the first move just say 'You may start'. " +
 								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Row  X'. " +
+								    "If you answer immediately, you can say 'Slot  X'. " +
 								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
 								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, Row  X'. " +
+								    "E.g. 'Alexa, Slot  X'. " +
 								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
 								    "The game is continued at the last position. " +
 								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
@@ -990,16 +990,16 @@ function set_locale(locale) {
 						display:	"Lets start with the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
-								    "If there is no row left to throw into, the game is a draw. " +
+								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the voice control: " +
 								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into row ...'. Do you want Alexa the make the first move just say 'You may start'. " +
+								    "To start the game just say 'I throw into slot ...'. Do you want Alexa the make the first move just say 'You may start'. " +
 								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Row ...'. " +
+								    "If you answer immediately, you can say 'Slot ...'. " +
 								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
 								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, Row ...'. " +
+								    "E.g. 'Alexa, slot ...'. " +
 								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
 								    "The game is continued at the last position. " +
 								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
@@ -1026,16 +1026,16 @@ function set_locale(locale) {
 						display: "Say 'Set playing level skill to ... (1..7)'. "
 					},
 					AI_STARTS_NOT_ALLOWED: {
-						speechOut: "The players can only switch at the first move. Into which row do you throw a coin?",
-						display: "The players can only switch at the first move. Into which row do you throw a coin?"
+						speechOut: "The players can only switch at the first move. Into which slot do you throw a disc?",
+						display: "The players can only switch at the first move. Into which slot do you throw a disc?"
 					},
 					NOT_YES_NO_ANSWER: {
-						speechOut: "That was not an answer to my question, I take this as a 'No'. Into which row do you throw a coin?",
-						display: "That was not an answer to my question, I take this as a 'No'. Into which row do you throw a coin?"
+						speechOut: "That was not an answer to my question, I take this as a 'No'. Into which slot do you throw a disc?",
+						display: "That was not an answer to my question, I take this as a 'No'. Into which slot do you throw a disc?"
 					},
 					NO_QUESTION_ASKED: {
-						speechOut: "I did not ask a Yes/No Question. Into which row do you throw a coin?",
-						display: "I did not ask a Yes/No Question. Into which row do you throw a coin?"
+						speechOut: "I did not ask a Yes/No Question. Into which slot do you throw a disc?",
+						display: "I did not ask a Yes/No Question. Into which slot do you throw a disc?"
 					}
 				},
 				
@@ -1053,8 +1053,8 @@ function set_locale(locale) {
 						display :  "I have won."
 					},
 					MAKE_YOUR_MOVE: { 
-						speechOut: "Into which row do you throw a coin?",
-						display :  "Into which row do you throw a coin?"
+						speechOut: "Into which slot do you throw a disc?",
+						display :  "Into which slot do you throw a disc?"
 					}
 				},
 				
@@ -1064,16 +1064,16 @@ function set_locale(locale) {
 						display :  "Congratulations! You have won."
 					},
 					DRAW: { 
-						speechOut: "I throw into row %1, the game ends with a draw.",
-						display :  "I throw into row %1, the game ends with a draw."
+						speechOut: "I throw into slot %1, the game ends with a draw.",
+						display :  "I throw into slot %1, the game ends with a draw."
 					},
 					AI_PLAYER_WINS: { 
-						speechOut: "I throw into row %1 and have won.",
-						display :  "I throw into row %1 and have won."
+						speechOut: "I throw into slot %1 and have won.",
+						display :  "I throw into slot %1 and have won."
 					},
 					MAKE_YOUR_MOVE: { 
-						speechOut: "I throw into row %1. Into which row do you throw a coin?",
-						display :  "I throw into row %1. Into which row do you throw a coin?"
+						speechOut: "I throw into slot %1. Into which slot do you throw a disc?",
+						display :  "I throw into slot %1. Into which slot do you throw a disc?"
 					}
 				},
 				
@@ -1091,8 +1091,8 @@ function set_locale(locale) {
 						display :  "start a new game."
 					},
 					MAKE_YOUR_MOVE: { 
-						speechOut: "I throw into row ...",
-						display :  "I throw into row ..."
+						speechOut: "I throw into slot ...",
+						display :  "I throw into slot ..."
 					}
 				},
 				
@@ -1106,24 +1106,24 @@ function set_locale(locale) {
 						display :  "The game ends with a draw."
 					},
 					S_OK: { 
-						speechOut: "I throw into row %1.",
-						display :  "I throw into row %1."
+						speechOut: "I throw into slot %1.",
+						display :  "I throw into slot %1."
 					},
 					S_AI_PLAYER_WINS: { 
-						speechOut: "I throw into row %1 and have won.",
-						display :  "I throw into row %1 and have won."
+						speechOut: "I throw into slot %1 and have won.",
+						display :  "I throw into slot %1 and have won."
 					},
 					S_AI_DRAW: { 
-						speechOut: "I throw into row %1 and the game ends with a draw.",
-						display :  "I throw into row %1 and the game ends with a draw."
+						speechOut: "I throw into slot %1 and the game ends with a draw.",
+						display :  "I throw into slot %1 and the game ends with a draw."
 					},
 					E_INVALID_PARAMETER: { 
 						speechOut: "Ich habe die Reihe nicht verstanden. Sage eine Zahl von eins bis sieben.",
 						display :  "Ich habe die Reihe nicht verstanden. Sage eine Zahl von 1-7."
 					},
 					E_INVALID_MOVE: {
-						speechOut: "This row has no space left for throwing a coin into it.",
-						display :  "This row has no space left for throwing a coin into it."
+						speechOut: "This slot has no space left for throwing a disc into it.",
+						display :  "This slot has no space left for throwing a disc into it."
 					},
 					E_GAME_FINISHED: { 
 						speechOut: "The game is over. To start a new game, say 'Start a new game'.",
@@ -1138,8 +1138,8 @@ function set_locale(locale) {
 						display :  "The playing skill level has been set to %1. It's your turn."
 					},
 					E_INVALID_PARAMETER: { 
-						speechOut: "The playing skill level has to be a number between 1 and 7. Into which row do you throw a coin?",
-						display :  "The playing skill level has to be a number between 1 and 7. Into which row do you throw a coin?"
+						speechOut: "The playing skill level has to be a number between 1 and 7. Into which slot do you throw a disc?",
+						display :  "The playing skill level has to be a number between 1 and 7. Into which slot do you throw a disc?"
 					},
 				}, 
 				

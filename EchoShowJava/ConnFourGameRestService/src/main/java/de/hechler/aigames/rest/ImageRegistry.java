@@ -51,7 +51,7 @@ public class ImageRegistry {
 		  HASE(			"einen", "Hasen",		"a", 	"rabbit"),
 		  HIRSCH(		"einen", "Hirsch",		"a", 	"deer"),
 		  HUND(			"einen", "Hund",		"a", 	"dog"),
-		  IGEL(			"einen", "Igel",		"a", 	"Hedgehog"),
+		  IGEL(			"einen", "Igel",		"a", 	"hedgehog"),
 		  KAMEL(		"ein", "Kamel",			"a", 	"camel"),
 		  KATZE(		"eine", "Katze",		"a", 	"cat"),
 		  KROKODIL(		"ein", "Krokodil",		"a", 	"crocodile"),
