@@ -683,8 +683,8 @@ function set_locale(locale) {
 					ActionHELP_REGELN: {
 						title:     	"Connect-Four Rules",
 						richText:   "<font size='3'>" +
-									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw.<br/></font>" +
 									"<font size='2'><br/>" +
 									"Back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font>",
@@ -767,8 +767,8 @@ function set_locale(locale) {
 					HELP_REGELN: {
 						title:      "Connect-Four Help",
 						richText:   "Lets start with the rules: <br/>" +
-									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. <br/><br/>" +
 								   
 									"Now to the voice control: <br/>" +
@@ -795,8 +795,8 @@ function set_locale(locale) {
 								    "Shall I repeat the Text?",
 								    
 						speechOut:  "Lets start with the rules: " +
-									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the voice control: " +
@@ -823,8 +823,8 @@ function set_locale(locale) {
 								    "Shall I repeat the Text?",
 								   
 						display:	"Lets start with the rules: " +
-									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the voice control: " +
@@ -853,8 +853,8 @@ function set_locale(locale) {
 					},
 					HELP_REGELN_NOGUI: {
 						speechOut:  "Lets start with the rules: " +
-									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the display: " +
@@ -874,7 +874,7 @@ function set_locale(locale) {
 								    "And now to other commands: " +
 								    "With the command 'Help' you get a help text at any time. " +
 								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
-								    "With the command 'Set playing skill level to  X' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
+								    "With the command 'Set playing skill level to X' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
 			
 								    "One hint at the end: " +
 								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
@@ -882,8 +882,8 @@ function set_locale(locale) {
 								    "Shall I repeat the Text?",
 
 						display:    "Lets start with the rules: " +
-									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the display: " +
@@ -960,8 +960,8 @@ function set_locale(locale) {
 					HELP_REGELN: {
 						
 						speechOut:  "Lets start with the rules: " +
-									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the voice control: " +
@@ -988,8 +988,8 @@ function set_locale(locale) {
 								    "Shall I repeat the Text?",
 								   
 						display:	"Lets start with the rules: " +
-									"In the game Connect-Four two players play against each other, by throwing coins alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive coins either vertically, horizontally or diagonally. " +
+									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
+								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. " +
 								   
 									"Now to the voice control: " +
@@ -1152,8 +1152,8 @@ function set_locale(locale) {
 				
 			    "AMAZON.StopIntent": {
 			    	"*": {
-			    		speechOut: "goodby, have a nice day!", 
-			    		display :  "goodby, have a nice day!"
+			    		speechOut: "goodbye, have a nice day!", 
+			    		display :  "goodbye, have a nice day!"
 			    	}
 			    },
 			    

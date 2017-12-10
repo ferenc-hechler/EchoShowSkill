@@ -44,7 +44,7 @@ function loaddata()
 			if (response.code === "S_OK") {
 			    document.getElementById( "imageFile" ).src="../c4/tiere/" + response.imageName + ".jpg";
 			    document.getElementById( "imageText" ).innerHTML="I can see "+ response.einText +" \"" + response.imageText + "\"";
-			    document.getElementById( "imageText2" ).innerHTML="\"Alexa, say Connect-Four' I can see "+ response.einText +" \"" + response.imageText + "\"";
+			    document.getElementById( "imageText2" ).innerHTML="\"Alexa, tell 'Connect-Four' I can see "+ response.einText +" \"" + response.imageText + "\"";
 			}
 			else if (response.code === "S_ACTIVATED") {
 				stopload();
@@ -132,7 +132,7 @@ Then say
 <p>
 Or start 'Connect-Four' with saying the animal, which you can see:
 <code><pre id="imageText2">
-"Alexa, say 'Connect-Four' I can see a ?"
+"Alexa, tell 'Connect-Four' I can see a ?"
 </pre></code>
 </p>
 
