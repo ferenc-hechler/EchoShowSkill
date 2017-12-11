@@ -1,3 +1,19 @@
+Echo-Spot Display info: https://developer.amazon.com/de/docs/custom-skills/best-practices-for-echo-show-skills.html#parse-supported-interfaces
+
+Echo Spot
+
+    Screen resolution is 480x480 pixels, with the screen cropped to a circle.
+    Background scrim/overlay of black #000000 is set at a 70% opacity.
+
+Compare to the specifications for Echo Show.
+
+    Screen resolution is 1024x640 pixels, with a rectangular screen.
+
+https://developer.amazon.com/de/docs/custom-skills/display-template-reference.html#device-display-comparisonbodytemplate1
+
+
+
+
 Featurewünsche: https://forums.developer.amazon.com/spaces/185/index.html
 
 https://developer.amazon.com/de/docs/custom-skills/best-practices-for-echo-show-skills.html:
