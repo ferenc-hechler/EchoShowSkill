@@ -100,10 +100,19 @@ public class ImageRegistry {
 		public ImageEnum image;
 		public String gameId;
 		public long creationTime;
+		public long lastQueryTime;
 		public SessionEntry(String sessionId, ImageEnum image) {
 			this.sessionId = sessionId;
 			this.image = image;
 			this.creationTime = System.currentTimeMillis();
+			this.lastQueryTime = this.creationTime;
+		}
+		public void updateLastQueryTime() {
+			this.lastQueryTime = System.currentTimeMillis();
+		}
+		public boolean checkLastQueryTime(long timeoutMillis) {
+			long millis = System.currentTimeMillis() - this.lastQueryTime;
+			return millis <= timeoutMillis;
 		}
 		@Override
 		public String toString() {

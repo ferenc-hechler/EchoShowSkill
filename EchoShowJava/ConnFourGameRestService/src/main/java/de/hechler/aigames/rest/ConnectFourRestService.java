@@ -49,6 +49,7 @@ import de.hechler.aigames.api.move.ConnectFourMove;
 import de.hechler.aigames.rest.ImageRegistry.ImageEnum;
 import de.hechler.aigames.rest.ImageRegistry.SessionEntry;
 import de.hechler.utils.RandUtils;
+import de.hechler.utils.TemporaryStore;
 
 //@WebServlet(urlPatterns = "/main", loadOnStartup = 1) 
 public class ConnectFourRestService extends HttpServlet {
@@ -63,6 +64,8 @@ public class ConnectFourRestService extends HttpServlet {
 	
 	public static ConnectFourImpl connectFourImpl = new ConnectFourImpl();
 
+	public static TemporaryStore<String, String> tempGameResult = new TemporaryStore<>(10000); 
+	
 	public Gson gson;
 	
 	@Override
@@ -234,6 +237,8 @@ public class ConnectFourRestService extends HttpServlet {
 	}
 
 	private String closeGame(String gameId) {
+		String lastGameData = gson.toJson(connectFourImpl.getGameData(gameId));
+		tempGameResult.put(gameId, lastGameData);
 		return gson.toJson(connectFourImpl.closeGame(gameId));
 	}
 
@@ -255,6 +260,9 @@ public class ConnectFourRestService extends HttpServlet {
 		SessionEntry entry = ImageRegistry.getInstance().getSessionEntry(image);
 //		logger.info("connectImage(" + gameId + ", " + imageName + " - " + entry + ")");
 		if (entry == null) {
+			return gson.toJson(new GenericResult(ResultCodeEnum.E_IMAGE_NOT_FOUND));
+		}
+		if (!entry.checkLastQueryTime(3500)) {
 			return gson.toJson(new GenericResult(ResultCodeEnum.E_IMAGE_NOT_FOUND));
 		}
 		entry.gameId = gameId;
@@ -279,6 +287,7 @@ public class ConnectFourRestService extends HttpServlet {
 		if (entry.gameId != null) {
 			return gson.toJson(new NewGameResult(ResultCodeEnum.S_ACTIVATED, entry.gameId));
 		}
+		entry.updateLastQueryTime();
 		Object sessionImageName = session.getAttribute("IMAGE");
 		if (entry.image.name().equals(sessionImageName)) {
 			return gson.toJson(GenericResult.genericNoChangeResult);
@@ -349,6 +358,11 @@ public class ConnectFourRestService extends HttpServlet {
 		}
 		if (entry.gameId == null) {
 			return gson.toJson(GenericResult.genericUnknownGameId);
+		}
+		String result = tempGameResult.get(entry.gameId);
+		if (result != null) {
+			tempGameResult.remove(entry.gameId);
+			return result;
 		}
 		return gson.toJson(connectFourImpl.getGameData(entry.gameId));
 	}
