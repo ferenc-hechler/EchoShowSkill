@@ -343,6 +343,9 @@ public class ConnectFourRestService extends HttpServlet {
 		if (entry.gameId == null) {
 			return gson.toJson(GenericResult.genericUnknownGameId);
 		}
+		if (tempGameResult.containsKey(entry.gameId)) {
+			return gson.toJson(GenericResult.genericChangesExistResult);
+		}
 		return gson.toJson(connectFourImpl.hasChanges(entry.gameId, version));
 
 	}

@@ -123,12 +123,10 @@ public class TemporaryStoreTest {
 	@Test
 	public void testRemove() {
 		TemporaryStore<String, Integer> tStore = new TemporaryStore<>(3*WAIT_TIME);
-		tStore.put("null", 0);
-		sleep(WAIT_TIME);
-		tStore.put("eins", 1);
-		tStore.put("zwei", 2);
-		sleep(WAIT_TIME);
-		tStore.put("drei", 3);
+		tStore.put("null", 0, WAIT_TIME);
+		tStore.put("eins", 1, 99*WAIT_TIME);
+		tStore.put("zwei", 2, 2*WAIT_TIME);
+		tStore.put("drei", 3, 3*WAIT_TIME);
 		Integer iNull = tStore.remove("null");
 		assertEquals(0, iNull.intValue());
 		Integer iEins = tStore.remove("eins");
@@ -137,6 +135,10 @@ public class TemporaryStoreTest {
 		assertEquals(2, iZwei.intValue());
 		Integer iDrei = tStore.remove("drei");
 		assertEquals(3, iDrei.intValue());
+		iDrei = tStore.remove("drei");
+		assertNull(iDrei);
+		Integer iVier = tStore.remove("vier");
+		assertNull(iVier);
 		iNull = tStore.get("null");
 		assertNull(iNull);
 		iEins = tStore.get("eins");
@@ -148,6 +150,29 @@ public class TemporaryStoreTest {
 	}
 	
 
+	@Test
+	public void testContains() {
+		TemporaryStore<String, Integer> tStore = new TemporaryStore<>(3*WAIT_TIME);
+		tStore.put("null", 0, WAIT_TIME);
+		tStore.put("eins", 1, 99*WAIT_TIME);
+		tStore.put("zwei", 2, 2*WAIT_TIME);
+		tStore.put("drei", 3, 3*WAIT_TIME);
+		assertTrue(tStore.containsKey("null"));
+		assertTrue(tStore.containsKey("eins"));
+		assertTrue(tStore.containsKey("zwei"));
+		assertTrue(tStore.containsKey("drei"));
+		assertFalse(tStore.containsKey("vier"));
+		tStore.remove("eins");
+		assertFalse(tStore.containsKey("eins"));
+		sleep(WAIT_TIME/2);
+		sleep(WAIT_TIME);
+		assertFalse(tStore.containsKey("null"));
+		assertFalse(tStore.containsKey("eins"));
+		assertTrue(tStore.containsKey("zwei"));
+		assertTrue(tStore.containsKey("drei"));
+		assertFalse(tStore.containsKey("vier"));
+	}
+	
 
 	private void sleep(long millis) {
 		try {

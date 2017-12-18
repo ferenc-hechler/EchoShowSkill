@@ -86,6 +86,7 @@ public class TemporaryStore<K, V> {
 	}
 	
 	public synchronized V remove(K key) {
+		timeout();
 		TimeoutObject<V> tValue = store.remove(key);
 		if (tValue == null) {
 			return null;
@@ -133,6 +134,11 @@ public class TemporaryStore<K, V> {
 			TimeoutObject<K> tKey = keysWithTimeout.remove(0);
 			store.remove(tKey.getObj());
 		}
+	}
+
+	public synchronized boolean containsKey(String key) {
+		timeout();
+		return store.containsKey(key);
 	}
 	
 }
