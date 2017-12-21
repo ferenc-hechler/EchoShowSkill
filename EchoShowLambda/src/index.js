@@ -829,6 +829,10 @@ function getAILevel(intent) {
 
 function getMappedAnimal(intent) {
 	var animal = getFromIntent(intent, "animal", "?");
+	if (animal === undefined) {
+		return '?';
+	}
+	animal = animal.toLowerCase();
 	var mappedAnimal = ANIMAL_MAPPING[animal];
 	if (mappedAnimal !== undefined) {
 		return mappedAnimal;

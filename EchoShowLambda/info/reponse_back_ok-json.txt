@@ -1,0 +1,44 @@
+{
+	"version": "1.0",
+	"response": {
+		"outputSpeech": {
+			"type": "PlainText",
+			"text": "Here the short help: You can use the following commands: 'Help', 'Start a new game', 'I throw into slot X', 'You may start', 'Set playing skill level to X' or Stop. Do you want a detailed help?"
+		},
+		"shouldEndSession": false,
+		"directives": {
+			"type": "Display.RenderTemplate",
+			"template": {
+				"type": "BodyTemplate3",
+				"token": "TOK_HELP",
+				"title": "Connect-Four Short Help",
+				"image": {
+					"sources": {
+						"url": "https://calcbox.de/c4imgs/help/viergewinnt_help-340.png"
+					}
+				},
+				"textContent": {
+					"primaryText": {
+						"type": "RichText",
+						"text": "Here the Short-Help: <br/><br/>You can use the following commands: <br/> * 'Help', <br/> * 'Start a new game', <br/> * 'I throw into slot ...', <br/> * 'You may start', <br/> * 'Set playing skill level to ...' <br/> * 'Stop' <br/><br/>Do you want a detailed help?"
+					}
+				},
+				"backButton": "VISIBLE"
+			}
+		}
+	},
+	"sessionAttributes": {
+		"gameId": "I28",
+		"dbUser": {
+			"userId": 126,
+			"userName": "amzn1.ask.account.****",
+			"app": "C4.USER",
+			"data": {
+				"hadIntro": true,
+				"aiLevel": "1"
+			}
+		},
+		"gameMovesCount": 0,
+		"yesNoQuery": "HELP"
+	}
+}
