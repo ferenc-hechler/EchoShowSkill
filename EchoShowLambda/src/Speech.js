@@ -11,9 +11,13 @@
  
 var messages;
 var cardTitle;
-
+var deviceType;
 
 var currentLocale = "?";
+
+function setDeviceType(type) {
+	deviceType = type;
+}
 
 //https://developer.amazon.com/de/docs/custom-skills/develop-skills-in-multiple-languages.html
 function set_locale(locale) {
@@ -75,7 +79,109 @@ function set_locale(locale) {
 				},
 				
 				TEXT: {
-					HELP: {
+					
+					"ASK_DEVICE": {
+						title:     	"Anzeige",
+						richText:   "Um welches Gerät handelt es sich?<br/><br/>" +
+									" * Echo Show<br/>" +
+									" * Echo Spot<br/>" +
+									" * Anderes<br/>",
+						speechOut:  "Du benutzt dieses Gerät zum ersten Mal für das Spiel Vierer-Reihe. " +
+									"Damit das Spielbrett auf Deinem Gerät gut angezeigt wird, " +
+									"musst Du mir sagen, um welches Gerät es sich handelt. " +
+									"Sage bitte: Echo Show, Echo Spot oder Anderes. ",
+						display:   	"Du benutzt dieses Gerät zum ersten Mal für das Spiel Vierer-Reihe. " +
+									"Damit das Spielbrett auf Deinem Gerät gut angezeigt wird, " +
+									"musst Du mir sagen, um welches Gerät es sich handelt. " +
+									"Sage bitte 'Echo Show', 'Echo Spot' oder 'Anderes'. "
+					},
+					"ASK_DEVICE.RETRY": {
+						title:     	"Anzeige",
+						richText:   "Um welches Gerät handelt es sich?<br/><br/>" +
+									" * Echo Show<br/>" +
+									" * Echo Spot<br/>" +
+									" * Anderes<br/>",
+						speechOut:  "Den Gerätenamen habe ich nicht verstanden. Bitte sage Echo Show, Echo Spot oder Anderes. ",
+						display:   	"Den Gerätenamen habe ich nicht verstanden. Bitte sage 'Echo Show', 'Echo Spot' oder 'Anderes'. "
+					},
+					"ASK_DEVICE.2": {
+						title:     	"Anzeige",
+						richText:   "Um welches Gerät handelt es sich?<br/><br/>" +
+									" * Echo Show<br/>" +
+									" * Echo Spot<br/>" +
+									" * Anderes<br/>",
+						speechOut:  "Den Gerätenamen habe ich nicht verstanden. Bitte sage Echo Show, Echo Spot oder Anderes. ",
+						display:   	"Den Gerätenamen habe ich nicht verstanden. Bitte sage 'Echo Show', 'Echo Spot' oder 'Anderes'. "
+					},
+
+					"INTRO": {      // Allererste Begrüßung, danach nie wieder.   
+						title:     	"Willkommen zum Spiel 'Vierer-Reihe'",
+						richText:   "Das Spiel kann mit den folgenden Kommandos gesteuert werden: <br/><br/>" +
+									" * Hilfe<br/>" +
+									" * Starte ein neues Spiel<br/>" +
+									" * Ich werfe in Reihe ...<br/>" +
+									" * Du darfst anfangen<br/>" +
+									" * Setze die Spielstärke auf ...<br/>" +
+									" * Stop<br/><br/>" + 
+									"Möchtest Du eine ausführliche Anleitung?",
+						speechOut:  "Willkommen zum Spiel Vierer-Reihe. " +
+						   			"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst anfangen', 'Setze die Spielstärke auf' oder Stop verwenden. " + 
+						   			"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Willkommen zum Spiel 'Vierer-Reihe'. " +
+						   			"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe ...', 'Du darfst anfangen', 'Setze die Spielstärke auf ...' oder 'Stop' verwenden. " + 
+						   			"Möchtest Du eine ausführliche Anleitung?"
+					},
+					"INTRO.spot": {
+						title: 		"Vierer-Reihe",
+						richText:   " * Hilfe<br/>" +
+									" * Starte ein neues Spiel<br/>" +
+									" * Ich werfe in Reihe ..<br/>" +
+									" * Du darfst anfangen<br/>" +
+									" * Setze Spielstärke auf ..<br/>" +
+									" * Stop<br/><br/>" + 
+									"Möchtest Du eine ausführliche Anleitung?",
+						speechOut:  "Willkommen zum Spiel Vierer-Reihe. " +
+						   			"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst anfangen', 'Setze die Spielstärke auf' oder Stop verwenden. " + 
+						   			"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Willkommen zum Spiel 'Vierer-Reihe'. " +
+						   			"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe ...', 'Du darfst anfangen', 'Setze die Spielstärke auf ...' oder 'Stop' verwenden. " + 
+						   			"Möchtest Du eine ausführliche Anleitung?"
+					},
+					
+
+					"WELCOME": {
+						title:     	"Willkommen zum Spiel 'Vierer-Reihe'",
+						richText:   "Das Spiel kann mit den folgenden Kommandos gesteuert werden: <br/><br/>" +
+									" * 'Hilfe', <br/>" +
+									" * 'Starte ein neues Spiel', <br/>" +
+									" * 'Ich werfe in Reihe ...', <br/>" +
+									" * 'Du darfst anfangen', <br/>" +
+									" * 'Setze die Spielstärke auf ...' oder <br/>" +
+									" * 'Stop'. <br/><br/>" + 
+									"Möchtest Du eine ausführliche Anleitung?",
+						speechOut: "Willkommen zum Spiel Vierer-Reihe: " +
+									"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Willkommen zum Spiel 'Vierer-Reihe': " +
+									"Möchtest Du eine ausführliche Anleitung?"
+					},
+					
+					"WELCOME.spot": {
+						title: 		"Vierer-Reihe",
+						richText:   " * Hilfe<br/>" +
+									" * Starte ein neues Spiel<br/>" +
+									" * Ich werfe in Reihe ..<br/>" +
+									" * Du darfst anfangen<br/>" +
+									" * Setze Spielstärke auf ..<br/>" +
+									" * Stop<br/><br/>" + 
+									"Möchtest Du eine ausführliche Anleitung?",
+						speechOut: "Willkommen zum Spiel Vierer-Reihe: " +
+									"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Willkommen zum Spiel 'Vierer-Reihe': " +
+									"Möchtest Du eine ausführliche Anleitung?"
+					},
+					
+
+					"HELP": {
 						title:     	"Vierer-Reihe Schnellhilfe",
 						richText:   "Hier die Kurzhilfe: <br/><br/>" +
 									"Du kannst eines der Kommandos <br/>" +
@@ -94,103 +200,7 @@ function set_locale(locale) {
 									"Möchtest Du eine ausführliche Anleitung?"
 					},
 					
-					ActionHELP: {
-						title:     	"Vierer-Reihe Hilfe",
-						richText:   "<font size='5'>Wähle ein Thema:<br/>" +
-									"<br/>" +
-									"<action token='ActionHELP_REGELN'>Regeln</action><br/>" +
-									"<action token='ActionHELP_SPRACHSTEUERUNG'>Sprachsteuerung</action><br/>" +
-									"<action token='ActionHELP_KOMMANDOS'>Kommandos</action><br/>" +
-									"<action token='ActionHELP_WEITERES'>Weiteres</action><br/>" +
-									"<br/>" +
-									"Zurück zum <action token='ActionHOME'>Spiel</action></font>",
-						speechOut: ""
-					},
-					ActionHELP_REGELN: {
-						title:     	"Vierer-Reihe Regeln",
-						richText:   "<font size='3'>" +
-									"Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
-								    "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
-								    "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden.<br/></font>" +
-									"<font size='2'><br/>" +
-									"Zurück zur <action token='ActionHELP'>Themenwahl</action> oder zum <action token='ActionHOME'>Spiel</action></font>",
-						speechOut: ""
-					},
-					ActionHELP_SPRACHSTEUERUNG: {
-						title:     "Vierer-Reihe Sprachsteuerung",
-						richText:  "<font size='2'>" +
-									"Zurück zur <action token='ActionHELP'>Themenwahl</action> oder zum <action token='ActionHOME'>Spiel</action></font><br/>" +
-									"<br/>" +
-								    "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
-								    "Sage dazu entweder 'Ich werfe in Reihe ...' oder 'Du darfst anfangen'. " +
-								    "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
-								    "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe ...' sagen. " +
-								    "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
-								    "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
-								    "Also  zum Beispiel 'Alexa, Reihe ...'. " +
-								    "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vierer-Reihe' zuerst wieder gestartet werden. " +
-								    "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
-								    "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet.",
-						speechOut: ""
-					},
-					ActionHELP_KOMMANDOS: {
-						title:     "Vierer-Reihe Sprachkommandos",
-						richText:  "<font size='3'>" +
-								   "'Hilfe': Starte die Hilfe.<br/>" +
-								   "'Starte ein neues Spiel': bricht das aktuelle Spiel ab und startet ein neues.<br/>" +
-								   "'Setze die Spielstärke auf ...': ändert die Spielstärke (AI) von Alexa. 1 ist am leichtesten und 7 am schwersten.<br/>" +
-								   "'Du darfst anfangen': lässt Alexa den ersten Zug machen.<br/></font>" +
-									"<font size='2'><br/>" +
-									"Zurück zur <action token='ActionHELP'>Themenwahl</action> oder zum <action token='ActionHOME'>Spiel</action></font>",
-						speechOut: ""
-					},
-					ActionHELP_WEITERES: {
-						title:     "Vierer-Reihe Weiteres",
-						richText:  "<font size='3'>" +
-								   "Links oben in der Anzeige wird die aktulle Zugzahl und die Spielstärke (AI) angezeigt.<br/>" +
-								   "<br/>" +
-								   "Ein Hinweis noch zum Schluss: <br/>" +
-								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com.<br/></font>" +
-									"<font size='2'><br/>" +
-									"Zurück zur <action token='ActionHELP'>Themenwahl</action> oder zum <action token='ActionHOME'>Spiel</action></font>",
-						speechOut: ""
-					},
-					
-					INTRO: {
-						title:     	"Willkommen zum Spiel 'Vierer-Reihe'",
-						richText:   "Das Spiel kann mit den folgenden Kommandos gesteuert werden: <br/><br/>" +
-									" * 'Hilfe', <br/>" +
-									" * 'Starte ein neues Spiel', <br/>" +
-									" * 'Ich werfe in Reihe ...', <br/>" +
-									" * 'Du darfst anfangen', <br/>" +
-									" * 'Setze die Spielstärke auf ...' oder <br/>" +
-									" * 'Stop'. <br/><br/>" + 
-									"Möchtest Du eine ausführliche Anleitung?",
-						speechOut: "Willkommen zum Spiel Vierer-Reihe: " +
-									"Das Spiel kann mit folgenden Kommandos gesteuert werden: 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst anfangen', 'Setze die Spielstärke auf' oder Stop. " + 
-									"Möchtest Du eine ausführliche Anleitung?",
-						display:   	"Willkommen zum Spiel 'Vierer-Reihe': " +
-									"Das Spiel kann mit folgenden Kommandos gesteuert werden: 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe ...', 'Du darfst anfangen', 'Setze die Spielstärke auf ...' oder 'Stop'. " + 
-									"Möchtest Du eine ausführliche Anleitung?"
-					},
-					
-					WELCOME: {
-						title:     	"Willkommen zum Spiel 'Vierer-Reihe'",
-						richText:   "Das Spiel kann mit den folgenden Kommandos gesteuert werden: <br/><br/>" +
-									" * 'Hilfe', <br/>" +
-									" * 'Starte ein neues Spiel', <br/>" +
-									" * 'Ich werfe in Reihe ...', <br/>" +
-									" * 'Du darfst anfangen', <br/>" +
-									" * 'Setze die Spielstärke auf ...' oder <br/>" +
-									" * 'Stop'. <br/><br/>" + 
-									"Möchtest Du eine ausführliche Anleitung?",
-						speechOut: "Willkommen zum Spiel Vierer-Reihe: " +
-									"Möchtest Du eine ausführliche Anleitung?",
-						display:   	"Willkommen zum Spiel 'Vierer-Reihe': " +
-									"Möchtest Du eine ausführliche Anleitung?"
-					},
-					
-					HELP_REGELN: {
+					"HELP_DETAIL": {
 						title:     "Vierer-Reihe Hilfe",
 						richText:  "Zuerst die Regeln: <br/>" +
 								   "Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
@@ -272,7 +282,7 @@ function set_locale(locale) {
 								   
 								   "Soll ich den Text nochmal wiederholen?"
 					},
-					HELP_REGELN_NOGUI: {
+					HELP_DETAIL_NOGUI: {
 						speechOut: "Zuerst die Regeln: " +
 								   "Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
@@ -335,6 +345,14 @@ function set_locale(locale) {
 				},
 				
 				INTERN: {
+					LETS_GO: {
+						speechOut: "Auf gehts. Welchen Zug machst Du? ",
+						display: "Welchen Zug machst Du? "
+					},
+					DEVICE_SELECTED: {
+						speechOut: "Die Anzeige wird angepasst für das Gerät %1.",
+						display: "Die Anzeige wird angepasst für das Gerät %1."
+					},
 					NO_AMZ_USERID: {
 						speechOut: "Der Request enthält keine User-ID.",
 						display: "Der Request enthält keine User-ID."
@@ -342,6 +360,10 @@ function set_locale(locale) {
 					INVALID_USERDATA: {
 						speechOut: "Die Benutzerdaten sind nicht lesbar.",
 						display: "Die Benutzerdaten sind nicht lesbar."
+					},
+					INVALID_DEVICEDATA: {
+						speechOut: "Die hinterlegten Geräte-Informationen sind nicht lesbar.",
+						display: "Die hinterlegten Geräte-Informationen sind nicht lesbar."
 					},
 					YOUR_MOVE: {
 						speechOut: "In welche Reihe wirfst Du?",
@@ -362,73 +384,6 @@ function set_locale(locale) {
 					GAME_CONTINUED: {
 						speechOut: "Dein letztes Spiel wird fortgesetzt, in welche Reihe wirfst Du?",
 						display: "Dein letztes Spiel wird fortgesetzt, in welche Reihe wirfst Du?"
-					},
-					HELP: {
-						speechOut: "Hier die Kurzhilfe: " +
-						   			"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst Anfangen', 'Setze die Spielstärke auf' oder 'Stop' verwenden. " + 
-						   			"Möchtest Du eine ausführliche Anleitung?",
-						display:   	"Hier die Kurzhilfe: " +
-									"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst Anfangen', 'Setze die Spielstärke auf' oder 'Stop' verwenden. " + 
-									"Möchtest Du eine ausführliche Anleitung?",
-					},
-					INTRO: {
-						speechOut: 	"Willkommen zum Vierer-Reihe Skill. Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?",
-						display: 	"Möchtest Du eine Einleitung zur Verwendung dieses Skills bekommen?"
-					},
-					HELP_REGELN: {
-						speechOut: "Zuerst die Regeln: " +
-								   "Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
-								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
-								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
-								   
-								   "Jetzt zur Sprachsteuerung: " +
-								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
-								   "Sage dazu entweder: 'Ich werfe in Reihe punkt punkt punkt' oder: 'Du darfst anfangen'. " +
-								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
-								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe punkt punkt punkt' sagen. " +
-								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
-								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
-								   "Also zum Beispiel: 'Alexa, Reihe punkt punkt punkt'. " +
-								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit: 'Alexa starte Vierer-Reihe' zuerst wieder gestartet werden. " +
-								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
-								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
-								   
-								   "Und nun zu den weiteren Kommandos: " +
-								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfe Text anzeigen lassen. " +
-								   "Mit dem Kommando 'Starte ein neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. " +
-								   "Mit dem Kommando 'Setze die Spielstärke auf punkt punkt punkt' kannst Du die Spielstärke von Alexa ändern. 1 ist dabei am leichtesten und 7 am schwersten. " +
-								   
-								   "Ein Hinweis noch zum Schluss: " +
-								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. " +
-								   
-								   "Soll ich den Text nochmal wiederholen?",
-								   
-						display:   "Zuerst die Regeln: " +
-								   "Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
-								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
-								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
-								   
-								   "Jetzt zur Sprachsteuerung: " +
-								   "Wenn ein neues Spiel startet, kannst Du entscheiden, ob Du anfangen möchtest, oder ob Alexa beginnen soll. " +
-								   "Sage dazu entweder 'Ich werfe in Reihe ...' oder 'Du darfst anfangen'. " +
-								   "Nach Deinem Zug macht Alexa ihren Zug und wartet sofort auf eine Antwort von Dir. " +
-								   "Wenn Du sofort antwortest, dann kannst Du einfach 'Reihe ...' sagen. " +
-								   "Allerdings wartet die Spracherkennung nur kurz auf Deine Antwort, danach wird nur noch das Spielfeld angezeigt. " +
-								   "Dann musst Du vor Deine Antwort noch das Aktivierungswort setzen, meist 'Alexa'. " +
-								   "Also  zum Beispiel 'Alexa, Reihe ...'. " +
-								   "Wenn auch das Spielfeld nicht mehr angezeigt wird, dann muss der Skill neu mit 'Alexa starte Vierer-Reihe' zuerst wieder gestartet werden. " +
-								   "Das Spiel wird dann an der Stelle fortgesetzt, an der es zuletzt beendet wurde. " +
-								   "Wird ein Spiel nach 4 Stunden nicht fortgesetzt, so wird es automatisch beendet. " +
-								   
-								   "Und nun zu den weiteren Kommandos: " +
-								   "Mit dem Kommando 'Hilfe' kannst Du Dir jederzeit den Hilfetext anzeigen lassen. " +
-								   "Mit dem Kommando 'Starte ein neues Spiel' kannst Du das aktuelle Spiel abbrechen und ein neues Spiel starten. " +
-								   "Mit dem Kommando 'Setze die Spielstärke auf ...' kannst Du die Spielstärke von Alexa ändern. 1 ist am leichtesten und 7 am schwersten. " +
-								   
-								   "Ein Hinweis noch zum Schluss: " +
-								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. " +
-								   
-								   "Soll ich den Text nochmal wiederholen?",
 					},
 					DID_NOT_UNDERSTAND: {
 						speechOut: "Ich verstehe Deine Antwort nicht, Sage Hilfe um die Steuerung dieses Skills kennen zu lernen.",
@@ -649,6 +604,7 @@ function set_locale(locale) {
 				},
 				
 				TEXT: {
+					
 					HELP: {
 						title:     	"Connect-Four Short Help",
 						richText:   "Here the Short-Help: <br/><br/>" +
@@ -954,7 +910,7 @@ function set_locale(locale) {
 						   			
 					},
 					INTRO: {
-						speechOut: 	"Elcom to the Connect-Four Skill. Do you want instructions how to use this skill?",
+						speechOut: 	"Welcom to the Connect-Four Skill. Do you want instructions how to use this skill?",
 						display: 	"Do you want instructions how to use this skill?"
 					},
 					HELP_REGELN: {
@@ -1077,25 +1033,6 @@ function set_locale(locale) {
 					}
 				},
 				
-				HINT: {
-					PLAYER_WINS: { 
-						speechOut: "start a new game.",
-						display :  "start a new game."
-					},
-					DRAW: { 
-						speechOut: "start a new game.",
-						display :  "start a new game."
-					},
-					AI_PLAYER_WINS: { 
-						speechOut: "start a new game.",
-						display :  "start a new game."
-					},
-					MAKE_YOUR_MOVE: { 
-						speechOut: "I throw into slot ...",
-						display :  "I throw into slot ..."
-					}
-				},
-				
 				PlayerMoveIntent: {
 					S_PLAYER_WINS: { 
 						speechOut: "Congratulations! You have won.",
@@ -1193,10 +1130,20 @@ function set_locale(locale) {
 function respond(intentName, resultCode, response, param1) {
 	var msg;
 	if (messages[intentName]) {
-		msg = messages[intentName][resultCode];
+		if (deviceType) {
+			msg = messages[intentName][resultCode+"."+deviceType];
+		}
+		if (!msg) {
+			msg = messages[intentName][resultCode];
+		}
 	}
 	if (!msg) {
-		msg = messages["Generic"][resultCode];
+		if (deviceType) {
+			msg = messages["Generic"][resultCode+"."+deviceType];
+		}
+		if (!msg) {
+			msg = messages["Generic"][resultCode];
+		}
 	}
 	if (!msg) {
 		msg = messages["Generic"]["E_MISSING"];
@@ -1209,10 +1156,20 @@ function respond(intentName, resultCode, response, param1) {
 function createMsg(intentName, resultCode, param1) {
 	var msg;
 	if (messages[intentName]) {
-		msg = messages[intentName][resultCode];
+		if (deviceType) {
+			msg = messages[intentName][resultCode+"."+deviceType];
+		}
+		if (!msg) {
+			msg = messages[intentName][resultCode];
+		}
 	}
 	if (!msg) {
-		msg = messages["Generic"][resultCode];
+		if (deviceType) {
+			msg = messages["Generic"][resultCode+"."+deviceType];
+		}
+		if (!msg) {
+			msg = messages["Generic"][resultCode];
+		}
 	}
 	if (!msg) {
 		msg = messages["Generic"]["E_MISSING"];
@@ -1238,10 +1195,20 @@ function outputMsgWithDirectives(response, msg, directives) {
 function goodbye(intentName, resultCode, response, param1) {
 	var msg;
 	if (messages[intentName]) {
-		msg = messages[intentName][resultCode];
+		if (deviceType) {
+			msg = messages[intentName][resultCode+"."+deviceType];
+		}
+		if (!msg) {
+			msg = messages[intentName][resultCode];
+		}
 	}
 	if (!msg) {
-		msg = messages["Generic"][resultCode];
+		if (deviceType) {
+			msg = messages["Generic"][resultCode+"."+deviceType];
+		}
+		if (!msg) {
+			msg = messages["Generic"][resultCode];
+		}
 	}
 	if (!msg) {
 		msg = messages["Generic"]["E_MISSING"];
@@ -1263,4 +1230,4 @@ function setParams(msg, param1) {
 }
 
 
-module.exports = {set_locale, respond, createMsg, respondMsg, respondMsgWithDirectives, outputMsgWithDirectives, goodbye};
+module.exports = {set_locale, setDeviceType, respond, createMsg, respondMsg, respondMsgWithDirectives, outputMsgWithDirectives, goodbye};

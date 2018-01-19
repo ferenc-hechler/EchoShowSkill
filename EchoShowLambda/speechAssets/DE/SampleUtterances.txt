@@ -20,5 +20,12 @@ AnimalConnectIntent Ich sehe ein {animal}
 AnimalConnectIntent Ich sehe eine {animal}
 AnimalConnectIntent Ich sehe einen {animal}
 
+DeviceTypeIntent {device}
+DeviceTypeIntent Echo {device}
+DeviceTypeIntent Ich habe ein {device}
+DeviceTypeIntent Ich habe ein Echo {device}
+DeviceTypeIntent Mein Gerät ist ein {device}
+DeviceTypeIntent Mein Gerät ist ein Echo {device}
+
 AMAZON.StopIntent Stop
 AMAZON.StopIntent abbrechen

@@ -28,7 +28,17 @@
         }
       ]
     },
-
+    
+    {
+      "intent": "DeviceTypeIntent",
+      "slots": [
+        {
+          "name": "device",
+          "type": "LIST_OF_DEVICES"
+        }
+      ]
+    },
+    
     {
       "intent": "AnimalConnectIntent",
       "slots": [
