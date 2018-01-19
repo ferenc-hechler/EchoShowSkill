@@ -34,5 +34,16 @@ AnimalConnectIntent I see an {animal}
 AnimalConnectIntent I can see a {animal}
 AnimalConnectIntent I can see an {animal}
 
+ChangeDeviceIntent Change display settings
+ChangeDeviceIntent Change the display
+ChangeDeviceIntent Change the settings
+
+DeviceTypeIntent {device}
+DeviceTypeIntent Echo {device}
+DeviceTypeIntent I have a {device}
+DeviceTypeIntent I have an Echo {device}
+DeviceTypeIntent My device is a {device}
+DeviceTypeIntent My device is an Echo {device}
+
 AMAZON.StopIntent stop
 AMAZON.StopIntent cancel

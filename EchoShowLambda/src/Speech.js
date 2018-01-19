@@ -481,25 +481,6 @@ function set_locale(locale) {
 					}
 				},
 				
-				HINT: {
-					PLAYER_WINS: { 
-						speechOut: "starte ein neues Spiel.",
-						display :  "starte ein neues Spiel."
-					},
-					DRAW: { 
-						speechOut: "starte ein neues Spiel.",
-						display :  "starte ein neues Spiel."
-					},
-					AI_PLAYER_WINS: { 
-						speechOut: "starte ein neues Spiel.",
-						display :  "starte ein neues Spiel."
-					},
-					MAKE_YOUR_MOVE: { 
-						speechOut: "ich werfe in Reihe ...",
-						display :  "ich werfe in Reihe ..."
-					}
-				},
-				
 				PlayerMoveIntent: {
 					S_PLAYER_WINS: { 
 						speechOut: "Herzlichen Glückwunsch, du hast gewonnen.",
@@ -641,10 +622,46 @@ function set_locale(locale) {
 				
 				TEXT: {
 					
-					HELP: {
-						title:     	"Connect-Four Short Help",
-						richText:   "Here the Short-Help: <br/><br/>" +
-									"You can use the following commands: <br/>" +
+					"ASK_DEVICE": {
+						title:     	"Change Display Settings",
+						richText:   "What device is this?<br/><br/>" +
+									" * Echo Show<br/>" +
+									" * Echo Spot<br/>" +
+									" * other<br/>",
+						speechOut:  "You are using this device the first time to play Connect-Four. " +
+									"To show the game board on your device in a good quality, " +
+									"you must tell me, what device is this. " +
+									"You can change the settings later by saying the command - Change Display Settings. " +
+									"Play say now: Echo Show, Echo Spot or - other. ",
+						display:    "You are using this device the first time to play Connect-Four. " +
+									"To show the game board on your device in a good quality, " +
+									"you must tell me, what device is this. " +
+									"You can change the settings later by saying the command 'Change Display Settings'. " +
+									"Play say now 'Echo Show', 'Echo Spot' or 'other'. "
+					},
+					"ASK_DEVICE.RETRY": {
+						title:     	"Display",
+						richText:   "What device is this?<br/><br/>" +
+									" * Echo Show<br/>" +
+									" * Echo Spot<br/>" +
+									" * other<br/>",
+						speechOut:  "I did not understand the device name. Play say Echo Show, Echo Spot or - other. ",
+						display:   	"I did not understand the device name. Play say 'Echo Show', 'Echo Spot' or 'other'. "
+					},
+					"ASK_DEVICE.2": {
+						title:     	"Display",
+						richText:   "What device is this?<br/><br/>" +
+									" * Echo Show<br/>" +
+									" * Echo Spot<br/>" +
+									" * other<br/>",
+						speechOut:  "I did not understand the device name. Play say Echo Show, Echo Spot or - other. ",
+						display:   	"I did not understand the device name. Play say 'Echo Show', 'Echo Spot' or 'other'. "
+					},
+
+					
+					INTRO: {		// first greeting, never again later.
+						title:     	"Welcome to the Connect-Four Game",
+						richText:   "You can use the following commands: <br/>" +
 									" * 'Help', <br/>" +
 									" * 'Start a new game', <br/>" +
 									" * 'I throw into slot ...', <br/>" +
@@ -652,79 +669,63 @@ function set_locale(locale) {
 									" * 'Set playing skill level to ...' <br/>" +
 									" * 'Stop' <br/><br/>" + 
 									"Do you want a detailed help?",
-						speechOut: "Here the short help: " +
+						speechOut:  "Welcome to the Connect-Four Game. " +
 						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot X', 'You may start', 'Set playing skill level to X' or Stop. " + 
 						   			"Do you want a detailed help?",
-						display:   	"Here the Short-Help: " +
+						display:   	"Welcome to the Connect-Four Game. " +
+									"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+									"Do you want a detailed help?"
+					},
+					"INTRO.spot": {
+						title: 		"Connect-Four",
+						richText:   " * Help<br/>" +
+									" * Start a new game<br/>" +
+									" * I throw into slot ...<br/>" +
+									" * You may start<br/>" +
+									" * Set playing skill level to ...<br/>" +
+									" * Stop<br/>" + 
+									"--- detailed help? ---",
+						speechOut:  "Welcome to the Connect-Four Game. " +
+						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot X', 'You may start', 'Set playing skill level to X' or Stop. " + 
+						   			"Do you want a detailed help?",
+						display:   	"Welcome to the Connect-Four Game. " +
 									"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
 									"Do you want a detailed help?"
 					},
 					
-					ActionHELP: {
-						title:     	"Connect-Four Help",
-						richText:   "<font size='5'>Choose a topic:<br/>" +
-									"<br/>" +
-									"<action token='ActionHELP_REGELN'>Rules</action><br/>" +
-									"<action token='ActionHELP_SPRACHSTEUERUNG'>Voice Control</action><br/>" +
-									"<action token='ActionHELP_KOMMANDOS'>Commands</action><br/>" +
-									"<action token='ActionHELP_WEITERES'>Others</action><br/>" +
-									"<br/>" +
-									"back to <action token='ActionHOME'>GAME</action></font>",
-						speechOut: ""
+					WELCOME: {		// everyday greeting, when starting the skill.
+						title:     	"Welcome to the Connect-Four Game",
+						richText:   "You can use the following commands: <br/>" +
+									" * 'Help' <br/>" +
+									" * 'Start a new game' <br/>" +
+									" * 'I throw into slot ...' <br/>" +
+									" * 'You may start' <br/>" +
+									" * 'Set playing skill level to ...' <br/>" +
+									" * 'Stop' <br/>" + 
+									"Do you want a detailed help?",
+						speechOut:  "Welcome to the Connect-Four Game. " +
+						   			"Do you want a detailed help?",
+						display:   	"Welcome to the Connect-Four Game. " +
+									"Do you want a detailed help?"
 					},
-					ActionHELP_REGELN: {
-						title:     	"Connect-Four Rules",
-						richText:   "<font size='3'>" +
-									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
-								    "If there is no slot left to throw into, the game is a draw.<br/></font>" +
-									"<font size='2'><br/>" +
-									"Back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font>",
-						speechOut: ""
+					"WELCOME.spot": {
+						title: 		"Connect-Four",
+						richText:   " * Help<br/>" +
+									" * Start a new game<br/>" +
+									" * I throw into slot ...<br/>" +
+									" * You may start<br/>" +
+									" * Set playing skill level to ...<br/>" +
+									" * Stop<br/>" + 
+									"--- detailed help? ---",
+						speechOut:  "Welcome to the Connect-Four Game. " +
+						   			"Do you want a detailed help?",
+						display:   	"Welcome to the Connect-Four Game. " +
+									"Do you want a detailed help?"
 					},
-					ActionHELP_SPRACHSTEUERUNG: {
-						title:     "Connect-Four Voice Control",
-						richText:  "<font size='2'>" +
-									"back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font><br/>" +
-									"<br/>" +
-								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into slot ...'. Do you want Alexa the make the first move just say 'You may start'. " +
-								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Slot ...'. " +
-								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
-								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, Slot ...'. " +
-								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
-								    "The game is continued at the last position. " +
-								    "If a game is not continued after 4 hours, then it will be quitted automatically.",
-						speechOut: ""
-					},
-					ActionHELP_KOMMANDOS: {
-						title:     "Connect-Four Commands",
-						richText:  "<font size='3'>" +
-								   "'Help': Starts the help.<br/>" +
-								   "'Start a new game': quits the current game and starts a new one.<br/>" +
-								   "'Set playing skill level to ...': changes the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult.<br/>" +
-								   "'You may start': Lets Alexa make the first move.<br/></font>" +
-									"<font size='2'><br/>" +
-									"Back to <action token='ActionHELP'>Topics</action> or ot <action token='ActionHOME'>GAME</action></font>",
-						speechOut: ""
-					},
-					ActionHELP_WEITERES: {
-						title:     "Connect-Four Others",
-						richText:  "<font size='3'>" +
-								   "In the upper left corenr the current move and the playing skill level (AI) is shown.<br/>" +
-								   "<br/>" +
-								   "One hint at the end: <br/>" +
-								   "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com.<br/></font>" +
-									"<font size='2'><br/>" +
-									"Back to <action token='ActionHELP'>Topics</action> or to <action token='ActionHOME'>GAME</action></font>",
-						speechOut: ""
-					},
-					
-					INTRO: {
-						title:     	"Welcom to the Game 'Connect-Four'",
-						richText:   "The game can be played using the following commands: <br/><br/>" +
+
+					HELP: {		
+						title:     	"Connect-Four Quick Help",
+						richText:   "Here the quick help: <br/>" +
 									" * 'Help', <br/>" +
 									" * 'Start a new game', <br/>" +
 									" * 'I throw into slot ...', <br/>" +
@@ -732,33 +733,38 @@ function set_locale(locale) {
 									" * 'Set playing skill level to ...' <br/>" +
 									" * 'Stop' <br/><br/>" + 
 									"Do you want a detailed help?",
-						speechOut: "Welcome to the game Connect-Four: " +
-									"The game can be played using the following commands: 'Help', 'Start a new game', 'I throw into slot', 'You may start', 'Set playing skill level to' or Stop. " + 
-									"Do you want a detailed help?",
-						display:   	"Welcome to the game 'Connect-Four': " +
-									"The game can be played using the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+						speechOut:  "Here the quick help. " +
+						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot X', 'You may start', 'Set playing skill level to X' or Stop. " + 
+						   			"Do you want a detailed help?",
+						display:   	"Here the quick help. " +
+									"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
+									"Do you want a detailed help?"
+					},
+					"HELP.spot": {
+						title: 		"Connect-Four",
+						richText:   " * Help<br/>" +
+									" * Start a new game<br/>" +
+									" * I throw into slot ...<br/>" +
+									" * You may start<br/>" +
+									" * Set playing skill level to ...<br/>" +
+									" * Stop<br/>" + 
+									"--- detailed help? ---",
+						speechOut:  "Here the quick help. " +
+						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot X', 'You may start', 'Set playing skill level to X' or Stop. " + 
+						   			"Do you want a detailed help?",
+						display:   	"Here the quick help. " +
+									"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
 									"Do you want a detailed help?"
 					},
 					
-					WELCOME: {
-						title:     	"Welcome to the game 'Connect-Four'",
-						richText:   "The game can be played using the following commands: <br/><br/>" +
-									" * 'Help', <br/>" +
-									" * 'Start a new game', <br/>" +
-									" * 'I throw into slot ...', <br/>" +
-									" * 'You may start', <br/>" +
-									" * 'Set playing skill level to ...' <br/>" +
-									" * 'Stop' <br/><br/>" + 
-									"Do you want a detailed help?",
-						speechOut: "Welcome to the game Connect-Four: " +
-									"Do you want a detailed help?",
-						display:   	"Welcome to the game 'Connect-Four': " +
-									"Do you want a detailed help?"
-					},
-					
-					HELP_REGELN: {
+
+					HELP_DETAIL: {
 						title:      "Connect-Four Help",
-						richText:   "Lets start with the rules: <br/>" +
+						richText:   "First of all a remark to the display: <br/>" +
+									"The game board is adapted to the selected device. " +
+									"If the game board looks broken, then use the command: 'Change Display Settings'. <br/><br/>" +
+						
+									"Now to the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. <br/><br/>" +
@@ -786,7 +792,11 @@ function set_locale(locale) {
 								   
 								    "Shall I repeat the Text?",
 								    
-						speechOut:  "Lets start with the rules: " +
+						speechOut:  "First of all a remark to the display: <br/>" +
+									"The game board is adapted to the selected device. " +
+									"If the game board looks broken, then use the command - Change Display Settings. " +
+						
+									"Now to the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. " +
@@ -814,7 +824,12 @@ function set_locale(locale) {
 								   
 								    "Shall I repeat the Text?",
 								   
-						display:	"Lets start with the rules: " +
+						display:	"First of all a remark to the display: <br/>" +
+									"The game board is adapted to the selected device. " +
+									"If the game board looks broken, then use the command: 'Change Display Settings'. " +
+						
+									"Now to the rules: " +
+									"Lets start with the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
 								    "If there is no slot left to throw into, the game is a draw. " +
@@ -843,7 +858,7 @@ function set_locale(locale) {
 								    "Shall I repeat the Text?"
 							
 					},
-					HELP_REGELN_NOGUI: {
+					"HELP_DETAIL.none": {
 						speechOut:  "Lets start with the rules: " +
 									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
 								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
@@ -904,8 +919,21 @@ function set_locale(locale) {
 								    
 					},
 				},
+
 				
 				INTERN: {
+					LETS_GO: {
+						speechOut: "Let´s go. Into which slot do you throw a disc? ",
+						display: "Into which slot do you throw a disc? "
+					},
+					DEVICE_SELECTED: {
+						speechOut: "The display is now adapted for the device %1.",
+						display: "The display is now adapted for the device %1."
+					},
+					DEVICE_HAS_NO_DISPLAY: {
+						speechOut: "This device does not have a display. So changing the display is not possible. Into which slot do you throw a disc? ",
+						display: "This device does not have a display. So changing the display is not possible. Into which slot do you throw a disc? "
+					},
 					NO_AMZ_USERID: {
 						speechOut:  "The request does not contain a User-ID.",
 						display:    "The request does not contain a User-ID."
@@ -913,6 +941,10 @@ function set_locale(locale) {
 					INVALID_USERDATA: {
 						speechOut:  "The userdata are not readable.",
 						display:    "The userdata are not readable."
+					},
+					INVALID_DEVICEDATA: {
+						speechOut:  "The devicedata are not readable.",
+						display:    "The devicedata are not readable."
 					},
 					YOUR_MOVE: {
 						speechOut:  "Into which slot do you throw a disc?",
@@ -933,81 +965,6 @@ function set_locale(locale) {
 					GAME_CONTINUED: {
 						speechOut:  "Your last game is continued, into which slot do you throw a disc?",
 						display:    "Your last game is continued, into which slot do you throw a disc?"
-					},
-					HELP: {
-						speechOut: "Here the short help: " +
-						   			"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot X', 'You may start', 'Set playing skill level to X' or Stop. " + 
-						   			"Do you want a detailed help?",
-						   			
-						   			
-						display:   	"Here the Short-Help: " +
-									"You can use the following commands: 'Help', 'Start a new game', 'I throw into slot ...', 'You may start', 'Set playing skill level to ...' or 'Stop'. " + 
-									"Do you want a detailed help?"
-						   			
-					},
-					INTRO: {
-						speechOut: 	"Welcom to the Connect-Four Skill. Do you want instructions how to use this skill?",
-						display: 	"Do you want instructions how to use this skill?"
-					},
-					HELP_REGELN: {
-						
-						speechOut:  "Lets start with the rules: " +
-									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
-								    "If there is no slot left to throw into, the game is a draw. " +
-								   
-									"Now to the voice control: " +
-								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into slot  X'. Do you want Alexa the make the first move just say 'You may start'. " +
-								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Slot  X'. " +
-								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
-								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, Slot  X'. " +
-								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
-								    "The game is continued at the last position. " +
-								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
-								    
-					   
-								    "And now to other commands: " +
-								    "With the command 'Help' you get a help text at any time. " +
-								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
-								    "With the command 'Set playing skill level to  X' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
-			
-								    "One hint at the end: " +
-								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
-								   
-								    "Shall I repeat the Text?",
-								   
-						display:	"Lets start with the rules: " +
-									"In the game Connect-Four two players play against each other, by throwing discs alternating into one of the 7 rows. " +
-								    "Goal of the game is to line up four consecutive discs either vertically, horizontally or diagonally. " +
-								    "If there is no slot left to throw into, the game is a draw. " +
-								   
-									"Now to the voice control: " +
-								    "On game start you can decide, whether you want to start or not. " +
-								    "To start the game just say 'I throw into slot ...'. Do you want Alexa the make the first move just say 'You may start'. " +
-								    "After you made your move, Alexa is doing her move and awaits an answer from you. " +
-								    "If you answer immediately, you can say 'Slot ...'. " +
-								    "But the voice recognition waits only a short time for your answer, then only the game board is shown. " +
-								    "To make your move you have to add the activation word, mostly 'Alexa'. " +
-								    "E.g. 'Alexa, slot ...'. " +
-								    "If the game board is not shown any more, then the skill has to be restarted with 'Alexa, start Connect-Four'." +
-								    "The game is continued at the last position. " +
-								    "If a game is not continued after 4 hours, then it will be quitted automatically. " +
-								    
-					   
-								    "And now to other commands: " +
-								    "With the command 'Help' you get a help text at any time. " +
-								    "With the command 'Start a new game' you can quit the current game and start a new one. " +
-								    "With the command 'Set playing skill level to ...' you can change the playing skill level (AI) of Alexa. 1 is the easiest and 7 the most difficult. " +
-			
-								    "One hint at the end: " +
-								    "Any form of improvement, praise or criticism is welcome. Just send an email to ferenc.hechler@gmail.com. " +
-								   
-								    "Shall I repeat the Text?"
-						
-						
 					},
 					DID_NOT_UNDERSTAND: {
 						speechOut: "Sorry, I do not understand your answer, say Help to learn the commands used in this skill.",
