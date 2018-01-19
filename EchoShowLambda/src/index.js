@@ -40,6 +40,7 @@ var leftTopSpacerWidth = 162;
 
 var imgBaseUrlSpot = "https://calcbox.de/c4imgs/50px/";
 var imgBaseSizeSpot = 50;
+var imgLeftSize = 13;
 
 
 var QUESTION_TO_INTENTS_MAPPING = {
@@ -208,6 +209,7 @@ ConnectFourSkill.prototype.intentHandlers = {
 	"PlayerMoveIntent" : doPlayerMove,
 	"AIStartsIntent" : doAIStarts,
 	"ChangeAILevelIntent" : doChangeAILevel,
+	"ChangeDeviceIntent" : doChangeDeviceIntent,
 	
 	"DeviceTypeIntent" : doDeviceTypeIntent,
 	
@@ -312,6 +314,12 @@ function doAIStarts(intent, session, response) {
 	});
 }
 
+function doChangeDeviceIntent(intent, session, response) {
+	initUserAndConnect(intent, session, response, function successFunc() {
+		execChangeDeviceIntent(session, response);
+	});
+}
+
 function doChangeAILevel(intent, session, response) {
 	initUserAndConnect(intent, session, response, function successFunc() {
 		var aiLevel = getAILevel(intent);
@@ -328,7 +336,7 @@ function doDeviceTypeIntent(intent, session, response) {
 function doAnimalConnect(intent, session, response) {
 	initUserAndConnect(intent, session, response, function successFunc() {
 		var animal = getMappedAnimal(intent);
-		execAnimalConnect(session, response);
+		execAnimalConnect(session, response, animal);
 	});
 }
 
@@ -440,6 +448,16 @@ function execIntro(session, response, phase) {
 
 function execWelcome(session, response) {
 	askQuestion(session, response, "WELCOME");
+}
+
+function execChangeDeviceIntent(session, response) {
+	if (!getRequestHasDisplay(session)) {
+		addRequestMsg(session, speech.createMsg("INTERN", "DEVICE_HAS_NO_DISPLAY"));
+		execDisplayField(session, response);
+	}
+	else {
+		askQuestion(session, response, "ASK_DEVICE");
+	}
 }
 
 function execChangeAILevel(session, response, aiLevel) {
@@ -651,7 +669,11 @@ function initUser(intent, session, response, successCallback) {
 }
 
 function initDevice(intent, session, response, successCallback) {
-	if (hasDBDeviceInSession(session)) {
+	if (!getRequestHasDisplay(session)) {
+		speech.setDeviceType("none");
+		successCallback();
+	}
+	else if (hasDBDeviceInSession(session)) {
 		var handled = handleDeviceQuestion(intent, session, response);
 		if (!handled) {
 			speech.setDeviceType(getDeviceType(session));
@@ -806,7 +828,7 @@ function createGameStatusInfo(gameData) {
 	if (!gameData) {
 		return "";
 	}
-	return "[Zug:"+(gameData.movesCount+1)+"/AI:"+gameData.aiLevel+"] - ";
+	return "[Zug:"+(gameData.movesCount+1)+"/AI:"+gameData.aiLevel+"]";
 }
 
 function createTitle(session, gameStatusInfo, displayMsg) {
@@ -863,11 +885,14 @@ function createFieldTextSpot(field) {
 	var result = "";
 	result = result + "<font size='2'>";
 	for (var y = 0; y < 6; y++) {
+		result = result + addImageSpotW("left", 13);
 		for (var x = 0; x < 7; x++) {
 			var col = field[y][x]; // col = 0..4
 			result = result + addImageSpot("circle-" + col, 1);
 		}
+		result = result + addImageSpotW("left", 13);
 	}
+	result = result + addImageSpotW("left", 13);
 	result = result + addImageSpot("frameset_top", 7);
 	result = result + "</font>";
 	return result;
@@ -916,6 +941,10 @@ function addImage(imgName, size) {
 
 function addImageSpot(imgName, size) {
 	return addImageWH(imgBaseUrlSpot, imgName, size * imgBaseSizeSpot, imgBaseSizeSpot);
+}
+
+function addImageSpotW(imgName, pxSize) {
+	return addImageWH(imgBaseUrlSpot, imgName, pxSize, imgBaseSizeSpot);
 }
 
 function addImageWH(baseUrl, imgName, width, height) {

@@ -81,7 +81,7 @@ function set_locale(locale) {
 				TEXT: {
 					
 					"ASK_DEVICE": {
-						title:     	"Anzeige",
+						title:     	"Ändere die Anzeige",
 						richText:   "Um welches Gerät handelt es sich?<br/><br/>" +
 									" * Echo Show<br/>" +
 									" * Echo Spot<br/>" +
@@ -89,10 +89,14 @@ function set_locale(locale) {
 						speechOut:  "Du benutzt dieses Gerät zum ersten Mal für das Spiel Vierer-Reihe. " +
 									"Damit das Spielbrett auf Deinem Gerät gut angezeigt wird, " +
 									"musst Du mir sagen, um welches Gerät es sich handelt. " +
+									"Du kannst Diese Einstellung auch später wieder Ändern, " +
+									"indem Du das Kommando - Ändere die Anzeige - sagst. " +
 									"Sage bitte: Echo Show, Echo Spot oder Anderes. ",
 						display:   	"Du benutzt dieses Gerät zum ersten Mal für das Spiel Vierer-Reihe. " +
 									"Damit das Spielbrett auf Deinem Gerät gut angezeigt wird, " +
 									"musst Du mir sagen, um welches Gerät es sich handelt. " +
+									"Du kannst Diese Einstellung auch später wieder Ändern, " +
+									"indem Du das Kommando 'Ändere die Anzeige' sagst." +
 									"Sage bitte 'Echo Show', 'Echo Spot' oder 'Anderes'. "
 					},
 					"ASK_DEVICE.RETRY": {
@@ -138,8 +142,8 @@ function set_locale(locale) {
 									" * Ich werfe in Reihe ..<br/>" +
 									" * Du darfst anfangen<br/>" +
 									" * Setze Spielstärke auf ..<br/>" +
-									" * Stop<br/><br/>" + 
-									"Möchtest Du eine ausführliche Anleitung?",
+									" * Stop<br/>" + 
+									"- ausführliche Anleitung? -",
 						speechOut:  "Willkommen zum Spiel Vierer-Reihe. " +
 						   			"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst anfangen', 'Setze die Spielstärke auf' oder Stop verwenden. " + 
 						   			"Möchtest Du eine ausführliche Anleitung?",
@@ -172,8 +176,8 @@ function set_locale(locale) {
 									" * Ich werfe in Reihe ..<br/>" +
 									" * Du darfst anfangen<br/>" +
 									" * Setze Spielstärke auf ..<br/>" +
-									" * Stop<br/><br/>" + 
-									"Möchtest Du eine ausführliche Anleitung?",
+									" * Stop<br/>" + 
+									"- ausführliche Anleitung? -",
 						speechOut: "Willkommen zum Spiel Vierer-Reihe: " +
 									"Möchtest Du eine ausführliche Anleitung?",
 						display:   	"Willkommen zum Spiel 'Vierer-Reihe': " +
@@ -199,10 +203,30 @@ function set_locale(locale) {
 									"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe ...', 'Du darfst anfangen', 'Setze die Spielstärke auf ...' oder 'Stop' verwenden. " + 
 									"Möchtest Du eine ausführliche Anleitung?"
 					},
+					"HELP.spot": {
+						title: 		"Vierer-Reihe",
+						richText:   " * Hilfe<br/>" +
+									" * Starte ein neues Spiel<br/>" +
+									" * Ich werfe in Reihe ..<br/>" +
+									" * Du darfst anfangen<br/>" +
+									" * Setze Spielstärke auf ..<br/>" +
+									" * Stop<br/>" + 
+									"- Ausführliche Anleitung? -",
+						speechOut: "Hier die Kurzhilfe: " +
+						   			"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe', 'Du darfst anfangen', 'Setze die Spielstärke auf' oder Stop verwenden. " + 
+						   			"Möchtest Du eine ausführliche Anleitung?",
+						display:   	"Hier die Kurzhilfe: " +
+									"Du kannst eines der Kommandos 'Hilfe', 'Starte ein neues Spiel', 'Ich werfe in Reihe ...', 'Du darfst anfangen', 'Setze die Spielstärke auf ...' oder 'Stop' verwenden. " + 
+									"Möchtest Du eine ausführliche Anleitung?"
+					},
 					
 					"HELP_DETAIL": {
 						title:     "Vierer-Reihe Hilfe",
-						richText:  "Zuerst die Regeln: <br/>" +
+						richText:  "Zuerst ein Hinweis zur Anzeige: <br/>" +
+								   "Die Anzeige des Spielbretts ist für das eingestellte Gerät angepasst. " +
+								   "Sollte das Spielbrett auf Deiner Anzeige komisch aussehen, so verwende die Floskel: 'Ändere die Anzeige'. <br/><br/>" +
+								   
+								   "Nun zu den Regeln: <br/>" +
 								   "Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. <br/><br/>" +
@@ -228,7 +252,11 @@ function set_locale(locale) {
 								   "Jede Form von Verbesserungsvorschlägen, Lob oder Kritik ist willkommen, am einfachsten per Mail an ferenc.hechler@gmail.com. <br/><br/>" +
 								   
 								   "Soll ich den Text nochmal wiederholen?",
-						speechOut: "Zuerst die Regeln: " +
+						speechOut: "Zuerst ein Hinweis zur Anzeige: " +
+								   "Die Anzeige des Spielbretts ist für das eingestellte Gerät angepasst. " +
+								   "Sollte das Spielbrett auf Deiner Anzeige komisch aussehen, so verwende die Floskel - Ändere die Anzeige. " +
+						   
+						   		   "Nun zu den Regeln: " +
 								   "Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
@@ -255,7 +283,11 @@ function set_locale(locale) {
 								   
 								   "Soll ich den Text nochmal wiederholen?",
 								   
-						display:   "Zuerst die Regeln: " +
+						display:   "Zuerst ein Hinweis zur Anzeige: " +
+								   "Die Anzeige des Spielbretts ist für das eingestellte Gerät angepasst. " +
+								   "Sollte das Spielbrett auf Deiner Anzeige komisch aussehen, so verwende die Floskel: 'Ändere die Anzeige'. " +
+								   
+								   "Nun zu den Regeln: " +
 								   "Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
 								   "Sind alle Reihen belegt, ohne dass eine vierer Reihe gebildet wurde, dann endet das Spiel unentschieden. " +
@@ -282,7 +314,7 @@ function set_locale(locale) {
 								   
 								   "Soll ich den Text nochmal wiederholen?"
 					},
-					HELP_DETAIL_NOGUI: {
+					"HELP_DETAIL.none": {
 						speechOut: "Zuerst die Regeln: " +
 								   "Beim Spiel Vierer-Reihe spielen zwei Spieler gegeneinander, indem sie abwechselnd Steine in eine der 7 Reihen werfen. " +
 								   "Ziel des Spieles ist es eine Reihe (horizontal, vertikal oder diagonal) von vier Steinen zu bekommen. " +
@@ -352,6 +384,10 @@ function set_locale(locale) {
 					DEVICE_SELECTED: {
 						speechOut: "Die Anzeige wird angepasst für das Gerät %1.",
 						display: "Die Anzeige wird angepasst für das Gerät %1."
+					},
+					DEVICE_HAS_NO_DISPLAY: {
+						speechOut: "Dein Gerät hat kein Display. Ein Ändern der Anzeige ist deshalb nicht möglich. In welche Reihe wirfst Du?",
+						display: "Dein Gerät hat kein Display. Ein Ändern der Anzeige ist deshalb nicht möglich. In welche Reihe wirfst Du?"
 					},
 					NO_AMZ_USERID: {
 						speechOut: "Der Request enthält keine User-ID.",

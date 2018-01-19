@@ -30,6 +30,10 @@
     },
     
     {
+      "intent": "ChangeDeviceIntent"
+    },
+
+    {
       "intent": "DeviceTypeIntent",
       "slots": [
         {
