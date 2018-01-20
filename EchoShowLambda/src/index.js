@@ -463,15 +463,16 @@ function execChangeDeviceIntent(session, response) {
 function execChangeAILevel(session, response, aiLevel) {
 	send(session, response, getSessionGameId(session), "setAILevel", aiLevel, "", function successFunc(result) {
 		setUserAILevel(session, aiLevel);
-		msg = speech.createMsg("INTERN", "AI_LEVEL_CHANGED", aiLevel);
-		execDisplayField(session, response, msg);
+		addRequestMsg(session, speech.createMsg("INTERN", "AI_LEVEL_CHANGED", aiLevel));
+		execDisplayField(session, response);
 	});
 }
 
 function execAnimalConnect(session, response, animal) {
 	send(session, response, getSessionGameId(session), "connectImage", animal, "", function successFunc(result) {
 		msg = speech.createMsg("INTERN", "ANIMAL_CONNECTED", animal);
-		execDisplayField(session, response, msg);
+		addRequestMsg(session, speech.createMsg("INTERN", "ANIMAL_CONNECTED", animal));
+		execDisplayField(session, response);
 	});
 }
 
@@ -481,8 +482,8 @@ function execAnimalConnect(session, response, animal) {
 
 
 function didNotUnterstand(intent, session, response) {
-	msg = speech.createMsg("INTERN", "DID_NOT_UNDERSTAND");
-	execDisplayField(session, response, msg)
+	addRequestMsg(session, speech.createMsg("INTERN", "DID_NOT_UNDERSTAND"));
+	execDisplayField(session, response)
 }
 
 
@@ -525,8 +526,11 @@ function execAnswer(question, intent, session, response) {
 	case "ASK_DEVICE":
 	case "ASK_DEVICE.2": {
 		var deviceType = getFromIntent(intent, "device");
-		deviceType = (deviceType===undefined) ? "" : deviceType.toLowerCase(); 
-		if ((deviceType !== "show") && (deviceType !== "spot") && (deviceType !== "anderes")) {
+		deviceType = (deviceType===undefined) ? "" : deviceType.toLowerCase();
+		if (deviceType === "anderes") {
+			deviceType = "other";
+		}
+		if ((deviceType !== "show") && (deviceType !== "spot") && (deviceType !== "other")) {
 			askQuestion(session, response, "ASK_DEVICE.2");
 		}
 		else {

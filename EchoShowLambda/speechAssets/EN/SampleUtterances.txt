@@ -38,7 +38,7 @@ ChangeDeviceIntent Change display settings
 ChangeDeviceIntent Change the display
 ChangeDeviceIntent Change the settings
 
-DeviceTypeIntent {device}
+DeviceTypeIntent {device} device
 DeviceTypeIntent Echo {device}
 DeviceTypeIntent I have a {device}
 DeviceTypeIntent I have an Echo {device}

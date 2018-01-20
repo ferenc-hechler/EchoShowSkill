@@ -627,35 +627,35 @@ function set_locale(locale) {
 						richText:   "What device is this?<br/><br/>" +
 									" * Echo Show<br/>" +
 									" * Echo Spot<br/>" +
-									" * other<br/>",
+									" * other device<br/>",
 						speechOut:  "You are using this device the first time to play Connect-Four. " +
 									"To show the game board on your device in a good quality, " +
 									"you must tell me, what device is this. " +
 									"You can change the settings later by saying the command - Change Display Settings. " +
-									"Play say now: Echo Show, Echo Spot or - other. ",
+									"Please say now: Echo Show, Echo Spot or - other device. ",
 						display:    "You are using this device the first time to play Connect-Four. " +
 									"To show the game board on your device in a good quality, " +
 									"you must tell me, what device is this. " +
 									"You can change the settings later by saying the command 'Change Display Settings'. " +
-									"Play say now 'Echo Show', 'Echo Spot' or 'other'. "
+									"Please say now 'Echo Show', 'Echo Spot' or 'other device'. "
 					},
 					"ASK_DEVICE.RETRY": {
 						title:     	"Display",
 						richText:   "What device is this?<br/><br/>" +
 									" * Echo Show<br/>" +
 									" * Echo Spot<br/>" +
-									" * other<br/>",
-						speechOut:  "I did not understand the device name. Play say Echo Show, Echo Spot or - other. ",
-						display:   	"I did not understand the device name. Play say 'Echo Show', 'Echo Spot' or 'other'. "
+									" * other device<br/>",
+						speechOut:  "I did not understand the device name. Play say Echo Show, Echo Spot or - other device. ",
+						display:   	"I did not understand the device name. Play say 'Echo Show', 'Echo Spot' or 'other device'. "
 					},
 					"ASK_DEVICE.2": {
 						title:     	"Display",
 						richText:   "What device is this?<br/><br/>" +
 									" * Echo Show<br/>" +
 									" * Echo Spot<br/>" +
-									" * other<br/>",
-						speechOut:  "I did not understand the device name. Play say Echo Show, Echo Spot or - other. ",
-						display:   	"I did not understand the device name. Play say 'Echo Show', 'Echo Spot' or 'other'. "
+									" * other device<br/>",
+						speechOut:  "I did not understand the device name. Play say Echo Show, Echo Spot or - other device. ",
+						display:   	"I did not understand the device name. Play say 'Echo Show', 'Echo Spot' or 'other device'. "
 					},
 
 					
@@ -792,7 +792,7 @@ function set_locale(locale) {
 								   
 								    "Shall I repeat the Text?",
 								    
-						speechOut:  "First of all a remark to the display: <br/>" +
+						speechOut:  "First of all a remark to the display: " +
 									"The game board is adapted to the selected device. " +
 									"If the game board looks broken, then use the command - Change Display Settings. " +
 						
@@ -824,7 +824,7 @@ function set_locale(locale) {
 								   
 								    "Shall I repeat the Text?",
 								   
-						display:	"First of all a remark to the display: <br/>" +
+						display:	"First of all a remark to the display: " +
 									"The game board is adapted to the selected device. " +
 									"If the game board looks broken, then use the command: 'Change Display Settings'. " +
 						
